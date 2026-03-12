@@ -1,0 +1,85 @@
+# Scoring Configuration - Tender Leads
+# 招标线索评分配置
+
+weights:
+  budget: 20          # 预算状态
+  relevance: 20       # 匹配度
+  timeliness: 20      # 时效性
+  completeness: 15    # 信息完备度
+  decision_chain: 10  # 决策链条
+  institution: 10     # 机构类型
+  history: 5          # 历史互动
+
+# 预算状态评分 (满分 20)
+budget:
+  confirmed:          # 已明确预算/立项
+    score: 20
+  indicated:          # 有预算线索
+    score: 12
+  unknown:            # 经费不详
+    score: 5
+
+# 匹配度评分 (满分 20)
+relevance:
+  core_equipment:     # 核心关键词+关联设备
+    score: 20
+  general_keywords:   # 泛关键词
+    score: 12
+  weak_match:         # 弱匹配
+    score: 4
+
+# 时效性评分 (满分 20)
+timeliness:
+  recent_90_days:     # 最近90天
+    score: 20
+  recent_180_days:    # 90-180天
+    score: 12
+  older:              # 更早
+    score: 5
+
+# 信息完备度评分 (满分 15)
+completeness:
+  full:               # 手机+邮箱+地址齐全
+    score: 15
+  no_phone:           # 缺手机号
+    score: 9
+  org_only:           # 仅有单位信息
+    score: 3
+
+# 决策链条评分 (满分 10)
+decision_chain:
+  full_chain:         # PI/联系人/设备科完整
+    score: 10
+  contact_only:       # 仅联系人
+    score: 6
+  org_only:           # 仅单位
+    score: 2
+
+# 机构类型评分 (满分 10)
+institution:
+  top_university:     # 985/211/双一流
+    score: 10
+  research_institute: # 科研院所
+    score: 10
+  hospital_tier3:     # 三甲医院
+    score: 7
+  enterprise:         # 企业/其他
+    score: 4
+
+# 历史互动评分 (满分 5)
+history:
+  closed:             # 已成交
+    score: 5
+  quoted:             # 已报价
+    score: 5
+  no_interaction:     # 无互动
+    score: 2
+  lost:               # 已流失
+    score: 0
+
+# 等级转换
+grade_thresholds:
+  A: 80   # >= 80
+  B: 65   # 65-79
+  C: 50   # 50-64
+  D: 0    # < 50

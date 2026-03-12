@@ -1,0 +1,49 @@
+# Keywords Configuration
+# 销售线索发现系统关键词配置
+
+# 英文核心关键词
+english:
+  core:
+    - "Multiplex Immunofluorescence"
+    - "mIF"
+    - "Immunofluorescence"
+    - "IF"
+    - "Tyramide Signal Amplification"
+    - "TSA"
+    - "Cyclic Immunofluorescence"
+    - "CyCIF"
+    - "CODEX"
+    - "Spatial Proteomics"
+    - "Spatial Transcriptomics"
+    - "Tissue Imaging"
+    - "Fluorescence Microscopy"
+    - "Autofluorescence Quenching"
+    - "H&E staining"
+    - "Hematoxylin and Eosin"
+
+  equipment:
+    - "Confocal Microscopy"
+    - "Confocal Microscope"
+    - "Fluorescence Microscope"
+    - "Olympus"
+    - "ZEISS"
+    - "Nikon"
+    - "Leica"
+
+# 中文核心关键词
+chinese:
+  core:
+    - "多重免疫荧光"
+    - "免疫荧光"
+    - "荧光淬灭"
+    - "自发荧光"
+    - "组织成像"
+    - "空间蛋白组学"
+    - "空间转录组学"
+    - "苏木精-伊红染色"
+    - "HE染色"
+
+  equipment:
+    - "共聚焦显微镜"
+    - "激光共聚焦"
+    - "荧光显微镜"

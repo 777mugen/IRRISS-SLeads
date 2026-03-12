@@ -1,0 +1,19 @@
+# Scheduler Configuration
+# 定时调度配置
+
+daily_run:
+  hour: 6
+  minute: 0
+  timezone: "Asia/Shanghai"
+
+full_export:
+  day_of_week: "sun"  # 周日全量导出
+  hour: 6
+  minute: 0
+
+retry:
+  max_attempts: 1
+  delay_seconds: 60
+
+timeout:
+  total_runtime_hours: 4  # 10:00 前完成

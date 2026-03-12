@@ -1,0 +1,76 @@
+# Data Sources Configuration
+# 数据源配置
+
+paper_sources:
+  pubmed:
+    name: "PubMed/PMC"
+    priority: 1
+    base_url: "https://pubmed.ncbi.nlm.nih.gov"
+    search_url: "https://pubmed.ncbi.nlm.nih.gov/?term={query}"
+    enabled: true
+
+  single_cell_papers:
+    name: "Single Cell Papers"
+    priority: 2
+    base_url: "https://single-cell-papers.bioinfo-assist.com"
+    enabled: true
+
+  openalex:
+    name: "OpenAlex"
+    priority: 3
+    base_url: "https://api.openalex.org"
+    enabled: true
+
+  cnki:
+    name: "CNKI"
+    priority: 4
+    enabled: false  # MVP 阶段暂不接入
+
+tender_sources:
+  ccgp:
+    name: "中国政府采购网"
+    priority: 1
+    url: "http://www.ccgp.gov.cn"
+    enabled: true
+
+  ggzy:
+    name: "全国公共资源交易平台"
+    priority: 2
+    url: "http://www.ggzy.gov.cn"
+    enabled: true
+
+  beijing:
+    name: "北京市政府采购网"
+    priority: 3
+    url: "https://czj.beijing.gov.cn/zfcg/"
+    enabled: true
+
+  shanghai:
+    name: "上海市政府采购网"
+    priority: 3
+    url: "https://www.zfcg.sh.gov.cn"
+    enabled: true
+
+  guangdong:
+    name: "广东省政府采购网"
+    priority: 3
+    url: "https://gdgpo.czt.gd.gov.cn"
+    enabled: true
+
+  jiangsu:
+    name: "江苏省政府采购网"
+    priority: 3
+    url: "http://www.ccgp-jiangsu.gov.cn"
+    enabled: true
+
+  zhejiang:
+    name: "浙江省政府采购网"
+    priority: 3
+    url: "https://zfcg.czt.zj.gov.cn"
+    enabled: true
+
+  ceb:
+    name: "中国招标投标公共服务平台"
+    priority: 4
+    url: "http://www.cebpubservice.com"
+    enabled: true
