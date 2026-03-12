@@ -13,22 +13,19 @@ from typing import Any
 class CSVExporter:
     """CSV 导出器"""
     
+    # 重构后的字段列表
     PAPER_COLUMNS = [
-        "PMID",              # 论文唯一标识
         "DOI",               # DOI 标识符
-        "文章标题",
-        "发表时间",
-        "通讯作者姓名",
-        "通讯作者单位",
-        "通讯作者邮箱",
-        "通讯作者电话",
-        "通讯作者地址",
-        "全部作者信息",      # JSON 格式的所有作者
-        "等级",
-        "分数",
-        "命中关键词",
-        "来源链接",          # 线索唯一标识 (URL)
-        "变更标记"
+        "标题",              # 文章标题
+        "发表时间",          # YYYY-MM-DD
+        "原文链接",          # https://doi.org/[DOI]
+        "来源",              # 固定"PubMed"
+        "通讯作者",          # 通讯作者姓名
+        "单位地址",          # 通讯作者单位地址
+        "联系电话",          # 通讯作者电话
+        "电子邮箱",          # 通讯作者邮箱
+        "其他作者信息",      # 一人一行展开
+        "线索等级"           # A/B/C/D（只暴露等级，不暴露分数）
     ]
     
     TENDER_COLUMNS = [
@@ -83,21 +80,17 @@ class CSVExporter:
             
             for lead in leads:
                 row = [
-                    lead.get('pmid', ''),
                     lead.get('doi', ''),
                     lead.get('title', ''),
                     self._format_date(lead.get('published_at')),
+                    lead.get('article_url', ''),
+                    lead.get('source', 'PubMed'),
                     lead.get('name', ''),
-                    lead.get('institution', ''),
-                    lead.get('email', ''),
+                    lead.get('address', ''),  # 单位地址
                     lead.get('phone', ''),
-                    lead.get('address', ''),
-                    self._format_all_authors(lead.get('all_authors')),
-                    lead.get('grade', ''),
-                    lead.get('score', ''),
-                    self._format_keywords(lead.get('keywords_matched')),
-                    lead.get('source_url', ''),
-                    lead.get('change_marker', '') if include_diff else ''
+                    lead.get('email', ''),
+                    self._format_all_authors_expanded(lead.get('all_authors')),
+                    lead.get('grade', '')
                 ]
                 writer.writerow(row)
         
@@ -168,9 +161,46 @@ class CSVExporter:
         return ','.join(keywords)
     
     def _format_all_authors(self, authors: Any) -> str:
-        """格式化全部作者信息"""
+        """格式化全部作者信息（JSON 格式）"""
         if not authors:
             return ''
         if isinstance(authors, str):
             return authors
         return json.dumps(authors, ensure_ascii=False)
+    
+    def _format_all_authors_expanded(self, authors: Any) -> str:
+        """
+        格式化全部作者信息（一人一行展开）
+        
+        数据库存储（JSON）:
+        [
+            {"name": "张三", "institution": "清华大学", "email": "abc@tsinghua.edu.cn", "phone": "+86-138-0000-0000"}
+        ]
+        
+        CSV 导出（一人一行）:
+        张三, 清华大学, abc@tsinghua.edu.cn, +86-138-0000-0000
+        李四, 北京大学, def@pku.edu.cn, 
+        """
+        if not authors:
+            return ''
+        
+        # 如果是字符串，先解析为 JSON
+        if isinstance(authors, str):
+            try:
+                authors = json.loads(authors)
+            except:
+                return authors
+        
+        # 展开为一人一行
+        lines = []
+        for author in authors:
+            if isinstance(author, dict):
+                parts = [
+                    author.get('name', ''),
+                    author.get('institution', ''),
+                    author.get('email', ''),
+                    author.get('phone', '')
+                ]
+                lines.append(', '.join(part for part in parts if part))
+        
+        return '\n'.join(lines)
