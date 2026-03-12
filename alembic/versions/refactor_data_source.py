@@ -21,13 +21,29 @@ def upgrade():
     """重构数据库架构"""
     
     # ============================================================
-    # Phase 1: 清空现有数据（按用户要求）
+    # Phase 1: 备份现有数据（安全措施）
     # ============================================================
     
-    # 注意：TRUNCATE 会清空所有数据，不可恢复！
-    op.execute("TRUNCATE TABLE paper_leads CASCADE;")
-    op.execute("TRUNCATE TABLE tender_leads CASCADE;")
-    op.execute("TRUNCATE TABLE crawled_urls CASCADE;")
+    # 创建备份表
+    op.execute("""
+        CREATE TABLE paper_leads_backup_20260312 AS 
+        SELECT * FROM paper_leads;
+    """)
+    
+    op.execute("""
+        CREATE TABLE tender_leads_backup_20260312 AS 
+        SELECT * FROM tender_leads;
+    """)
+    
+    op.execute("""
+        CREATE TABLE crawled_urls_backup_20260312 AS 
+        SELECT * FROM crawled_urls;
+    """)
+    
+    # 清空现有数据（使用 DELETE 而不是 TRUNCATE，支持事务回滚）
+    op.execute("DELETE FROM paper_leads;")
+    op.execute("DELETE FROM tender_leads;")
+    op.execute("DELETE FROM crawled_urls;")
     
     # ============================================================
     # Phase 2: 新建 raw_markdown 表
@@ -106,4 +122,13 @@ def downgrade():
     op.drop_index('idx_raw_markdown_doi', 'raw_markdown')
     op.drop_table('raw_markdown')
     
-    # 注意：TRUNCATE 的数据无法恢复！
+    # 恢复备份的数据（如果需要）
+    # 取消注释以下行来恢复数据：
+    # op.execute("INSERT INTO paper_leads SELECT * FROM paper_leads_backup_20260312;")
+    # op.execute("INSERT INTO tender_leads SELECT * FROM tender_leads_backup_20260312;")
+    # op.execute("INSERT INTO crawled_urls SELECT * FROM crawled_urls_backup_20260312;")
+    
+    # 删除备份表（可选）
+    # op.execute("DROP TABLE IF EXISTS paper_leads_backup_20260312;")
+    # op.execute("DROP TABLE IF EXISTS tender_leads_backup_20260312;")
+    # op.execute("DROP TABLE IF EXISTS crawled_urls_backup_20260312;")
