@@ -120,7 +120,10 @@ class TwoStageExtractor:
 """
         
         try:
-            response = await self.llm.call(prompt)
+            response = await self.llm.chat(prompt, temperature=0.1)
+            
+            # 记录原始响应（调试用）
+            self.logger.debug(f"GLM-5 原始响应: {response[:200] if response else '空'}")
             
             # 解析 JSON
             locations = json.loads(response)
@@ -130,6 +133,7 @@ class TwoStageExtractor:
             
         except json.JSONDecodeError as e:
             self.logger.error(f"定位阶段 JSON 解析失败: {e}")
+            self.logger.error(f"GLM-5 响应内容: {response[:500] if response else '空响应'}")
             return None
         except Exception as e:
             self.logger.error(f"定位阶段失败: {e}")
@@ -248,7 +252,7 @@ class TwoStageExtractor:
 """
         
         try:
-            response = await self.llm.call(prompt)
+            response = await self.llm.chat(prompt, temperature=0.1)
             result = json.loads(response)
             return result
         except Exception as e:
