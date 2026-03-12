@@ -94,14 +94,17 @@ class Config:
         return os.getenv("ZAI_MODEL", "glm-5")
     
     @property
-    def anthropic_api_key(self) -> str:
-        """Anthropic API Key (deprecated, use zai)"""
-        return os.getenv("ANTHROPIC_API_KEY", "")
+    def feishu_webhook(self) -> str:
+        """飞书机器人 Webhook URL"""
+        return os.getenv("FEISHU_WEBHOOK", "")
     
     @property
-    def log_level(self) -> str:
-        """日志级别"""
-        return os.getenv("LOG_LEVEL", "INFO")
+    def tender_keywords(self) -> list[str]:
+        """招标关键词"""
+        env_keywords = os.getenv("TENDER_KEYWORDS", "")
+        if env_keywords:
+            return [k.strip() for k in env_keywords.split(",") if k.strip()]
+        return []
     
     @property
     def feishu_webhook(self) -> str:
@@ -121,6 +124,21 @@ class Config:
             return self.keywords["tender"]
         
         return []
+    
+    @property
+    def jina_api_key(self) -> str:
+        """Jina API Key"""
+        return os.getenv("JINA_API_KEY", "")
+    
+    @property
+    def zai_api_key(self) -> str:
+        """ZAI API Key (GLM-5)"""
+        return os.getenv("ZAI_API_KEY", "")
+    
+    @property
+    def zai_model(self) -> str:
+        """ZAI Model"""
+        return os.getenv("ZAI_MODEL", "glm-5")
 
 
 # 全局配置实例
