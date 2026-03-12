@@ -20,7 +20,15 @@ class BatchMonitor:
     2. 错误检测和告警
     3. 自动重试失败的论文
     4. 生成统计报告
+    5. **业务指标跟踪**
     """
+    
+    # 业务指标阈值
+    SUCCESS_RATE_TARGET = 80.0  # 目标成功率 80%
+    FAILURE_RATE_WARNING = 10.0  # 失败率警告阈值 10%
+    FAILURE_RATE_ERROR = 20.0  # 失败率错误阈值 20%
+    MAX_BACKLOG = 100  # 最大积压数量
+    MAX_STALE_HOURS = 24  # 卡住任务最大小时数
     
     def __init__(self):
         self.logger = get_logger()

@@ -135,25 +135,39 @@ class BatchResultParser:
             
         Returns:
             解析后的结构化数据
+            
+        Raises:
+            ValueError: 内容过长
+            ValueError: JSON 解析失败
         """
-        # 尝试直接解析 JSON
+        # 1. 内容长度限制（防止内存溢出）
+        MAX_CONTENT_LENGTH = 100000  # 100KB
+        if len(content) > MAX_CONTENT_LENGTH:
+            raise ValueError(f"LLM 响应内容过长: {len(content)} 字节 (最大 {MAX_CONTENT_LENGTH})")
+        
+        # 2. 空内容检查
+        if not content or not content.strip():
+            raise ValueError("LLM 响应内容为空")
+        
+        # 3. 尝试直接解析 JSON
         try:
             data = json.loads(content)
             return self._validate_and_clean_data(data)
-        except json.JSONDecodeError:
-            pass
+        except json.JSONDecodeError as e:
+            self.logger.debug(f"直接 JSON 解析失败: {e}")
         
-        # 尝试提取 JSON 块
+        # 4. 尝试提取 JSON 块
         import re
         json_match = re.search(r'\{[\s\S]*\}', content)
         if json_match:
             try:
                 data = json.loads(json_match.group())
                 return self._validate_and_clean_data(data)
-            except json.JSONDecodeError:
-                pass
+            except json.JSONDecodeError as e:
+                self.logger.debug(f"JSON 块提取解析失败: {e}")
         
-        raise ValueError(f"无法解析 LLM 响应为 JSON: {content[:200]}...")
+        # 5. 所有尝试都失败
+        raise ValueError(f"无法解析 LLM 响应为 JSON (内容长度: {len(content)}, 前 200 字符: {content[:200]}...)")
     
     def _validate_and_clean_data(self, data: Dict) -> Dict[str, Any]:
         """

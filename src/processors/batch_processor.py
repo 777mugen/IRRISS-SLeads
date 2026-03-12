@@ -159,17 +159,18 @@ class BatchProcessor:
         batch_id: str
     ):
         """
-        标记论文为处理中
+        标记论文为处理中（批量优化）
         
         Args:
             papers: 论文列表
             batch_id: 批处理任务 ID
         """
+        from sqlalchemy import update
+        
         async with get_session() as session:
             doi_list = [paper.doi for paper in papers]
             
-            # 使用 UPDATE 语句批量更新
-            from sqlalchemy import update
+            # 批量更新（使用 synchronize_session=False 提升性能）
             stmt = (
                 update(RawMarkdown)
                 .where(RawMarkdown.doi.in_(doi_list))
@@ -177,6 +178,7 @@ class BatchProcessor:
                     processing_status='processing',
                     batch_id=batch_id
                 )
+                .execution_options(synchronize_session=False)  # 性能优化
             )
             
             await session.execute(stmt)
@@ -196,6 +198,8 @@ class BatchProcessor:
             doi: DOI
             extracted_data: 提取的数据（用于更新 paper_leads）
         """
+        from sqlalchemy import update
+        
         async with get_session() as session:
             stmt = (
                 update(RawMarkdown)
@@ -223,6 +227,8 @@ class BatchProcessor:
             doi: DOI
             error_message: 错误信息
         """
+        from sqlalchemy import update
+        
         async with get_session() as session:
             stmt = (
                 update(RawMarkdown)
