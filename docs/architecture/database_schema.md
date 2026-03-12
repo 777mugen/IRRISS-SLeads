@@ -18,6 +18,7 @@
 - 存储 Jina Reader 返回的原始 Markdown
 - 支持字段补齐时重新提取
 - 避免重复调用 Jina API
+- **支持批量处理任务的状态跟踪**
 
 ### 字段
 
@@ -28,14 +29,29 @@
 | pmid | VARCHAR | PMID |
 | markdown_content | TEXT | Markdown 原始内容 |
 | source_url | VARCHAR | 原始链接（https://doi.org/[DOI]） |
+| **processing_status** | VARCHAR(20) | **处理状态（pending/processing/completed/failed）** |
+| **batch_id** | VARCHAR | **所属批量任务 ID（智谱返回的 batch_id）** |
+| **processed_at** | TIMESTAMP | **处理完成时间** |
+| **error_message** | TEXT | **错误信息（如果处理失败）** |
 | fetched_at | TIMESTAMP | 获取时间 |
 | created_at | TIMESTAMP | 创建时间 |
+
+### 处理状态说明
+
+| 状态 | 说明 |
+|------|------|
+| pending | 未处理，等待批量提取 |
+| processing | 已提交到智谱批量 API，正在处理 |
+| completed | 处理完成，数据已提取到 paper_leads |
+| failed | 处理失败，需要重试 |
 
 ### 索引
 
 ```sql
 CREATE INDEX idx_raw_markdown_doi ON raw_markdown(doi);
 CREATE INDEX idx_raw_markdown_pmid ON raw_markdown(pmid);
+CREATE INDEX idx_raw_markdown_processing_status ON raw_markdown(processing_status);
+CREATE INDEX idx_raw_markdown_batch_id ON raw_markdown(batch_id);
 ```
 
 ---
