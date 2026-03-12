@@ -10,7 +10,7 @@ Two-Stage Extractor
 from typing import Dict, Optional
 import json
 
-from src.llm.client import LLMClient
+from src.llm.client import ZaiClient
 from src.logging_config import get_logger
 
 
@@ -24,7 +24,7 @@ class TwoStageExtractor:
     
     def __init__(self):
         self.logger = get_logger()
-        self.llm = LLMClient()
+        self.llm = ZaiClient()
     
     async def close(self):
         """关闭资源"""

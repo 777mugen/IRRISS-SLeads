@@ -21,7 +21,8 @@ class NCBIIDConverter:
     这是最快、最准确的 DOI 获取工具
     """
     
-    BASE_URL = "https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/"
+    # 更新后的 API URL（2026年新地址）
+    BASE_URL = "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/"
     
     def __init__(self):
         self.logger = get_logger()
