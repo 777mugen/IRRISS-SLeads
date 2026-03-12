@@ -102,6 +102,25 @@ class Config:
     def log_level(self) -> str:
         """日志级别"""
         return os.getenv("LOG_LEVEL", "INFO")
+    
+    @property
+    def feishu_webhook(self) -> str:
+        """飞书机器人 Webhook URL"""
+        return os.getenv("FEISHU_WEBHOOK", "")
+    
+    @property
+    def tender_keywords(self) -> list[str]:
+        """招标关键词"""
+        # 从环境变量或配置文件获取
+        env_keywords = os.getenv("TENDER_KEYWORDS", "")
+        if env_keywords:
+            return [k.strip() for k in env_keywords.split(",") if k.strip()]
+        
+        # 从配置文件获取
+        if self.keywords and "tender" in self.keywords:
+            return self.keywords["tender"]
+        
+        return []
 
 
 # 全局配置实例

@@ -237,3 +237,78 @@ class SingleCellPapersCollector(LibraryCollector):
             max_pages=max_pages,
             max_urls=max_urls
         )
+
+
+class MultiModeCollector:
+    """
+    多模式收集器
+    
+    同时运行多种收集模式，自动去重合并结果
+    """
+    
+    def __init__(
+        self,
+        keywords: list[str],
+        library_url: Optional[str] = None,
+        max_results_per_mode: int = 50
+    ):
+        """
+        初始化多模式收集器
+        
+        Args:
+            keywords: 关键词列表
+            library_url: 库 URL（可选）
+            max_results_per_mode: 每种模式的最大结果数
+        """
+        self.keywords = keywords
+        self.library_url = library_url
+        self.max_results = max_results_per_mode
+        self.logger = get_logger()
+    
+    async def collect_all(self) -> list[dict]:
+        """
+        运行所有收集模式并合并去重
+        
+        Returns:
+            [{'url': str, 'sources': ['search', 'library']}, ...]
+        """
+        from src.processors.url_deduplicator import URLDeduplicator
+        
+        urls_by_source = {}
+        
+        # 模式1: Search
+        try:
+            search_collector = PubMedSearchCollector(
+                self.keywords, 
+                max_results=self.max_results
+            )
+            urls_by_source['search'] = await search_collector.collect()
+            await search_collector.close()
+        except Exception as e:
+            self.logger.error(f"Search 模式失败: {e}")
+            urls_by_source['search'] = []
+        
+        # 模式2: Library
+        if self.library_url:
+            try:
+                library_collector = SingleCellPapersCollector(
+                    keyword=self.keywords[0] if self.keywords else None,
+                    max_urls=self.max_results
+                )
+                urls_by_source['library'] = await library_collector.collect()
+                await library_collector.close()
+            except Exception as e:
+                self.logger.error(f"Library 模式失败: {e}")
+                urls_by_source['library'] = []
+        
+        # 合并去重
+        deduplicator = URLDeduplicator()
+        merged = deduplicator.merge_sources(urls_by_source)
+        
+        self.logger.info(
+            f"收集完成: Search={len(urls_by_source.get('search', []))}, "
+            f"Library={len(urls_by_source.get('library', []))}, "
+            f"合并后={len(merged)}"
+        )
+        
+        return merged

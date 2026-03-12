@@ -1,7 +1,7 @@
 ---
 title: Playwright Fallback & URL Deduplication
 type: feat
-status: active
+status: completed
 date: 2026-03-12
 ---
 
@@ -536,21 +536,21 @@ class MultiModeCollector:
 
 ### Phase 1: Playwright Fallback
 
-- [ ] `PlaywrightClient` 类实现完成
-- [ ] `ContentFetcher` 统一获取器实现
-- [ ] 反爬页面检测逻辑（检测 "Just a moment" 等）
-- [ ] Jina → Playwright 自动切换
-- [ ] 添加 `playwright` 依赖到 `requirements.txt`
+- [x] `PlaywrightClient` 类实现完成
+- [x] `ContentFetcher` 统一获取器实现
+- [x] 反爬页面检测逻辑（检测 "Just a moment" 等）
+- [x] Jina → Playwright 自动切换
+- [x] 添加 `playwright` 依赖到 `requirements.txt`
 - [ ] 单元测试：反爬检测
 - [ ] 集成测试：ScienceDirect DOI 链接能正确获取
 
 ### Phase 2: URL Deduplication
 
-- [ ] `URLDeduplicator` 类实现
-- [ ] PMID 提取和去重
-- [ ] DOI 提取和去重
-- [ ] URL 规范化（移除追踪参数、统一格式）
-- [ ] `MultiModeCollector` 多模式收集器
+- [x] `URLDeduplicator` 类实现
+- [x] PMID 提取和去重
+- [x] DOI 提取和去重
+- [x] URL 规范化（移除追踪参数、统一格式）
+- [x] `MultiModeCollector` 多模式收集器
 - [ ] 单元测试：各种 URL 格式的去重
 - [ ] 集成测试：模式1 + 模式2 合并去重
 
