@@ -31,13 +31,26 @@ class LeadPipeline:
         self.paper_scorer = PaperScorer()
         self.tender_scorer = TenderScorer()
     
-    async def is_url_crawled(self, url: str) -> bool:
-        """检查 URL 是否已抓取"""
+    async def is_url_crawled(self, url: str, only_success: bool = False) -> bool:
+        """检查 URL 是否已抓取
+        
+        Args:
+            url: 要检查的 URL
+            only_success: 如果为 True，只检查成功的记录
+            
+        Returns:
+            bool: URL 是否已抓取
+        """
         async with get_session() as session:
             result = await session.execute(
                 select(CrawledURL).where(CrawledURL.url == url)
             )
-            return result.scalar_one_or_none() is not None
+            crawled = result.scalar_one_or_none()
+            if crawled is None:
+                return False
+            if only_success:
+                return crawled.status == 'success'
+            return True
     
     async def mark_url_crawled(
         self, 
@@ -69,9 +82,9 @@ class LeadPipeline:
         Returns:
             处理后的线索数据，如果验证失败返回 None
         """
-        # 检查是否已抓取
-        if await self.is_url_crawled(url):
-            self.logger.debug(f"URL 已抓取，跳过: {url}")
+        # 检查是否已成功抓取（允许重试失败的）
+        if await self.is_url_crawled(url, only_success=True):
+            self.logger.debug(f"URL 已成功抓取，跳过: {url}")
             return None
         
         # 提取字段
@@ -134,9 +147,9 @@ class LeadPipeline:
         Returns:
             处理后的线索数据
         """
-        # 检查是否已抓取
-        if await self.is_url_crawled(url):
-            self.logger.debug(f"URL 已抓取，跳过: {url}")
+        # 检查是否已成功抓取（允许重试失败的）
+        if await self.is_url_crawled(url, only_success=True):
+            self.logger.debug(f"URL 已成功抓取，跳过: {url}")
             return None
         
         # 提取字段

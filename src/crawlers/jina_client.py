@@ -123,9 +123,13 @@ class JinaClient:
         
         return results
     
+    async def close(self):
+        """关闭客户端"""
+        if self._client:
+            await self._client.aclose()
+    
     async def __aenter__(self):
         return self
     
     async def __aexit__(self, exc_type, exc_val, exc_tb):
-        if self._client:
-            await self._client.aclose()
+        await self.close()
