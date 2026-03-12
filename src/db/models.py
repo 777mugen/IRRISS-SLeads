@@ -132,6 +132,7 @@ class RawMarkdown(Base):
     
     存储从 Jina Reader 获取的原始 Markdown 内容
     支持字段补齐时重新提取
+    支持批量处理任务状态跟踪
     """
     __tablename__ = "raw_markdown"
     
@@ -140,12 +141,25 @@ class RawMarkdown(Base):
     pmid: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     markdown_content: Mapped[str] = mapped_column(Text, nullable=False)
     source_url: Mapped[str] = mapped_column(Text, nullable=False)
+    
+    # 批量处理状态跟踪
+    processing_status: Mapped[str] = mapped_column(
+        String(20), 
+        nullable=False, 
+        server_default="pending"
+    )  # pending/processing/completed/failed
+    batch_id: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    processed_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    error_message: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    
     fetched_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
     
     __table_args__ = (
         Index('idx_raw_markdown_doi', 'doi'),
         Index('idx_raw_markdown_pmid', 'pmid'),
+        Index('idx_raw_markdown_processing_status', 'processing_status'),
+        Index('idx_raw_markdown_batch_id', 'batch_id'),
     )
 
 

@@ -6,7 +6,8 @@
 
 ```
 关键词 → PubMed Entrez API → PMID列表 → NCBI ID Converter → DOI列表 → 
-Jina Reader → Markdown → 存储 → GLM-5提取 → 结构化JSON → 评分 → 入库 → CSV导出 → 飞书通知
+Jina Reader → Markdown → raw_markdown表 → 智谱批量API → 结构化JSON → 
+paper_leads表 → 评分 → CSV导出 → 飞书通知
 ```
 
 ---
@@ -40,14 +41,30 @@ Jina Reader → Markdown → 存储 → GLM-5提取 → 结构化JSON → 评分
 - paper_leads 表（DOI 唯一标识）
 - tender_leads 表
 
-### 4. Extraction Layer
-**两阶段提取**:
-1. 定位阶段：搜索关键词（Correspondence, Email, Affiliation）
-2. 提取阶段：提取指定区域的结构化字段
+### 4. Extraction Layer（批量处理）
 
-**模型**: GLM-5
+**批量处理模式**（推荐）:
+- 从 raw_markdown 表读取未处理论文（processing_status = 'pending'）
+- 构建 JSONL 文件（每行一个请求）
+- 提交到智谱批量 API（https://open.bigmodel.cn/api/paas/v4/batches）
+- 异步处理（10-30 分钟）
+- 解析结果，更新 paper_leads
+
+**模型**: GLM-4-Plus
+- **优势**: 高吞吐量、低成本、无速率限制
+- **适合**: 离线批量处理场景
+- **max_tokens**: 4096
+
+**实时 API 模式**（备用）:
+- 两阶段提取：定位 + 提取
 - 速率控制：高峰期30秒/请求，非高峰20秒/请求
 - 429 自动重试
+
+**Prompt 设计要点**:
+- ✅ 明确不提取 References 部分
+- ✅ 只提取正文中的通讯作者信息
+- ✅ JSON 格式输出
+- ✅ 字段缺失时返回 null
 
 ### 5. Scoring Layer
 **7维度评分**（0-100分）:
@@ -98,8 +115,9 @@ Jina Reader → Markdown → 存储 → GLM-5提取 → 结构化JSON → 评分
 
 - ✅ **DOI 为唯一标识**: 通往全文的官方凭证
 - ✅ **增量优先**: 已有DOI且字段完整 → 跳过
-- ✅ **字段补齐**: 字段缺失 → 重新提取
-- ✅ **两阶段提取**: 先定位再提取，避免超长上下文
+- ✅ **字段补齐**: 字段缺失 → 从 raw_markdown 重新提取
+- ✅ **批量处理**: 离线批量提取，避免速率限制
+- ✅ **处理状态跟踪**: raw_markdown.processing_status 跟踪处理进度
 - ✅ **配置驱动**: 规则在 YAML 中管理
 - ✅ **原始数据保留**: Markdown 可重新提取
 - ✅ **可追溯**: 策略版本可回退
@@ -112,11 +130,17 @@ Jina Reader → Markdown → 存储 → GLM-5提取 → 结构化JSON → 评分
 ```python
 if DOI 不存在:
     # 新线索
-    获取 Markdown → 提取 → 评分 → 入库
-elif DOI 存在 and 字段缺失:
+    获取 Markdown → 存储到 raw_markdown → processing_status='pending'
+    
+if DOI 存在 and processing_status == 'pending':
+    # 批量提取
+    加入下一个批处理任务 → 提交智谱 API → 等待结果
+    
+if DOI 存在 and processing_status == 'completed' and 字段缺失:
     # 补齐字段
-    从 raw_markdown 重新提取 → 更新 → 发送通知
-else:
+    从 raw_markdown 重新提取 → 更新 paper_leads
+    
+if DOI 存在 and 字段完整:
     # 字段完整
     跳过
 ```

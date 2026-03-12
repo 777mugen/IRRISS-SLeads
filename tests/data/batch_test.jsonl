@@ -1,0 +1,1 @@
+{"custom_id": "test-1", "method": "POST", "url": "/v4/chat/completions", "body": {"model": "glm-4-plus", "messages": [{"role": "user", "content": "请用一句话介绍什么是多重免疫荧光（mIF）技术？"}], "max_tokens": 100}}
