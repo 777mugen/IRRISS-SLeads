@@ -250,9 +250,7 @@ class BatchPipeline:
                     email=corr_author.get('email'),
                     phone=corr_author.get('phone'),
                     institution=corr_author.get('institution'),
-                    institution_cn=corr_author.get('institution_cn'),
                     address=corr_author.get('address'),
-                    address_cn=corr_author.get('address_cn'),
                     all_authors=data.get('all_authors_info')
                 )
             )

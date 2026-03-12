@@ -28,22 +28,18 @@ BATCH_EXTRACTION_PROMPT_V1 = """从以下论文内容中提取信息，以 JSON 
    - **重要**：只提取中国人的信息作为通讯作者
 
 3. **字段对应关系**：
-   - "单位地址"、"联系电话"、"电子邮箱" 必须对应 "通讯作者" 这个字段的人
+   - "address"、"联系电话"、"电子邮箱" 必须对应 "通讯作者" 这个字段的人
    - 不是其他作者的信息
 
 4. **🔴 翻译要求（重要）**：
    - **institution** 字段：保留英文原文
-   - **institution_cn** 字段：**必须翻译成中文**
-     * 例如："Peking University" → "北京大学"
-     * 例如："Tsinghua University" → "清华大学"
-     * 例如："Fudan University" → "复旦大学"
+   - **address** 字段：**翻译成中文，合并单位和地址**
+     * 格式："单位中文名，地址中文翻译"
+     * 例如："Peking University, Beijing, China" → "北京大学，中国北京"
+     * 例如："Tsinghua University, Haidian District, Beijing" → "清华大学，北京市海淀区"
+     * 例如："Harvard Medical School, Boston, MA, USA" → "哈佛医学院，美国马萨诸塞州波士顿"
    
-   - **address** 字段：保留英文原文
-   - **address_cn** 字段：**必须翻译成中文**
-     * 例如："Beijing, China" → "中国北京"
-     * 例如："123 Main St, Shanghai" → "上海主街123号"
-   
-   - **所有地址信息都需要提供中英文两个版本**
+   - **address 字段必须包含单位中文名 + 地址中文翻译**
 
 5. **作者信息合集格式**：
    - 包含所有作者（包括通讯作者）
@@ -67,9 +63,7 @@ BATCH_EXTRACTION_PROMPT_V1 = """从以下论文内容中提取信息，以 JSON 
     "email": "通讯作者的邮箱（对应上述姓名的人）",
     "phone": "通讯作者的联系电话（对应上述姓名的人）",
     "institution": "通讯作者的单位（英文原文）",
-    "institution_cn": "通讯作者的单位（中文翻译）",
-    "address": "通讯作者的单位地址（英文原文）",
-    "address_cn": "通讯作者的单位地址（中文翻译）"
+    "address": "通讯作者的单位地址（中文，格式：单位中文名，地址中文翻译）"
   }},
   "all_authors_info": "作者信息合集（每个作者一行，格式：姓名 | 单位地址 | 联系电话 | 电子邮箱）"
 }}
@@ -83,9 +77,7 @@ BATCH_EXTRACTION_PROMPT_V1 = """从以下论文内容中提取信息，以 JSON 
     "email": "zhang@pku.edu.cn",
     "phone": "+86-10-12345678",
     "institution": "Peking University",
-    "institution_cn": "北京大学",
-    "address": "Beijing, China",
-    "address_cn": "中国北京"
+    "address": "北京大学，中国北京"
   }},
   "all_authors_info": "张三 | Peking University | +86-10-12345678 | zhang@pku.edu.cn\\n李四 | Tsinghua University | +86-10-87654321 | li@tsinghua.edu.cn"
 }}
@@ -99,9 +91,7 @@ BATCH_EXTRACTION_PROMPT_V1 = """从以下论文内容中提取信息，以 JSON 
     "email": "john@harvard.edu",
     "phone": "+1-617-1234567",
     "institution": "Harvard Medical School",
-    "institution_cn": "哈佛医学院",
-    "address": "Boston, MA, USA",
-    "address_cn": "美国马萨诸塞州波士顿"
+    "address": "哈佛医学院，美国马萨诸塞州波士顿"
   }},
   "all_authors_info": "John Doe | Harvard Medical School | +1-617-1234567 | john@harvard.edu\\nJane Smith | MIT | +1-617-9876543 | jane@mit.edu"
 }}

@@ -188,9 +188,7 @@ class BatchResultParser:
                 'email': None,
                 'phone': None,
                 'institution': None,
-                'institution_cn': None,
-                'address': None,
-                'address_cn': None
+                'address': None
             },
             'all_authors_info': data.get('all_authors_info')
         }
@@ -203,9 +201,7 @@ class BatchResultParser:
                 'email': corr_author.get('email'),
                 'phone': corr_author.get('phone'),
                 'institution': corr_author.get('institution'),
-                'institution_cn': corr_author.get('institution_cn'),
-                'address': corr_author.get('address'),
-                'address_cn': corr_author.get('address_cn')
+                'address': corr_author.get('address')
             }
         
         return cleaned
