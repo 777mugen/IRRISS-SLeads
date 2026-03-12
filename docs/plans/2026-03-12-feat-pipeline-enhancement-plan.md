@@ -145,12 +145,12 @@ class ZAIClient:
 
 ### Acceptance Criteria
 
-- [ ] `GLMRateLimiter` 类实现
-- [ ] 高峰期 (14:00-18:00) 30 秒/请求
-- [ ] 非高峰期 20 秒/请求
-- [ ] 集成到 `ZAIClient`
-- [ ] 添加重试逻辑（429 时自动重试）
-- [ ] 日志记录等待时间
+- [x] `GLMRateLimiter` 类实现
+- [x] 高峰期 (14:00-18:00) 30 秒/请求
+- [x] 非高峰期 20 秒/请求
+- [x] 集成到 `ZAIClient`
+- [x] 添加重试逻辑（429 时自动重试）
+- [x] 日志记录等待时间
 
 ---
 
@@ -313,9 +313,9 @@ class TenderCrawler:
 
 ### Acceptance Criteria
 
-- [ ] `TenderCrawler` 类实现
-- [ ] 支持多关键词搜索
-- [ ] URL 去重
+- [x] `TenderCrawler` 类实现
+- [x] 支持多关键词搜索
+- [x] URL 去重
 - [ ] 集成到 `run_daily_task`
 - [ ] 测试：搜索 "免疫荧光 招标" 返回结果
 
@@ -425,10 +425,10 @@ FEISHU_WEBHOOK=https://open.feishu.cn/open-apis/bot/v2/hook/xxx
 
 ### Acceptance Criteria
 
-- [ ] `FeishuNotifier` 类实现
-- [ ] 支持文本消息
-- [ ] 支持每日摘要
-- [ ] 配置项 `FEISHU_WEBHOOK`
+- [x] `FeishuNotifier` 类实现
+- [x] 支持文本消息
+- [x] 支持每日摘要
+- [x] 配置项 `FEISHU_WEBHOOK`
 - [ ] 集成到 `run_daily_task`
 - [ ] 测试：发送测试消息到群
 
