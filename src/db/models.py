@@ -40,13 +40,18 @@ class PaperLead(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     source_url: Mapped[str] = mapped_column(Text, unique=True, nullable=False)
+    pmid: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # PubMed ID
+    doi: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # DOI 标识符
     title: Mapped[str] = mapped_column(Text, nullable=False)
     published_at: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
-    institution: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    address: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    email: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    name: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    phone: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    # 通讯作者信息
+    name: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者姓名
+    institution: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者单位
+    address: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者地址
+    email: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者邮箱
+    phone: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者电话
+    # 全部作者信息（JSON 格式）
+    all_authors: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # JSON 格式的全部作者信息
     keywords_matched: Mapped[Optional[List[str]]] = mapped_column(ARRAY(Text), nullable=True)
     score: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
     grade: Mapped[Optional[str]] = mapped_column(String(1), nullable=True)  # 'A' | 'B' | 'C' | 'D'
@@ -64,6 +69,7 @@ class PaperLead(Base):
         Index('ix_paper_leads_grade', 'grade'),
         Index('ix_paper_leads_feedback_status', 'feedback_status'),
         Index('ix_paper_leads_created_at', 'created_at'),
+        Index('ix_paper_leads_pmid', 'pmid'),
     )
 
 

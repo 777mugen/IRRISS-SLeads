@@ -114,16 +114,30 @@ class LeadPipeline:
     
     async def save_paper_lead(self, lead: dict):
         """保存论文线索到数据库"""
+        import json
+        
+        # 处理通讯作者信息
+        corresponding = lead.get('corresponding_author') or {}
+        
+        # 处理全部作者信息
+        all_authors = lead.get('all_authors')
+        all_authors_json = json.dumps(all_authors, ensure_ascii=False) if all_authors else None
+        
         async with get_session() as session:
             paper = PaperLead(
                 source_url=lead['source_url'],
+                pmid=lead.get('pmid'),
+                doi=lead.get('doi'),
                 title=lead.get('title', ''),
                 published_at=lead.get('published_at'),
-                institution=lead.get('institution'),
-                address=lead.get('address'),
-                email=lead.get('email'),
-                name=lead.get('name'),
-                phone=lead.get('phone'),
+                # 通讯作者信息
+                name=corresponding.get('name') if corresponding else lead.get('name'),
+                institution=corresponding.get('institution') if corresponding else lead.get('institution'),
+                address=corresponding.get('address') if corresponding else lead.get('address'),
+                email=corresponding.get('email') if corresponding else lead.get('email'),
+                phone=corresponding.get('phone') if corresponding else lead.get('phone'),
+                # 全部作者
+                all_authors=all_authors_json,
                 keywords_matched=lead.get('keywords_matched', []),
                 score=lead.get('score'),
                 grade=lead.get('grade'),

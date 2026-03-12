@@ -65,14 +65,18 @@ async def quick_crawl_and_export():
         if all_leads:
             leads_data = [
                 {
+                    'pmid': l.pmid,
+                    'doi': l.doi,
+                    'title': l.title,
+                    'published_at': l.published_at,
                     'name': l.name,
                     'institution': l.institution,
                     'email': l.email,
                     'phone': l.phone,
                     'address': l.address,
-                    'title': l.title,
-                    'published_at': l.published_at,
+                    'all_authors': l.all_authors,
                     'grade': l.grade,
+                    'score': l.score,
                     'keywords_matched': l.keywords_matched,
                     'source_url': l.source_url,
                 }

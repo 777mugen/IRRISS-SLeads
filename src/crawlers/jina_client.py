@@ -29,48 +29,83 @@ class JinaClient:
             self.headers["Authorization"] = f"Bearer {self.api_key}"
         self._client = httpx.AsyncClient(timeout=30.0, follow_redirects=True)
     
-    async def search(self, query: str, max_results: int = 10) -> list[str]:
+    async def search(self, query: str, max_results: int = 10, site: str = None) -> list[str]:
         """
         使用 Jina Search API 搜索
         
         Args:
             query: 搜索查询
             max_results: 最大结果数
+            site: 限制站点（如 "pubmed.ncbi.nlm.nih.gov"）
             
         Returns:
             URL 列表
         """
         import re
+        import json
         
-        search_url = f"{self.SEARCH_URL}/{query}"
+        search_url = f"{self.SEARCH_URL}/"
         
-        response = await self._client.get(
+        # 构建请求体
+        payload = {
+            "q": query,
+            "num": max_results
+        }
+        
+        # 设置请求头
+        headers = {
+            **self.headers,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+        
+        # 如果指定了站点，添加 X-Site header
+        if site:
+            headers["X-Site"] = site
+        
+        response = await self._client.post(
             search_url, 
-            headers=self.headers
+            headers=headers,
+            json=payload
         )
-        response.raise_for_status()
+        
+        if response.status_code != 200:
+            # 如果 POST 失败，回退到 GET 方式
+            get_url = f"{self.SEARCH_URL}/{query}"
+            get_headers = {**self.headers, "Accept": "application/json"}
+            if site:
+                get_headers["X-Site"] = site
+            
+            response = await self._client.get(get_url, headers=get_headers)
         
         content = response.text
         
-        # 从搜索结果中提取所有 URL
+        # 尝试解析 JSON 响应
         urls = []
-        # 匹配 http/https URL
-        url_pattern = r'https?://[^\s<>"\)\]\}]+'
+        try:
+            data = response.json()
+            # 从 JSON 结构中提取 URL
+            if isinstance(data, dict) and 'data' in data:
+                for item in data.get('data', []):
+                    if isinstance(item, dict) and 'url' in item:
+                        urls.append(item['url'])
+            elif isinstance(data, list):
+                for item in data:
+                    if isinstance(item, dict) and 'url' in item:
+                        urls.append(item['url'])
+        except:
+            # 如果不是 JSON，从文本中提取 URL
+            url_pattern = r'https?://[^\s<>"\)\]\}]+'
+            for match in re.finditer(url_pattern, content):
+                url = match.group(0)
+                url = url.rstrip('.,;:!?)]>}')
+                if url not in urls and len(url) < 500:
+                    if url.count('?') <= 1 and url.count('&') <= 3:
+                        urls.append(url)
+                        if len(urls) >= max_results:
+                            break
         
-        for match in re.finditer(url_pattern, content):
-            url = match.group(0)
-            # 清理 URL 尾部的标点
-            url = url.rstrip('.,;:!?)]>}')
-            
-            # 过滤：只保留有效的 URL
-            if url not in urls and len(url) < 500:
-                # 过滤掉查询参数过多的 URL
-                if url.count('?') <= 1 and url.count('&') <= 3:
-                    urls.append(url)
-                    if len(urls) >= max_results:
-                        break
-        
-        return urls
+        return urls[:max_results]
     
     async def read(self, url: str) -> str:
         """
