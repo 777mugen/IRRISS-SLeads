@@ -11,8 +11,8 @@ import yaml
 from dotenv import load_dotenv
 
 
-# 加载环境变量
-load_dotenv()
+# 加载环境变量（override=True 强制使用 .env 文件中的值）
+load_dotenv(override=True)
 
 # 配置文件目录
 CONFIG_DIR = Path(__file__).parent.parent.parent / "config"

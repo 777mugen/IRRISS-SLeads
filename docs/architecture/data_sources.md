@@ -2,12 +2,43 @@
 
 ## 论文数据源（类型 A）
 
-| 优先级 | 数据源 | 说明 |
-|--------|--------|------|
-| 1 | PubMed / PMC | 主力来源，优先通过 Jina Reader 读取真实页面 |
-| 2 | single-cell-papers | https://single-cell-papers.bioinfo-assist.com |
-| 3 | OpenAlex | 补充来源 |
-| 4 | CNKI | 本期暂不接入 |
+### 数据获取流程
+
+```
+关键词搜索 → PubMed Entrez API → PMID列表 → NCBI ID Converter → DOI列表 → Jina Reader → Markdown
+```
+
+### API 说明
+
+#### 1. PubMed Entrez API
+- **用途**: 关键词搜索，获取 PMID 列表
+- **官方文档**: https://www.ncbi.nlm.nih.gov/books/NBK25500/
+- **限制**: 3 requests/second (无 API Key)
+- **参数**:
+  - email: Shane@irriss.com
+  - tool: IRRISS-SLeads
+  - db: pubmed
+  - term: 搜索关键词
+
+#### 2. NCBI ID Converter API
+- **用途**: 批量转换 PMID → DOI
+- **官方文档**: https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/
+- **优势**: 最快、最准确的 DOI 转换工具
+- **格式**: JSON
+
+#### 3. Jina Reader API
+- **用途**: 通过 DOI 链接获取 Markdown 内容
+- **URL格式**: https://r.jina.ai/https://doi.org/[DOI]
+- **处理**: 剔除广告、侧边栏、脚本 → 干净 Markdown
+
+### 优先级
+
+| 优先级 | 步骤 | API |
+|--------|------|-----|
+| 1 | 关键词搜索 | PubMed Entrez (esearch.fcgi) |
+| 2 | 获取详情 | PubMed Entrez (efetch.fcgi) |
+| 3 | PMID → DOI | NCBI ID Converter API |
+| 4 | 获取全文 | Jina Reader API |
 
 时间范围：2024 年 1 月至今
 
