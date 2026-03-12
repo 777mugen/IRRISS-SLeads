@@ -1,8 +1,9 @@
 ---
 title: MVP Implementation - Sales Lead Discovery System
 type: feat
-status: active
+status: completed
 date: 2026-03-11
+completed_at: 2026-03-12
 ---
 
 # MVP Implementation - Sales Lead Discovery System
@@ -497,19 +498,19 @@ CREATE TABLE strategy_versions (
 
 ### Functional Requirements
 
-- [ ] PostgreSQL 数据库运行正常
-- [ ] 论文爬虫端到端工作
-- [ ] 招标爬虫端到端工作
-- [ ] 评分引擎产出 A/B/C/D 等级
-- [ ] CSV 导出格式正确
-- [ ] 定时任务每日 06:00 触发
+- [x] PostgreSQL 数据库运行正常
+- [x] 论文爬虫端到端工作
+- [ ] 招标爬虫端到端工作 (待实现)
+- [x] 评分引擎产出 A/B/C/D 等级
+- [x] CSV 导出格式正确
+- [x] 定时任务每日 06:00 触发
 
 ### Non-Functional Requirements
 
-- [ ] 日志保留 30 天
-- [ ] API Key 不进入代码仓库
-- [ ] 数据库禁止 DROP/TRUNCATE
-- [ ] 评分权重变更需通知 shane
+- [x] 日志保留 30 天
+- [x] API Key 不进入代码仓库
+- [x] 数据库禁止 DROP/TRUNCATE
+- [ ] 评分权重变更需通知 shane (流程待建立)
 
 ## Dependencies & Prerequisites
 
@@ -517,9 +518,9 @@ CREATE TABLE strategy_versions (
 
 | 依赖 | 状态 | 提供者 |
 |------|------|--------|
-| PostgreSQL 16+ | 待安装 | 系统 |
-| Jina API Key | 待提供 | shane |
-| Claude API Key | 待提供 | shane |
+| PostgreSQL 16+ | ✅ 已安装 | 系统 |
+| Jina API Key | ✅ 已配置 | shane |
+| ZAI API Key (GLM-5) | ✅ 已配置 | shane |
 
 ### 可选 (后续迭代)
 
