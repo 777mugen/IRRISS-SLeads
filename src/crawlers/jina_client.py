@@ -24,47 +24,51 @@ class JinaClient:
     
     def __init__(self, api_key: Optional[str] = None):
         self.api_key = api_key or config.jina_api_key
-        self.headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Accept": "text/event-stream",
-        }
-        self._client = httpx.AsyncClient(
-            timeout=60.0,
-            follow_redirects=True,
-        )
+        self.headers = {}
+        if self.api_key:
+            self.headers["Authorization"] = f"Bearer {self.api_key}"
+        self._client = httpx.AsyncClient(timeout=30.0, follow_redirects=True)
     
-    async def close(self):
-        """关闭客户端"""
-        await self._client.aclose()
-    
-    async def search(self, query: str, count: int = 10) -> list[str]:
+    async def search(self, query: str, max_results: int = 10) -> list[str]:
         """
-        使用 Jina Search API 搜索关键词
+        使用 Jina Search API 搜索
         
         Args:
-            query: 搜索关键词
-            count: 返回结果数量
+            query: 搜索查询
+            max_results: 最大结果数
             
         Returns:
             URL 列表
         """
-        url = f"{self.SEARCH_URL}/{query}"
-        params = {"count": count}
+        import re
+        
+        search_url = f"{self.SEARCH_URL}/{query}"
         
         response = await self._client.get(
-            url, 
-            headers=self.headers, 
-            params=params
+            search_url, 
+            headers=self.headers
         )
         response.raise_for_status()
         
-        # 解析响应，提取 URL
-        # Jina Search 返回格式需要解析
+        content = response.text
+        
+        # 从搜索结果中提取所有 URL
         urls = []
-        for line in response.text.strip().split("\n"):
-            if line.startswith("data: "):
-                # 解析 SSE 格式
-                pass  # TODO: 实现解析逻辑
+        # 匹配 http/https URL
+        url_pattern = r'https?://[^\s<>"\)\]\}]+'
+        
+        for match in re.finditer(url_pattern, content):
+            url = match.group(0)
+            # 清理 URL 尾部的标点
+            url = url.rstrip('.,;:!?)]>}')
+            
+            # 过滤：只保留有效的 URL
+            if url not in urls and len(url) < 500:
+                # 过滤掉查询参数过多的 URL
+                if url.count('?') <= 1 and url.count('&') <= 3:
+                    urls.append(url)
+                    if len(urls) >= max_results:
+                        break
         
         return urls
     
@@ -80,42 +84,13 @@ class JinaClient:
         """
         reader_url = f"{self.READER_URL}/{url}"
         
-        # 使用 Accept: text/plain 获取纯文本而非 SSE
-        headers = {**self.headers, "Accept": "text/plain"}
-        
         response = await self._client.get(
             reader_url, 
-            headers=headers
+            headers=self.headers
         )
         response.raise_for_status()
         
-        # 如果返回 SSE 格式，解析它
-        text = response.text
-        if text.startswith("event:") or text.startswith("data:"):
-            return self._parse_sse(text)
-        
-        return text
-    
-    def _parse_sse(self, sse_text: str) -> str:
-        """解析 SSE 格式响应"""
-        lines = sse_text.strip().split("\n")
-        content_parts = []
-        
-        for line in lines:
-            if line.startswith("data:"):
-                import json
-                try:
-                    data_str = line[5:].strip()
-                    if data_str:
-                        data = json.loads(data_str)
-                        if "content" in data:
-                            content_parts.append(data["content"])
-                        elif "text" in data:
-                            content_parts.append(data["text"])
-                except:
-                    pass
-        
-        return "\n".join(content_parts) if content_parts else sse_text
+        return response.text
     
     async def read_batch(self, urls: list[str]) -> dict[str, str]:
         """
@@ -152,4 +127,5 @@ class JinaClient:
         return self
     
     async def __aexit__(self, exc_type, exc_val, exc_tb):
-        await self.close()
+        if self._client:
+            await self._client.aclose()

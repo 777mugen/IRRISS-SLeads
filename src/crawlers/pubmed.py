@@ -75,7 +75,7 @@ class PubMedCrawler:
         max_results: int = 100
     ) -> list[str]:
         """
-        搜索 PubMed 论文 URL
+        使用 Jina Search API 搜索 PubMed 论文
         
         Args:
             query: 搜索查询
@@ -89,23 +89,31 @@ class PubMedCrawler:
         if end_year is None:
             end_year = date.today().year
         
-        search_url = self.SEARCH_URL.format(
-            query=quote_plus(query),
-            start=start_year,
-            end=end_year
-        )
+        # 使用 Jina Search API 搜索 PubMed
+        search_query = f"site:pubmed.ncbi.nlm.nih.gov {query}"
         
-        self.logger.info(f"搜索 PubMed: {query}")
+        self.logger.info(f"使用 Jina Search 搜索 PubMed: {query}")
         
         try:
-            # 使用 Jina Reader 读取搜索结果页
-            content = await self.jina.read(search_url)
+            all_urls = await self.jina.search(search_query, max_results * 2)
             
-            # 提取论文 URL
-            urls = self._extract_pubmed_urls(content, max_results)
+            # 过滤：只保留纯数字 PMID 的论文页面
+            pubmed_urls = []
+            pmid_pattern = re.compile(r'https://pubmed\.ncbi\.nlm\.nih\.gov/(\d+)/?$')
             
-            self.logger.info(f"发现 {len(urls)} 个论文 URL")
-            return urls
+            for url in all_urls:
+                match = pmid_pattern.match(url)
+                if match:
+                    # 标准化 URL
+                    pmid = match.group(1)
+                    normalized_url = f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/"
+                    if normalized_url not in pubmed_urls:
+                        pubmed_urls.append(normalized_url)
+                        if len(pubmed_urls) >= max_results:
+                            break
+            
+            self.logger.info(f"发现 {len(pubmed_urls)} 个论文 URL")
+            return pubmed_urls
             
         except Exception as e:
             self.logger.error(f"搜索失败: {e}")

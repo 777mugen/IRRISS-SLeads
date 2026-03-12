@@ -130,17 +130,78 @@ class TaskScheduler:
     
     async def run_full_export(self):
         """运行全量导出"""
+        from src.exporters.csv_exporter import CSVExporter
+        from src.db.utils import get_session
+        from src.db.models import PaperLead, TenderLead
+        from sqlalchemy import select
+        
         self.logger.info("开始全量导出")
         start_time = datetime.now()
         
         try:
-            # TODO: 实现全量导出
-            # 1. 同步数据库
-            # 2. 导出全量 CSV
-            # 3. 标注 diff
+            exporter = CSVExporter()
+            
+            # 1. 导出全量论文线索
+            async with get_session() as session:
+                result = await session.execute(
+                    select(PaperLead)
+                    .where(PaperLead.is_archived == False)
+                    .order_by(PaperLead.score.desc().nullslast(), PaperLead.created_at.desc())
+                )
+                paper_leads = result.scalars().all()
+            
+            if paper_leads:
+                leads_data = [
+                    {
+                        'name': l.name,
+                        'institution': l.institution,
+                        'email': l.email,
+                        'phone': l.phone,
+                        'address': l.address,
+                        'title': l.title,
+                        'published_at': l.published_at,
+                        'grade': l.grade,
+                        'keywords_matched': l.keywords_matched,
+                        'source_url': l.source_url,
+                        'change_marker': '',  # TODO: 实现 diff 标注
+                    }
+                    for l in paper_leads
+                ]
+                filepath = exporter.export_paper_leads(leads_data, include_diff=True)
+                self.logger.info(f"论文全量导出完成: {filepath}, 共 {len(paper_leads)} 条")
+            
+            # 2. 导出全量招标线索
+            async with get_session() as session:
+                result = await session.execute(
+                    select(TenderLead)
+                    .where(TenderLead.is_archived == False)
+                    .order_by(TenderLead.score.desc().nullslast(), TenderLead.created_at.desc())
+                )
+                tender_leads = result.scalars().all()
+            
+            if tender_leads:
+                leads_data = [
+                    {
+                        'project_name': l.project_name,
+                        'organization': l.organization,
+                        'name': l.name,
+                        'email': l.email,
+                        'phone': l.phone,
+                        'address': l.address,
+                        'budget_info': l.budget_info,
+                        'published_at': l.published_at,
+                        'grade': l.grade,
+                        'keywords_matched': l.keywords_matched,
+                        'source_url': l.source_url,
+                        'change_marker': '',  # TODO: 实现 diff 标注
+                    }
+                    for l in tender_leads
+                ]
+                filepath = exporter.export_tender_leads(leads_data, include_diff=True)
+                self.logger.info(f"招标全量导出完成: {filepath}, 共 {len(tender_leads)} 条")
             
             elapsed = (datetime.now() - start_time).total_seconds()
-            self.logger.info(f"全量导出完成", elapsed_seconds=elapsed)
+            self.logger.info(f"全量导出完成, elapsed_seconds={elapsed:.1f}")
             
         except Exception as e:
             self.logger.error(f"全量导出失败", error=str(e))
