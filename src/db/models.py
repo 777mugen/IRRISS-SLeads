@@ -46,8 +46,10 @@ class PaperLead(Base):
     published_at: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
     # 通讯作者信息
     name: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者姓名
-    institution: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者单位
-    address: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者地址
+    institution: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者单位（英文）
+    institution_cn: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者单位（中文）
+    address: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者地址（英文）
+    address_cn: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者地址（中文）
     email: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者邮箱
     phone: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者电话
     # 全部作者信息（JSON 格式）

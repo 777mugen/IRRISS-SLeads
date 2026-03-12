@@ -188,8 +188,11 @@ class BatchResultParser:
                 'email': None,
                 'phone': None,
                 'institution': None,
-                'address': None
-            }
+                'institution_cn': None,
+                'address': None,
+                'address_cn': None
+            },
+            'all_authors_info': data.get('all_authors_info')
         }
         
         # 提取通讯作者信息
@@ -200,7 +203,9 @@ class BatchResultParser:
                 'email': corr_author.get('email'),
                 'phone': corr_author.get('phone'),
                 'institution': corr_author.get('institution'),
-                'address': corr_author.get('address')
+                'institution_cn': corr_author.get('institution_cn'),
+                'address': corr_author.get('address'),
+                'address_cn': corr_author.get('address_cn')
             }
         
         return cleaned
