@@ -1,41 +1,50 @@
-# 反馈机制与策略版本管理
+# 销售反馈机制
 
-## 反馈输入
+## 反馈表 (feedback)
 
-销售将反馈 CSV 放入 feedback/ 目录。
+销售可通过反馈表记录每条线索的实际使用情况。
 
-文件命名：
-feedback_YYYY-MM-DD.csv
+### 表结构
 
-## 状态流转
+```sql
+CREATE TABLE feedback (
+    id SERIAL PRIMARY KEY,
+    paper_lead_id INTEGER REFERENCES paper_leads(id) ON DELETE CASCADE,
+    
+    -- 5个反馈维度（好/中/差）
+    accuracy VARCHAR(10),           -- 线索准确性（信息是否正确）
+    demand_match VARCHAR(10),       -- 需求匹配度（客户是否真有需求）
+    contact_validity VARCHAR(10),   -- 联系方式有效性（能否联系到人）
+    deal_speed VARCHAR(10),         -- 成交速度（从接触到成交的周期）
+    deal_price VARCHAR(10),         -- 成交价格（成交金额）
+    
+    notes TEXT,                     -- 销售备注
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
 
-未处理 → 已联系 → 已拜访 → 已报价 → 已成交
-                     ↘ 暂缓跟进
-                     ↘ 已流失
+### 反馈维度说明
 
-## 反馈维度
+| 字段 | 说明 | 值选项 |
+|------|------|--------|
+| accuracy | 线索准确性 | 好/中/差 |
+| demand_match | 需求匹配度 | 好/中/差 |
+| contact_validity | 联系方式有效性 | 好/中/差 |
+| deal_speed | 成交速度 | 好/中/差 |
+| deal_price | 成交价格 | 好/中/差 |
 
-线索准确性
-需求匹配度
-联系方式有效性
-成交速度
-成交价格
+### 使用流程
 
-## 处理模式
+1. 销售在飞书多维表格中填入反馈（好/中/差）
+2. 定期导出反馈数据
+3. 系统分析反馈数据，生成优化建议报告
+4. shane 审核后确认执行
+5. 执行后生成新策略版本
 
-采用人工审核模式：
+## 注意事项
 
-1. 系统分析反馈
-2. 生成优化建议
-3. shane 审核
-4. 生成新策略版本
-
-系统不会自动修改评分权重。
-
-## 策略版本规则
-
-版本号递增 v1 v2 v3
-旧版本归档
-支持回退
-
-版本信息存储在 strategy_versions 表。
+- 反馈数据不影响已有线索的评分
+- 反馈数据用于优化未来的评分策略
+- 反馈数据与 paper_leads 通过外键关联
+- 删除线索时，关联的反馈也会被删除（ON DELETE CASCADE）

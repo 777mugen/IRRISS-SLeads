@@ -124,3 +124,58 @@ class StrategyVersion(Base):
     changed_by: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class RawMarkdown(Base):
+    """
+    原始 Markdown 存储表
+    
+    存储从 Jina Reader 获取的原始 Markdown 内容
+    支持字段补齐时重新提取
+    """
+    __tablename__ = "raw_markdown"
+    
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    doi: Mapped[str] = mapped_column(Text, unique=True, nullable=False)
+    pmid: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    markdown_content: Mapped[str] = mapped_column(Text, nullable=False)
+    source_url: Mapped[str] = mapped_column(Text, nullable=False)
+    fetched_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
+    
+    __table_args__ = (
+        Index('idx_raw_markdown_doi', 'doi'),
+        Index('idx_raw_markdown_pmid', 'pmid'),
+    )
+
+
+class Feedback(Base):
+    """
+    销售反馈表
+    
+    记录销售对每条线索的反馈（好/中/差）
+    用于优化评分策略
+    """
+    __tablename__ = "feedback"
+    
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    paper_lead_id: Mapped[int] = mapped_column(Integer, ForeignKey('paper_leads.id', ondelete='CASCADE'))
+    
+    # 5个反馈维度（好/中/差）
+    accuracy: Mapped[Optional[str]] = mapped_column(String(10), nullable=True)  # 线索准确性
+    demand_match: Mapped[Optional[str]] = mapped_column(String(10), nullable=True)  # 需求匹配度
+    contact_validity: Mapped[Optional[str]] = mapped_column(String(10), nullable=True)  # 联系方式有效性
+    deal_speed: Mapped[Optional[str]] = mapped_column(String(10), nullable=True)  # 成交速度
+    deal_price: Mapped[Optional[str]] = mapped_column(String(10), nullable=True)  # 成交价格
+    
+    notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 销售备注
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+    
+    __table_args__ = (
+        Index('idx_feedback_paper_lead_id', 'paper_lead_id'),
+    )
