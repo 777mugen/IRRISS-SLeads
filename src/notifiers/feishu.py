@@ -1,8 +1,12 @@
 """
-Feishu notification client.
-飞书通知客户端。
+Feishu notification client with signature support.
+飞书通知客户端，支持签名校验。
 """
 
+import base64
+import hashlib
+import hmac
+import time
 from datetime import datetime
 from typing import Optional
 
@@ -17,18 +21,72 @@ class FeishuNotifier:
     飞书机器人通知
     
     使用 Webhook 发送消息到飞书群
+    支持签名校验
     """
     
-    def __init__(self, webhook_url: Optional[str] = None):
+    def __init__(self, webhook_url: Optional[str] = None, secret: Optional[str] = None):
         """
         初始化飞书通知器
         
         Args:
             webhook_url: 飞书机器人 Webhook URL
+            secret: 飞书机器人签名密钥
         """
         self.webhook_url = webhook_url or getattr(config, 'feishu_webhook', None)
+        self.secret = secret or getattr(config, 'feishu_secret', None)
         self.logger = get_logger()
         self._client = httpx.AsyncClient(timeout=10.0)
+    
+    def _generate_sign(self, timestamp: int) -> str:
+        """
+        生成签名
+        
+        飞书签名算法：
+        string_to_sign = timestamp + "\n" + secret
+        sign = Base64(HmacSHA256(string_to_sign, ""))
+        
+        Args:
+            timestamp: 时间戳（秒）
+            
+        Returns:
+            Base64 编码的签名
+        """
+        if not self.secret:
+            return ""
+        
+        string_to_sign = f"{timestamp}\n{self.secret}"
+        # 飞书签名算法：sign = Base64(HmacSHA256(string_to_sign, ""))
+        # 注意：密钥是 string_to_sign，消息是空字符串
+        hmac_code = hmac.new(
+            string_to_sign.encode("utf-8"),  # 密钥是 string_to_sign
+            b"",  # 消息是空字符串
+            digestmod=hashlib.sha256
+        ).digest()
+        return base64.b64encode(hmac_code).decode("utf-8")
+    
+    def _build_payload(self, msg_type: str, content: dict) -> dict:
+        """
+        构建请求体（包含签名）
+        
+        Args:
+            msg_type: 消息类型
+            content: 消息内容
+            
+        Returns:
+            完整的请求体
+        """
+        payload = {
+            "msg_type": msg_type,
+            "content": content
+        }
+        
+        # 添加签名
+        if self.secret:
+            timestamp = int(time.time())
+            payload["timestamp"] = str(timestamp)
+            payload["sign"] = self._generate_sign(timestamp)
+        
+        return payload
     
     async def send_text(self, text: str) -> bool:
         """
@@ -44,12 +102,7 @@ class FeishuNotifier:
             self.logger.warning("飞书 Webhook 未配置")
             return False
         
-        payload = {
-            "msg_type": "text",
-            "content": {
-                "text": text
-            }
-        }
+        payload = self._build_payload("text", {"text": text})
         
         try:
             response = await self._client.post(
@@ -57,8 +110,14 @@ class FeishuNotifier:
                 json=payload
             )
             response.raise_for_status()
-            self.logger.info("飞书通知发送成功")
-            return True
+            result = response.json()
+            
+            if result.get("StatusCode") == 0:
+                self.logger.info("飞书通知发送成功")
+                return True
+            else:
+                self.logger.error(f"飞书通知发送失败: {result}")
+                return False
         except Exception as e:
             self.logger.error(f"飞书通知发送失败: {e}")
             return False
@@ -109,54 +168,6 @@ class FeishuNotifier:
         
         return await self.send_text(text)
     
-    async def send_card(self, title: str, content: str) -> bool:
-        """
-        发送卡片消息
-        
-        Args:
-            title: 卡片标题
-            content: 卡片内容
-        """
-        if not self.webhook_url:
-            self.logger.warning("飞书 Webhook 未配置")
-            return False
-        
-        payload = {
-            "msg_type": "interactive",
-            "card": {
-                "config": {
-                    "wide_screen_mode": True
-                },
-                "header": {
-                    "title": {
-                        "tag": "plain_text",
-                        "content": title
-                    },
-                    "template": "blue"
-                },
-                "elements": [
-                    {
-                        "tag": "div",
-                        "text": {
-                            "tag": "plain_text",
-                            "content": content
-                        }
-                    }
-                ]
-            }
-        }
-        
-        try:
-            response = await self._client.post(
-                self.webhook_url,
-                json=payload
-            )
-            response.raise_for_status()
-            self.logger.info("飞书卡片消息发送成功")
-            return True
-        except Exception as e:
-            self.logger.error(f"飞书卡片消息发送失败: {e}")
-            return False
-    
     async def close(self):
+        """关闭客户端"""
         await self._client.aclose()

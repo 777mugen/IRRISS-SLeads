@@ -99,22 +99,14 @@ class Config:
         return os.getenv("FEISHU_WEBHOOK", "")
     
     @property
-    def tender_keywords(self) -> list[str]:
-        """招标关键词"""
-        env_keywords = os.getenv("TENDER_KEYWORDS", "")
-        if env_keywords:
-            return [k.strip() for k in env_keywords.split(",") if k.strip()]
-        return []
-    
-    @property
-    def feishu_webhook(self) -> str:
-        """飞书机器人 Webhook URL"""
-        return os.getenv("FEISHU_WEBHOOK", "")
+    def feishu_secret(self) -> str:
+        """飞书机器人签名密钥"""
+        return os.getenv("FEISHU_SECRET", "")
     
     @property
     def tender_keywords(self) -> list[str]:
         """招标关键词"""
-        # 从环境变量或配置文件获取
+        # 从环境变量获取
         env_keywords = os.getenv("TENDER_KEYWORDS", "")
         if env_keywords:
             return [k.strip() for k in env_keywords.split(",") if k.strip()]
@@ -126,19 +118,9 @@ class Config:
         return []
     
     @property
-    def jina_api_key(self) -> str:
-        """Jina API Key"""
-        return os.getenv("JINA_API_KEY", "")
-    
-    @property
-    def zai_api_key(self) -> str:
-        """ZAI API Key (GLM-5)"""
-        return os.getenv("ZAI_API_KEY", "")
-    
-    @property
-    def zai_model(self) -> str:
-        """ZAI Model"""
-        return os.getenv("ZAI_MODEL", "glm-5")
+    def log_level(self) -> str:
+        """日志级别"""
+        return os.getenv("LOG_LEVEL", "INFO")
 
 
 # 全局配置实例
