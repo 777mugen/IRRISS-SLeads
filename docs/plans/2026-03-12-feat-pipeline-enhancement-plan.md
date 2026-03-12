@@ -1,7 +1,7 @@
 ---
 title: SLeads Pipeline Enhancement - Rate Control & Complete Workflow
 type: feat
-status: active
+status: completed
 date: 2026-03-12
 ---
 
