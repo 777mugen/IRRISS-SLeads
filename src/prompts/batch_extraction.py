@@ -15,17 +15,35 @@ BATCH_EXTRACTION_PROMPT_V1 = """从以下论文内容中提取信息，以 JSON 
    - 只提取正文内容（References 之前的部分）
 
 2. **🔴 中国作者识别规则（重要）**：
-   - **判断标准**：单位地址包含以下关键词之一：
-     * "China"、"中国"
-     * 城市名："Beijing"、"Shanghai"、"Guangzhou"、"Shenzhen"、"Hangzhou"、"Nanjing"、"Wuhan"、"Chengdu"、"Xi'an"
-     * 省份名："Beijing"、"Shanghai"、"Guangdong"、"Jiangsu"、"Zhejiang"
+
+   **A. 姓名判断（中文拼音规则）**：
+   - 姓名由 1-4 个部分组成，用空格分隔
+   - 每个部分首字母大写，其余字母小写
+   - 示例：Wei Zhang, Xiaohong Wang, Ouyang Ming
+   - **支持复姓**（视为一个整体）：
+     * Ouyang, Zhuge, Sima, Dugu, Murong, Shangguan, Situ, Tai Shih, Gongye, Duanmu, Huyan, Ximen, Nangong, Liangqiu, Zuoqiu, Dongfang, Helian, Yuchi, Wenyuan, Tantai
+   - 示例：
+     * "Ouyang Ming" = 2 个部分（Ouyang + Ming）
+     * "Sima Guang" = 2 个部分（Sima + Guang）
+     * "Zhuge Liang" = 2 个部分（Zhuge + Liang）
    
+   **B. 地址判断（中国机构）**：
+   - 地址字段包含以下关键词之一（不区分大小写）：
+     * **国家**：china, chinese
+     * **主要城市**：beijing, shanghai, guangzhou, shenzhen, tianjin, chongqing
+     * **省会/重点城市**：nanjing, wuhan, chengdu, xi'an, hangzhou, shenyang, changchun, harbin, jinan, zhengzhou, hefei, fuzhou, nanchang, changsha, guiyang, kunming, lanzhou, xining, yinchuan, urumqi, nanning, haikou, shijiazhuang, taiyuan, hohhot, lhasa, macau, hong kong
+     * **机构特征**：university, institute, hospital, academy, college, school（需结合上述地点判断）
+   
+   **C. 组合判断规则**：
+   - **同时满足**：姓名符合中文拼音规则 **且** 地址包含中国关键词 → 视为中国作者
    - **通讯作者识别优先级**：
-     * 优先级1：正文中标注的 "Corresponding Author" + **且是中国作者**
+     * 优先级1：正文标注的 "Corresponding Author" + **且是中国作者**
      * 优先级2：**第一个中国作者**（按作者顺序）
      * 优先级3：如果没有中国作者，提取第一个作者
    
-   - **重要**：只提取中国人的信息作为通讯作者
+   **D. 排除规则**：
+   - 地址包含 "USA"、"UK"、"Japan" 等其他国家，**同时包含 "China"** → 仍视为中国（如 "China-USA 联合研究所"）
+   - 地址明确包含其他国家且**不包含**中国关键词 → 即使姓名像中文也排除
 
 3. **字段对应关系**：
    - "address"、"联系电话"、"电子邮箱" 必须对应 "通讯作者" 这个字段的人
@@ -44,7 +62,8 @@ BATCH_EXTRACTION_PROMPT_V1 = """从以下论文内容中提取信息，以 JSON 
 5. **作者信息合集格式**：
    - 包含所有作者（包括通讯作者）
    - 每个作者一行，用 \\n 换行
-   - 格式：姓名 | 单位地址 | 联系电话 | 电子邮箱
+   - **all_authors_info**：格式：姓名 | 单位地址 | 联系电话 | 电子邮箱（保留英文原文）
+   - **all_authors_info_cn**：格式：姓名 | 单位地址中文翻译 | 联系电话 | 电子邮箱
 
 6. **缺失值处理**：
    - 如果某个字段找不到，设为 null
@@ -65,7 +84,8 @@ BATCH_EXTRACTION_PROMPT_V1 = """从以下论文内容中提取信息，以 JSON 
     "institution": "通讯作者的单位（英文原文）",
     "address": "通讯作者的单位地址（中文，格式：单位中文名，地址中文翻译）"
   }},
-  "all_authors_info": "作者信息合集（每个作者一行，格式：姓名 | 单位地址 | 联系电话 | 电子邮箱）"
+  "all_authors_info": "作者信息合集（每个作者一行，格式：姓名 | 单位地址 | 联系电话 | 电子邮箱）",
+  "all_authors_info_cn": "作者信息合集中文版（每个作者一行，格式：姓名 | 单位地址中文翻译 | 联系电话 | 电子邮箱）"
 }}
 
 **示例输出 1（中国作者）**：
@@ -73,27 +93,29 @@ BATCH_EXTRACTION_PROMPT_V1 = """从以下论文内容中提取信息，以 JSON 
   "title": "Multiplex immunofluorescence detection...",
   "published_at": "2024-03-15",
   "corresponding_author": {{
-    "name": "张三",
+    "name": "Wei Zhang",
     "email": "zhang@pku.edu.cn",
     "phone": "+86-10-12345678",
     "institution": "Peking University",
     "address": "北京大学，中国北京"
   }},
-  "all_authors_info": "张三 | Peking University | +86-10-12345678 | zhang@pku.edu.cn\\n李四 | Tsinghua University | +86-10-87654321 | li@tsinghua.edu.cn"
+  "all_authors_info": "Wei Zhang | Peking University, Beijing, China | +86-10-12345678 | zhang@pku.edu.cn\\nXiaohong Wang | Tsinghua University, Beijing, China | +86-10-87654321 | wang@tsinghua.edu.cn",
+  "all_authors_info_cn": "张伟 | 北京大学，中国北京 | +86-10-12345678 | zhang@pku.edu.cn\\n王小红 | 清华大学，中国北京 | +86-10-87654321 | wang@tsinghua.edu.cn"
 }}
 
-**示例输出 2（外国作者）**：
+**示例输出 2（复姓作者）**：
 {{
   "title": "Spatial proteomics analysis...",
   "published_at": "2024-02-20",
   "corresponding_author": {{
-    "name": "John Doe",
-    "email": "john@harvard.edu",
-    "phone": "+1-617-1234567",
-    "institution": "Harvard Medical School",
-    "address": "哈佛医学院，美国马萨诸塞州波士顿"
+    "name": "Ouyang Ming",
+    "email": "ouyang@fudan.edu.cn",
+    "phone": "+86-21-12345678",
+    "institution": "Fudan University",
+    "address": "复旦大学，中国上海"
   }},
-  "all_authors_info": "John Doe | Harvard Medical School | +1-617-1234567 | john@harvard.edu\\nJane Smith | MIT | +1-617-9876543 | jane@mit.edu"
+  "all_authors_info": "Ouyang Ming | Fudan University, Shanghai, China | +86-21-12345678 | ouyang@fudan.edu.cn",
+  "all_authors_info_cn": "欧阳明 | 复旦大学，中国上海 | +86-21-12345678 | ouyang@fudan.edu.cn"
 }}
 
 **只返回 JSON，不要有任何其他文字。**

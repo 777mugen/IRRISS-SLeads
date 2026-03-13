@@ -190,7 +190,8 @@ class BatchResultParser:
                 'institution': None,
                 'address': None
             },
-            'all_authors_info': data.get('all_authors_info')
+            'all_authors_info': data.get('all_authors_info'),
+            'all_authors_info_cn': data.get('all_authors_info_cn')
         }
         
         # 提取通讯作者信息

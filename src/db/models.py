@@ -52,6 +52,8 @@ class PaperLead(Base):
     phone: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者电话
     # 全部作者信息（JSON 格式）
     all_authors: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # JSON 格式的全部作者信息
+    all_authors_info: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 所有作者信息合集（英文）
+    all_authors_info_cn: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 所有作者信息合集（中文）
     keywords_matched: Mapped[Optional[List[str]]] = mapped_column(ARRAY(Text), nullable=True)
     score: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
     grade: Mapped[Optional[str]] = mapped_column(String(1), nullable=True)  # 'A' | 'B' | 'C' | 'D'
