@@ -19,48 +19,8 @@ from src.config import config
 from src.logging_config import get_logger
 
 
-# 批量提取的 Prompt 模板
-BATCH_EXTRACTION_PROMPT = """从以下论文内容中提取信息，以 JSON 格式返回。
-
-**🔴 重要说明 - 必须严格遵守**：
-
-1. **绝对不要提取 References 部分的任何信息**：
-   - References 中的作者姓名、单位、联系方式
-   - References 中的文章标题、DOI
-   - References 中的任何其他信息
-   
-2. **只提取正文部分的信息**：
-   - 论文标题（正文标题）
-   - 发表时间
-   - 通讯作者信息（正文中标注的）
-   
-3. **通讯作者识别标准**：
-   - 寻找 "Correspondence to"、"Corresponding Author"、"通讯作者" 等标识
-   - 只提取明确标注为通讯作者的人员信息
-   - 不要提取其他作者或被引用文献作者的信息
-
-4. **如果某个字段找不到，设为 null**
-
-论文内容：
-{markdown_content}
-
----
-
-**返回格式（JSON）**：
-{{
-  "title": "文章标题（来自正文，非 References）",
-  "published_at": "YYYY-MM-DD 或 null",
-  "corresponding_author": {{
-    "name": "通讯作者姓名（来自正文，非 References）",
-    "email": "邮箱地址（来自正文，非 References）",
-    "phone": "电话号码（来自正文，非 References）",
-    "institution": "所属单位（来自正文，非 References）",
-    "address": "单位地址（来自正文，非 References）"
-  }}
-}}
-
-**只返回 JSON，不要有任何其他文字。**
-"""
+# 使用完整版 Prompt（从 prompts 模块导入）
+from src.prompts.batch_extraction import BATCH_EXTRACTION_PROMPT_V1
 
 
 class BatchProcessor:
@@ -139,7 +99,7 @@ class BatchProcessor:
                         "messages": [
                             {
                                 "role": "user",
-                                "content": BATCH_EXTRACTION_PROMPT.format(
+                                "content": BATCH_EXTRACTION_PROMPT_V1.format(
                                     markdown_content=paper.markdown_content
                                 )
                             }

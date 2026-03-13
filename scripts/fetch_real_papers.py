@@ -126,7 +126,8 @@ async def main():
     queries = [
         "multiplex immunofluorescence China",
         "spatial proteomics Beijing",
-        "tumor microenvironment Shanghai"
+        "tumor microenvironment Shanghai",
+        "cancer immunotherapy Guangzhou"
     ]
     
     all_pmids = []
@@ -136,23 +137,24 @@ async def main():
         await asyncio.sleep(1)
     
     # 去重
-    all_pmids = list(set(all_pmids))[:30]  # 最多 30 篇
+    all_pmids = list(set(all_pmids))[:50]  # 最多 50 篇
     
     # 2. 获取详情
     papers = await fetch_paper_details(all_pmids)
     
-    # 3. 获取 Markdown（前 10 篇）
-    print(f"\n📥 获取 Markdown 内容（前 10 篇）...")
+    # 3. 获取 Markdown（前 20 篇）
+    print(f"\n📥 获取 Markdown 内容（目标 20 篇）...")
     
     papers_with_markdown = []
     async with JinaClient() as jina:
-        for i, paper in enumerate(papers[:15], 1):  # 尝试 15 篇，成功 10 篇即可
+        for i, paper in enumerate(papers[:30], 1):  # 尝试 30 篇，成功 20 篇即可
             doi = paper['doi']
-            title = paper['title'][:50]
+            title = paper.get('title', 'Unknown')
+            title_display = title[:50] if title else 'Unknown'
             is_chinese = "🇨🇳" if paper['is_chinese'] else "🌍"
             
             try:
-                print(f"  [{i}/{min(15, len(papers))}] {is_chinese} PMID {paper['pmid']} - {title}...")
+                print(f"  [{i}/{min(30, len(papers))}] {is_chinese} PMID {paper['pmid']} - {title_display}...")
                 
                 doi_url = f"https://doi.org/{doi}"
                 markdown = await jina.read(doi_url)
@@ -170,8 +172,8 @@ async def main():
                 
                 print(f"  ✅ 成功（{len(markdown)} 字符）")
                 
-                # 达到 10 篇即可停止
-                if len(papers_with_markdown) >= 10:
+                # 达到 20 篇即可停止
+                if len(papers_with_markdown) >= 20:
                     break
                 
                 await asyncio.sleep(2)
@@ -181,8 +183,8 @@ async def main():
     
     print(f"\n✅ 成功获取 {len(papers_with_markdown)} 篇论文")
     
-    if len(papers_with_markdown) < 10:
-        print(f"⚠️  未达到 10 篇目标，尝试增加搜索关键词或调整时间范围")
+    if len(papers_with_markdown) < 20:
+        print(f"⚠️  未达到 20 篇目标，尝试增加搜索关键词或调整时间范围")
     
     if not papers_with_markdown:
         print("❌ 没有获取到任何论文")

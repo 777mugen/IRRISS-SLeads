@@ -54,6 +54,17 @@ class TaskScheduler:
         
         self.logger.info(f"批量提取已配置: {batch_hour:02d}:{batch_minute:02d}")
         
+        # 批处理结果轮询任务（每5分钟检查一次）
+        self.scheduler.add_job(
+            self.poll_batch_results,
+            CronTrigger(minute='*/5'),  # 每5分钟
+            id='batch_poll',
+            name='批处理结果轮询',
+            replace_existing=True
+        )
+        
+        self.logger.info(f"批处理轮询任务已配置: 每5分钟检查一次")
+        
         # 周日全量导出
         day_of_week = full_export.get('day_of_week', 'sun')
         full_hour = full_export.get('hour', 6)
