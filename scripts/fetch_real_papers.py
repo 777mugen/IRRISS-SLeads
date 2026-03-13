@@ -1,5 +1,5 @@
 """
-获取真实论文数据 - 简化版
+获取真实论文数据 - 优化版（优先中国作者）
 """
 
 import asyncio
@@ -11,12 +11,11 @@ from src.crawlers.jina_client import JinaClient
 import xml.etree.ElementTree as ET
 
 
-async def search_pubmed_papers(query: str, max_results: int = 10):
+async def search_pubmed_papers(query: str, max_results: int = 20):
     """搜索 PubMed 论文"""
     
     print(f"\n🔍 搜索 PubMed: {query}")
     
-    # 构建搜索 URL
     base_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
     
     # 搜索
@@ -74,47 +73,94 @@ async def fetch_paper_details(pmids: list):
             title_elem = article.find(".//ArticleTitle")
             title = title_elem.text if title_elem is not None else "Unknown"
             
+            # 提取作者和国籍
+            authors = []
+            affiliations = []
+            for author in article.findall(".//Author"):
+                lastname = author.find("LastName")
+                forename = author.find("ForeName")
+                if lastname is not None and forename is not None:
+                    authors.append(f"{forename.text} {lastname.text}")
+            
+            for affiliation in article.findall(".//AffiliationInfo/Affiliation"):
+                if affiliation.text:
+                    affiliations.append(affiliation.text)
+            
+            # 判断是否包含中国作者
+            is_chinese = any(
+                any(keyword in aff.lower() for keyword in 
+                    ['china', 'beijing', 'shanghai', 'guangzhou', 'shenzhen', 
+                     'nanjing', 'wuhan', 'chengdu', 'hangzhou', 'tianjin'])
+                for aff in affiliations
+            )
+            
             if doi:
                 papers.append({
                     'pmid': pmid,
                     'doi': doi,
-                    'title': title
+                    'title': title,
+                    'authors': authors,
+                    'affiliations': affiliations,
+                    'is_chinese': is_chinese
                 })
         
         print(f"✅ 获取到 {len(papers)} 篇论文详情")
         
-        return papers
+        # 优先返回中国作者论文
+        chinese_papers = [p for p in papers if p['is_chinese']]
+        other_papers = [p for p in papers if not p['is_chinese']]
+        
+        print(f"   - 包含中国作者: {len(chinese_papers)} 篇")
+        print(f"   - 其他: {len(other_papers)} 篇")
+        
+        # 优先返回中国作者论文
+        return chinese_papers + other_papers
 
 
 async def main():
     print("\n" + "="*60)
-    print("🚀 获取真实论文数据")
+    print("🚀 获取真实论文数据（优化版）")
     print("="*60)
     
-    # 1. 搜索论文（关键词：multiplex immunofluorescence）
-    pmids = await search_pubmed_papers("multiplex immunofluorescence", max_results=10)
+    # 1. 搜索论文（多个关键词，提高中国作者概率）
+    queries = [
+        "multiplex immunofluorescence China",
+        "spatial proteomics Beijing",
+        "tumor microenvironment Shanghai"
+    ]
     
-    if not pmids:
-        print("❌ 没有找到论文")
-        return
+    all_pmids = []
+    for query in queries:
+        pmids = await search_pubmed_papers(query, max_results=10)
+        all_pmids.extend(pmids)
+        await asyncio.sleep(1)
+    
+    # 去重
+    all_pmids = list(set(all_pmids))[:30]  # 最多 30 篇
     
     # 2. 获取详情
-    papers = await fetch_paper_details(pmids[:5])  # 只取 5 篇
+    papers = await fetch_paper_details(all_pmids)
     
-    # 3. 获取 Markdown
-    print(f"\n📥 获取 Markdown 内容...")
+    # 3. 获取 Markdown（前 10 篇）
+    print(f"\n📥 获取 Markdown 内容（前 10 篇）...")
     
     papers_with_markdown = []
     async with JinaClient() as jina:
-        for i, paper in enumerate(papers, 1):
+        for i, paper in enumerate(papers[:15], 1):  # 尝试 15 篇，成功 10 篇即可
             doi = paper['doi']
             title = paper['title'][:50]
+            is_chinese = "🇨🇳" if paper['is_chinese'] else "🌍"
             
             try:
-                print(f"  [{i}/{len(papers)}] PMID {paper['pmid']} - {title}...")
+                print(f"  [{i}/{min(15, len(papers))}] {is_chinese} PMID {paper['pmid']} - {title}...")
                 
                 doi_url = f"https://doi.org/{doi}"
                 markdown = await jina.read(doi_url)
+                
+                # 检查是否被反爬虫拦截
+                if "Just a moment" in markdown or len(markdown) < 200:
+                    print(f"  ⚠️  跳过（内容异常）")
+                    continue
                 
                 papers_with_markdown.append({
                     **paper,
@@ -124,6 +170,10 @@ async def main():
                 
                 print(f"  ✅ 成功（{len(markdown)} 字符）")
                 
+                # 达到 10 篇即可停止
+                if len(papers_with_markdown) >= 10:
+                    break
+                
                 await asyncio.sleep(2)
             
             except Exception as e:
@@ -131,9 +181,16 @@ async def main():
     
     print(f"\n✅ 成功获取 {len(papers_with_markdown)} 篇论文")
     
+    if len(papers_with_markdown) < 10:
+        print(f"⚠️  未达到 10 篇目标，尝试增加搜索关键词或调整时间范围")
+    
     if not papers_with_markdown:
         print("❌ 没有获取到任何论文")
         return
+    
+    # 统计中国作者论文
+    chinese_count = sum(1 for p in papers_with_markdown if p['is_chinese'])
+    print(f"\n📊 中国作者论文: {chinese_count}/{len(papers_with_markdown)}")
     
     # 4. 存储到数据库
     print(f"\n💾 存储到数据库...")

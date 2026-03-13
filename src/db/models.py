@@ -47,7 +47,8 @@ class PaperLead(Base):
     # 通讯作者信息
     name: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者姓名
     institution: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者单位（英文）
-    address: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者地址（中文，合并单位+地址）
+    address: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者地址（英文原文，多单位换行）
+    address_cn: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者地址（中文翻译，多单位换行）
     email: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者邮箱
     phone: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者电话
     # 全部作者信息（JSON 格式）

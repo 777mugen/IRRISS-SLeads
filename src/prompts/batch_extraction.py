@@ -51,19 +51,32 @@ BATCH_EXTRACTION_PROMPT_V1 = """从以下论文内容中提取信息，以 JSON 
 
 4. **🔴 翻译要求（重要）**：
    - **institution** 字段：保留英文原文
-   - **address** 字段：**翻译成中文，合并单位和地址**
-     * 格式："单位中文名，地址中文翻译"
-     * 例如："Peking University, Beijing, China" → "北京大学，中国北京"
-     * 例如："Tsinghua University, Haidian District, Beijing" → "清华大学，北京市海淀区"
-     * 例如："Harvard Medical School, Boston, MA, USA" → "哈佛医学院，美国马萨诸塞州波士顿"
    
-   - **address 字段必须包含单位中文名 + 地址中文翻译**
+   - **address** 字段：**保留英文原文**（多单位换行）
+     * 格式：每个单位单独一行，用 \\n 换行
+     * 格式：¹科室 → 机构 → 城市 → 邮编 → 国家
+     * 示例：
+       ```
+       ¹Department of Cardiology, West China Hospital, Sichuan University, Chengdu 610041, China
+       ²Department of Cardiology, Sichuan Provincial People's Hospital, Chengdu 610072, China
+       ```
+   
+   - **address_cn** 字段：**翻译成中文**（多单位换行）
+     * 格式：每个单位单独一行，用 \\n 换行
+     * 格式：¹科室中文 → 机构中文 → 城市中文 → 邮编 → 国家中文
+     * 示例：
+       ```
+       ¹四川大学华西医院心内科，成都 610041，中国
+       ²四川省人民医院心内科，成都 610072，中国
+       ```
+   
+   - **重要**：address 和 address_cn 必须对应，行数相同
 
 5. **作者信息合集格式**：
    - 包含所有作者（包括通讯作者）
    - 每个作者一行，用 \\n 换行
-   - **all_authors_info**：格式：姓名 | 单位地址 | 联系电话 | 电子邮箱（保留英文原文）
-   - **all_authors_info_cn**：格式：姓名 | 单位地址中文翻译 | 联系电话 | 电子邮箱
+   - **all_authors_info**：格式：姓名 | 单位地址（英文） | 联系电话 | 电子邮箱
+   - **all_authors_info_cn**：格式：姓名 | 单位地址（中文翻译） | 联系电话 | 电子邮箱
 
 6. **缺失值处理**：
    - 如果某个字段找不到，设为 null
@@ -82,40 +95,43 @@ BATCH_EXTRACTION_PROMPT_V1 = """从以下论文内容中提取信息，以 JSON 
     "email": "通讯作者的邮箱（对应上述姓名的人）",
     "phone": "通讯作者的联系电话（对应上述姓名的人）",
     "institution": "通讯作者的单位（英文原文）",
-    "address": "通讯作者的单位地址（中文，格式：单位中文名，地址中文翻译）"
+    "address": "通讯作者的单位地址（英文原文，多单位换行）",
+    "address_cn": "通讯作者的单位地址（中文翻译，多单位换行）"
   }},
-  "all_authors_info": "作者信息合集（每个作者一行，格式：姓名 | 单位地址 | 联系电话 | 电子邮箱）",
+  "all_authors_info": "作者信息合集（每个作者一行，格式：姓名 | 单位地址英文 | 联系电话 | 电子邮箱）",
   "all_authors_info_cn": "作者信息合集中文版（每个作者一行，格式：姓名 | 单位地址中文翻译 | 联系电话 | 电子邮箱）"
 }}
 
-**示例输出 1（中国作者）**：
+**示例输出 1（双单位中国作者）**：
 {{
-  "title": "Multiplex immunofluorescence detection...",
+  "title": "Multiplex immunofluorescence detection of tumor microenvironment...",
   "published_at": "2024-03-15",
   "corresponding_author": {{
     "name": "Wei Zhang",
-    "email": "zhang@pku.edu.cn",
-    "phone": "+86-10-12345678",
-    "institution": "Peking University",
-    "address": "北京大学，中国北京"
+    "email": "zhang@scu.edu.cn",
+    "phone": "+86-28-85422141",
+    "institution": "West China Hospital, Sichuan University",
+    "address": "¹Department of Cardiology, West China Hospital, Sichuan University, Chengdu 610041, China\\n²Department of Cardiology, Sichuan Provincial People's Hospital, Chengdu 610072, China",
+    "address_cn": "¹四川大学华西医院心内科，成都 610041，中国\\n²四川省人民医院心内科，成都 610072，中国"
   }},
-  "all_authors_info": "Wei Zhang | Peking University, Beijing, China | +86-10-12345678 | zhang@pku.edu.cn\\nXiaohong Wang | Tsinghua University, Beijing, China | +86-10-87654321 | wang@tsinghua.edu.cn",
-  "all_authors_info_cn": "张伟 | 北京大学，中国北京 | +86-10-12345678 | zhang@pku.edu.cn\\n王小红 | 清华大学，中国北京 | +86-10-87654321 | wang@tsinghua.edu.cn"
+  "all_authors_info": "Wei Zhang | ¹Department of Cardiology, West China Hospital, Sichuan University, Chengdu 610041, China\\n²Department of Cardiology, Sichuan Provincial People's Hospital, Chengdu 610072, China | +86-28-85422141 | zhang@scu.edu.cn\\nXiaohong Wang | Department of Oncology, Peking University Third Hospital, Beijing 100191, China | +86-10-82265714 | wang@pku.edu.cn",
+  "all_authors_info_cn": "张伟 | ¹四川大学华西医院心内科，成都 610041，中国\\n²四川省人民医院心内科，成都 610072，中国 | +86-28-85422141 | zhang@scu.edu.cn\\n王小红 | 北京大学第三医院肿瘤科，北京 100191，中国 | +86-10-82265714 | wang@pku.edu.cn"
 }}
 
-**示例输出 2（复姓作者）**：
+**示例输出 2（三单位+实验室）**：
 {{
-  "title": "Spatial proteomics analysis...",
+  "title": "Spatial proteomics analysis of tumor heterogeneity...",
   "published_at": "2024-02-20",
   "corresponding_author": {{
-    "name": "Ouyang Ming",
-    "email": "ouyang@fudan.edu.cn",
-    "phone": "+86-21-12345678",
-    "institution": "Fudan University",
-    "address": "复旦大学，中国上海"
+    "name": "Jing Liu",
+    "email": "liujing@sysucc.org.cn",
+    "phone": "+86-20-87343146",
+    "institution": "Sun Yat-sen University Cancer Center",
+    "address": "¹State Key Laboratory of Oncology in South China, Sun Yat-sen University Cancer Center, Guangzhou 510060, China\\n²Department of Medicine, University of Chinese Academy of Sciences, Beijing 100049, China\\n³Department of Oncology, Peking University Third Hospital, Beijing 100191, China",
+    "address_cn": "¹华南肿瘤学国家重点实验室，中山大学肿瘤防治中心，广州 510060，中国\\n²中国科学院大学医学院，北京 100049，中国\\n³北京大学第三医院肿瘤科，北京 100191，中国"
   }},
-  "all_authors_info": "Ouyang Ming | Fudan University, Shanghai, China | +86-21-12345678 | ouyang@fudan.edu.cn",
-  "all_authors_info_cn": "欧阳明 | 复旦大学，中国上海 | +86-21-12345678 | ouyang@fudan.edu.cn"
+  "all_authors_info": "Jing Liu | ¹State Key Laboratory of Oncology in South China, Sun Yat-sen University Cancer Center, Guangzhou 510060, China\\n²Department of Medicine, University of Chinese Academy of Sciences, Beijing 100049, China\\n³Department of Oncology, Peking University Third Hospital, Beijing 100191, China | +86-20-87343146 | liujing@sysucc.org.cn",
+  "all_authors_info_cn": "刘静 | ¹华南肿瘤学国家重点实验室，中山大学肿瘤防治中心，广州 510060，中国\\n²中国科学院大学医学院，北京 100049，中国\\n³北京大学第三医院肿瘤科，北京 100191，中国 | +86-20-87343146 | liujing@sysucc.org.cn"
 }}
 
 **只返回 JSON，不要有任何其他文字。**
