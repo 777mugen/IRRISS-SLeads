@@ -90,6 +90,12 @@ class BatchProcessor:
         with open(output_file, 'w', encoding='utf-8') as f:
             for paper in papers:
                 # 构建 JSONL 请求（双 role 结构：system + user）
+                # 使用字符串拼接而不是 .format()，避免 JSON 示例中的花括号冲突
+                user_content = BATCH_EXTRACTION_PROMPT_V1.replace(
+                    "{markdown_content}", 
+                    paper.markdown_content
+                )
+                
                 request = {
                     "custom_id": f"doi_{paper.doi.replace('/', '_')}",
                     "method": "POST",
@@ -103,9 +109,7 @@ class BatchProcessor:
                             },
                             {
                                 "role": "user",
-                                "content": BATCH_EXTRACTION_PROMPT_V1.format(
-                                    markdown_content=paper.markdown_content
-                                )
+                                "content": user_content
                             }
                         ],
                         "temperature": 0.1,
