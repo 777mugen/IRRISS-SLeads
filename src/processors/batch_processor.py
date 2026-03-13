@@ -89,7 +89,7 @@ class BatchProcessor:
         
         with open(output_file, 'w', encoding='utf-8') as f:
             for paper in papers:
-                # 构建 JSONL 请求
+                # 构建 JSONL 请求（双 role 结构：system + user）
                 request = {
                     "custom_id": f"doi_{paper.doi.replace('/', '_')}",
                     "method": "POST",
@@ -98,12 +98,17 @@ class BatchProcessor:
                         "model": "glm-4-plus",
                         "messages": [
                             {
+                                "role": "system",
+                                "content": "你是一个专业的学术论文信息提取助手。严格按照规则提取，返回 JSON 格式。"
+                            },
+                            {
                                 "role": "user",
                                 "content": BATCH_EXTRACTION_PROMPT_V1.format(
                                     markdown_content=paper.markdown_content
                                 )
                             }
                         ],
+                        "temperature": 0.1,
                         "max_tokens": 4096
                     }
                 }

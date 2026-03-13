@@ -1,10 +1,4 @@
-"""
-Batch Extraction Prompts
-批量提取的 Prompt 模板
-"""
-
-# 批量提取 Prompt v2（从 docs/Batch Prompt v2.md 导入）
-BATCH_EXTRACTION_PROMPT_V2 = """# 任务
+# 任务
 从以下论文内容中提取信息，以 JSON 格式返回。
 
 ## 严格遵守规则：绝对不要提取 References 和 Cite This Article 部分的任何信息：
@@ -150,8 +144,8 @@ Weiping Yang 1,#, Wei Xiao 2,#, Wenhao Xu 3,#, Lijun Ren 1, Tao Li 3,4,*, Wei Zh
     "name": "Tao Li",
     "email": "taoli@email.com",
     "phone": null,
-    "address": "Ningxia Key Laboratory for Prevention of Common Infectious Diseases, Yinchuan, China\\nDepartment of Hepatobiliary Surgery, General Hospital of Ningxia Medical University, Yinchuan, China",
-    "address_cn": "宁夏常见传染病防治重点实验室，银川，中国\\n宁夏医科大学总医院肝胆外科，银川，中国"
+    "address": "Ningxia Key Laboratory for Prevention of Common Infectious Diseases, Yinchuan, China\nDepartment of Hepatobiliary Surgery, General Hospital of Ningxia Medical University, Yinchuan, China",
+    "address_cn": "宁夏常见传染病防治重点实验室，银川，中国\n宁夏医科大学总医院肝胆外科，银川，中国"
   },
   "all_authors_info": [
     {
@@ -234,8 +228,3 @@ Weiping Yang 1,#, Wei Xiao 2,#, Wenhao Xu 3,#, Lijun Ren 1, Tao Li 3,4,*, Wei Zh
 
 
 # 论文内容
-{markdown_content}
-"""
-
-# 保留旧版本以兼容
-BATCH_EXTRACTION_PROMPT_V1 = BATCH_EXTRACTION_PROMPT_V2
