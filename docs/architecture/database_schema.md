@@ -73,10 +73,13 @@ CREATE INDEX idx_raw_markdown_batch_id ON raw_markdown(batch_id);
 | source | VARCHAR(50) | ✅ | 来源（PubMed） |
 | name | VARCHAR | ✅ | 通讯作者姓名 |
 | institution | VARCHAR | ❌ | 通讯作者单位 |
-| address | VARCHAR | ✅ | 通讯作者地址 |
+| address | VARCHAR | ✅ | 通讯作者地址（英文原文） |
+| **address_cn** | VARCHAR | ✅ | **通讯作者地址（中文翻译）** |
 | email | VARCHAR | ✅ | 通讯作者邮箱 |
 | phone | VARCHAR | ✅ | 通讯作者电话 |
 | all_authors | TEXT | ❌ | 全部作者信息（JSON 格式） |
+| **all_authors_info** | TEXT | ❌ | **全部作者信息合集（英文）** |
+| **all_authors_info_cn** | TEXT | ❌ | **全部作者信息合集中文版** |
 | score | INTEGER | ❌ | 数值分数（0-100） |
 | grade | VARCHAR(1) | ❌ | 等级（A/B/C/D） |
 | feedback_status | VARCHAR(20) | ❌ | 反馈状态（默认"未处理"） |

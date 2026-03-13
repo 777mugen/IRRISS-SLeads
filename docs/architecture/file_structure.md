@@ -22,10 +22,19 @@ extractors/
 
 processors/
   url_deduplicator.py      # URL 去重
+  batch_processor.py       # 批量处理器（构建 JSONL）
+  batch_result_parser.py   # 批量结果解析器
+
+prompts/
+  batch_extraction.py      # 批量提取 Prompt（v2）
 
 llm/
   rate_limiter.py          # GLM-5 速率控制
   extractor.py             # LLM 提取器
+  batch_client.py          # 智谱批量 API 客户端
+
+batch/
+  pipeline_batch.py        # 批量处理 Pipeline
 
 scoring/
   paper_scorer.py          # 论文评分

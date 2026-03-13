@@ -19,11 +19,13 @@
 | 原文链接 | https://doi.org/[DOI] | paper_leads.article_url |
 | 来源 | 数据来源（当前固定"PubMed"） | paper_leads.source |
 | 通讯作者 | 通讯作者姓名（如有多个只写第一个） | paper_leads.name |
-| 单位地址 | 通讯作者单位地址 | paper_leads.address |
+| 单位地址 | 通讯作者单位地址（英文原文） | paper_leads.address |
+| **单位地址（中文）** | **通讯作者单位地址（中文翻译）** | **paper_leads.address_cn** |
 | 联系电话 | 通讯作者电话 | paper_leads.phone |
 | 电子邮箱 | 通讯作者邮箱 | paper_leads.email |
 | 线索等级 | A/B/C/D | paper_leads.grade |
-| 其他作者信息 | 一人一行，格式：姓名,单位,邮箱,电话 | paper_leads.all_authors (JSON → 展开) |
+| 其他作者信息（英文） | 一人一行，格式：姓名,单位,邮箱,电话 | paper_leads.all_authors_info |
+| **其他作者信息（中文）** | **一人一行，格式：姓名,单位中文,邮箱,电话** | **paper_leads.all_authors_info_cn** |
 
 ### 其他作者信息格式
 

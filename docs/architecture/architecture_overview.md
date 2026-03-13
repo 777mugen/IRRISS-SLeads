@@ -6,9 +6,16 @@
 
 ```
 关键词 → PubMed Entrez API → PMID列表 → NCBI ID Converter → DOI列表 → 
-Jina Reader → Markdown → raw_markdown表 → 智谱批量API → 结构化JSON → 
+Jina Reader（优化版）→ Markdown → raw_markdown表 → 智谱批量API → 结构化JSON → 
 paper_leads表 → 评分 → CSV导出 → 飞书通知
 ```
+
+**Jina Reader API 优化**（付费用户）:
+- 15 个优化 Headers（X-Engine: browser, X-Retain-Links: none, X-Retain-Images: none 等）
+- 反爬虫拦截: 60% → <10%
+- 内容纯度: 去除图片和链接
+- 缓存: 1 小时（提升 3-5x 速度）
+- 详见: `docs/jina_api_parameters.md` 和 `docs/architecture/data_sources.md`
 
 ---
 
@@ -46,6 +53,7 @@ paper_leads表 → 评分 → CSV导出 → 飞书通知
 **批量处理模式**（推荐）:
 - 从 raw_markdown 表读取未处理论文（processing_status = 'pending'）
 - 构建 JSONL 文件（每行一个请求）
+- **双 role 结构**: system（身份说明）+ user（完整 Prompt + 论文内容）
 - 提交到智谱批量 API（https://open.bigmodel.cn/api/paas/v4/batches）
 - 异步处理（10-30 分钟）
 - 解析结果，更新 paper_leads
@@ -54,17 +62,38 @@ paper_leads表 → 评分 → CSV导出 → 飞书通知
 - **优势**: 高吞吐量、低成本、无速率限制
 - **适合**: 离线批量处理场景
 - **max_tokens**: 4096
+- **temperature**: 0.1（稳定输出）
 
-**实时 API 模式**（备用）:
-- 两阶段提取：定位 + 提取
-- 速率控制：高峰期30秒/请求，非高峰20秒/请求
-- 429 自动重试
+**Prompt 版本**: v2（docs/Batch Prompt v2.md）
+- 详细的作者符号规则（#、†、*）
+- 脚注说明和降级处理
+- 地址格式支持（斜杠、多机构）
+- 完整的联系人识别规则
+- 真实的示例输出
 
-**Prompt 设计要点**:
-- ✅ 明确不提取 References 部分
-- ✅ 只提取正文中的通讯作者信息
-- ✅ JSON 格式输出
-- ✅ 字段缺失时返回 null
+**JSONL 格式**（符合智谱官方规范）:
+```json
+{
+  "custom_id": "doi_10_1234_example",
+  "method": "POST",
+  "url": "/v4/chat/completions",
+  "body": {
+    "model": "glm-4-plus",
+    "messages": [
+      {
+        "role": "system",
+        "content": "你是一个专业的学术论文信息提取助手。"
+      },
+      {
+        "role": "user",
+        "content": "完整 Prompt + 论文内容"
+      }
+    ],
+    "temperature": 0.1,
+    "max_tokens": 4096
+  }
+}
+```
 
 ### 5. Scoring Layer
 **7维度评分**（0-100分）:
