@@ -155,10 +155,10 @@ async def main():
             
             try:
                 print(f"  [{i}/{min(30, len(papers))}] {is_chinese} PMID {paper['pmid']} - {title_display}...")
-                
+
                 doi_url = f"https://doi.org/{doi}"
-                markdown = await jina.read(doi_url)
-                
+                markdown = await jina.read_paper(doi_url)  # ✅ 使用优化的 read_paper 方法
+
                 # 检查是否被反爬虫拦截
                 if "Just a moment" in markdown or len(markdown) < 200:
                     print(f"  ⚠️  跳过（内容异常）")

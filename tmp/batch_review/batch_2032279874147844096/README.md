@@ -10,11 +10,29 @@
 
 ## 📂 文件说明
 
-| 文件 | 说明 | 格式 |
-|------|------|------|
-| `01_input.jsonl` | 输入文件（发送给智谱 API 的请求） | JSONL（每行一个 JSON 对象） |
-| `02_output.jsonl` | 输出文件（智谱 API 返回的结果） | JSONL（每行一个 JSON 对象） |
-| `README.md` | 本说明文件 | Markdown |
+| 文件 | 大小 | 说明 | 格式 |
+|------|------|------|------|
+| **01_input.jsonl** | 1.4 MB | 旧版输入（简化 Prompt，单 role） | JSONL |
+| **02_output.jsonl** | 17 KB | 旧版输出（结果） | JSONL |
+| **03_summary.md** | 2.0 KB | 提取结果摘要 | Markdown |
+| **04_statistics.md** | 711 B | 统计报告 | Markdown |
+| **05_input_new_prompt.jsonl** | 1.5 MB | 新 Prompt（单 role，未使用） | JSONL |
+| **06_comparison.md** | 9.8 KB | 新旧 Prompt 对比 | Markdown |
+| **07_format_update.md** | 3.8 KB | JSONL 格式更新说明 | Markdown |
+| **07_input_correct_format.jsonl** | **1.5 MB** | **✅ 正确格式（双 role）** | JSONL |
+| **README.md** | 本文件 | 完整说明文档 | Markdown |
+
+---
+
+## 🎯 推荐使用
+
+**最新版本**: `07_input_correct_format.jsonl` ✅
+
+**格式特点**:
+- ✅ 符合智谱官方批处理 API 文档
+- ✅ `system` role（固定规则）
+- ✅ `user` role（完整 Prompt + 论文内容）
+- ✅ 双 role 结构，更清晰
 
 ---
 

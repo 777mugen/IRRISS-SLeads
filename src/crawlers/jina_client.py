@@ -110,21 +110,67 @@ class JinaClient:
     async def read(self, url: str) -> str:
         """
         使用 Jina Reader API 读取网页内容
-        
+
         Args:
             url: 要读取的网页 URL
-            
+
         Returns:
             网页的 Markdown 内容
         """
         reader_url = f"{self.READER_URL}/{url}"
-        
+
         response = await self._client.get(
-            reader_url, 
+            reader_url,
             headers=self.headers
         )
         response.raise_for_status()
-        
+
+        return response.text
+
+    async def read_paper(self, doi_url: str) -> str:
+        """
+        读取学术论文 DOI 链接（优化版）
+
+        特点:
+        - 模拟浏览器减少反爬
+        - 去除图片和链接
+        - 利用缓存提升速度
+
+        Args:
+            doi_url: DOI 链接（如 "https://doi.org/10.1234/example"）
+
+        Returns:
+            Markdown 格式的论文内容（无图片、无链接）
+        """
+        reader_url = f"{self.READER_URL}/{doi_url}"
+
+        # 针对学术论文优化的 Headers
+        headers = {
+            **self.headers,
+            'Accept': 'text/plain',
+            'X-Respond-With': 'markdown',
+            'X-Respond-Timing': 'resource-idle',
+            'X-Timeout': '60',
+            'X-Engine': 'browser',  # 模拟浏览器，减少反爬
+            'X-Cache-Tolerance': '3600',  # 1小时缓存
+            'X-Remove-Selector': (
+                'nav, aside, footer, .sidebar, '
+                '.advertisement, .comments, '
+                '.related-articles, .social-share, '
+                'img, a img, figure'
+            ),
+            'X-Retain-Links': 'none',  # 去除链接
+            'X-Retain-Images': 'none',  # 去除图片
+            'X-With-Generated-Alt': 'false',
+            'X-Locale': 'en-US',
+            'X-Referer': 'https://doi.org/',
+            'X-Token-Budget': '50000',
+            'X-Robots-Txt': 'false'
+        }
+
+        response = await self._client.get(reader_url, headers=headers, timeout=65)
+        response.raise_for_status()
+
         return response.text
     
     async def read_batch(self, urls: list[str]) -> dict[str, str]:
