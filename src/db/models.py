@@ -44,16 +44,18 @@ class PaperLead(Base):
     doi: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # DOI 标识符
     title: Mapped[str] = mapped_column(Text, nullable=False)
     published_at: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
+    source: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)  # 来源（PubMed）
+    article_url: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 原文链接
     # 通讯作者信息
     name: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者姓名
     address: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者地址（英文原文，多单位换行）
     address_cn: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者地址（中文翻译，多单位换行）
+    institution_cn: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 机构中文名
     email: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者邮箱
     phone: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 通讯作者电话
     # 全部作者信息（JSON 格式）
     all_authors_info: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 所有作者信息合集（英文）
     all_authors_info_cn: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # 所有作者信息合集（中文）
-    keywords_matched: Mapped[Optional[List[str]]] = mapped_column(ARRAY(Text), nullable=True)
     score: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
     grade: Mapped[Optional[str]] = mapped_column(String(1), nullable=True)  # 'A' | 'B' | 'C' | 'D'
     feedback_status: Mapped[Optional[str]] = mapped_column(String(20), nullable=True, default="未处理")
