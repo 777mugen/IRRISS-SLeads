@@ -1,0 +1,681 @@
+Published Time: Sat, 14 Mar 2026 10:58:36 GMT
+
+Brain Circulation
+===============
+
+![Image 1: A circular design featuring a 3x3 grid with squares of red, light blue, light green, and dark blue colors](https://cdn.wolterskluwer.io/wk-logos/1.0.x/favicon.png?rev=43)![Image 2](https://doi.org/_layouts/15/images/spcommon.png?rev=43)
+
+[](javascript:;)
+
+*   Log in
+*   or
+*   [Register](https://journals.lww.com/BRCI/pages/register.aspx?ContextUrl=%2fbrci%2ffulltext%2f2026%2f01000%2fa_novel_mucosa_associated_lymphoid_tissue.6.aspx)
+*   [Get new issue alerts Get alerts](javascript:javascript: alerts_ShowSubscribeeTOCPopup('Brain Circulation','BRCI','eTOC', 'eTOC');;)
+*   [Submit a Manuscript](https://review.jow.medknow.com/bc)
+
+[Subscribe to eTOC](javascript:javascript: alerts_ShowSubscribeeTOCPopup('Brain Circulation','BRCI','eTOC', 'eTOC');;)
+
+[### Secondary Logo](http://wolterskluwer.com/)[](https://doi.org/10.4103/bc.bc_65_24#)
+
+Enter your Email address: 
+
+[Privacy Policy](https://journals.lww.com/BRCI/_layouts/oaks.journals/privacy.aspx)
+
+[### Journal Logo](https://journals.lww.com/BRCI/pages/default.aspx)
+
+Articles
+
+[Advanced Search](https://journals.lww.com/BRCI/pages/advancedsearch.aspx)
+
+[](https://doi.org/10.4103/bc.bc_65_24)
+
+[Current Issue](https://doi.org/brci/pages/currenttoc.aspx)
+
+[Article as EPUB](https://doi.org/10.4103/bc.bc_65_24#epub-link)
+
+[Export All Images to PowerPoint File](https://doi.org/brci/fulltext/2026/01000/a_novel_mucosa_associated_lymphoid_tissue.6.aspx?Ppt=Article|brci:2026:01000:00006|10.4103/bc.bc_65_24|)Add to My Favorites
+
+[](javascript:)
+
+**Email to Colleague**
+
+Colleague's E-mail is Invalid
+
+ Your Name: 
+
+Colleague's Email:
+
+Separate multiple e-mails with a (;).
+
+ Message: 
+
+Your message has been successfully sent to your colleague.
+
+Some error has occurred while processing your request. Please try after some time.
+
+[](javascript:)
+
+**Export to**
+
+End Note
+Procite
+Reference Manager
+
+- [x] Save my selection
+
+Original Article
+
+A novel mucosa-associated lymphoid tissue translocation gene 1-related immune prognostic signature and targeted drug screening for glioblastoma
+===============================================================================================================================================
+
+Li, Hui 1,#; Du, Zhishan 2,#; Lu, Han 3; Xi, Jianxin 4; Hu, Hong 5
+
+[Author Information](https://doi.org/10.4103/bc.bc_65_24#)
+
+1 Department of Neurology, Xuanwu Hospital, Capital Medical University, Beijing, China
+
+2 National Research Center for Translational Medicine at Shanghai, State Key Laboratory of Medical Genomics, Shanghai Institute of Hematology, Ruijin Hospital Affiliated to Shanghai Jiao Tong University School of Medicine, Shanghai, China
+
+3 Department of Breast Surgery, the First Hospital of Jilin University, Jilin, China
+
+4 Department of Hepatobiliary and Pancreatic Surgery, General Surgery Center, The First Hospital of Jilin University, Jilin, China
+
+5 Department of Neurosurgery, The First Hospital of Harbin Medical University, Harbin, Heilongjian, China
+
+**Address for correspondence:** Dr. Hong Hu, Department of Neurosurgery, The First Hospital of Harbin Medical University, Harbin, Heilongjian 150001, China. E-mail: [Huhong2021@163.com](mailto:mailto:Huhong2021@163.com)
+
+#Hui Li and Zhishan Du contributed equally to this work.
+
+This is an open access article distributed under the terms of the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 License (CC BY-NC-ND)](https://creativecommons.org/licenses/by-nc-nd/4.0/), where it is permissible to download and share the work provided it is properly cited. The work cannot be changed in any way or used commercially without permission from the journal.
+
+Brain Circulation [12(1):p 42-57, Jan–Mar 2026.](https://doi.org/brci/pages/currenttoc.aspx) | DOI: 10.4103/bc.bc_65_24[](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+
+*   Open
+
+Abstract
+--------
+
+### BACKGROUND:
+
+Glioblastoma (GBM) is the most common intracranial malignancy in adults, and traditional treatments such as surgery, chemotherapy, and radiotherapy have shown limited improvements in patient prognosis. While immunotherapy has transformed treatment outcomes for many cancers, GBM patients often exhibit resistance due to the tumor’s unique immunosuppressive microenvironment, resulting in poor prognosis. The mucosa-associated lymphoid tissue translocation gene 1 (MALT1) has been implicated in the activation of nuclear factor kappa-B and the promotion of cancer cell proliferation and migration. Inhibiting MALT1 has been shown to reduce the mesenchymal phenotype of GBM. Thus, understanding the role of MALT1 in GBM’s immunosuppressive microenvironment is crucial.
+
+### MATERIALS AND METHODS:
+
+In this study, we analyzed RNA-seq data from 169 GBM patients obtained from The Cancer Genome Atlas database, categorizing them into MALT1_High and MALT1_Low groups based on MALT1 expression levels. We quantified the enrichment levels of 29 immune signatures for each patient in both the groups. We then identified differentially expressed immune genes and used these to develop an immune prognostic signature (IPS) through Least Absolute Shrinkage and Selection Operator Cox regression analysis. Furthermore, we validated the role of MALT1 in GBM through MTT(3-(4,5-dimethylthiazol-2-yl)-2,5-diphenyltetrazolium bromide), scratch assays, and small interfering RNA knockdown experiments. In addition, we tested the effects of promising MALT1 inhibitors identified through computer-aided technologies.
+
+### RESULTS:
+
+Our analysis revealed that PDYN, a gene not previously associated with GBM prognosis, could serve as a potential target. Using a three-gene IPS, we created a predictive nomogram model to assess the prognosis of GBM patients. The validation experiments confirmed that MALT1 plays a significant role in promoting GBM cell proliferation, migration, and invasion. In addition, the computer-aided identification of MALT1 inhibitors demonstrated their potential to inhibit GBM progression.
+
+### CONCLUSION:
+
+This study explored the role of MALT1 in GBM’s immunosuppressive microenvironment, developed a novel MALT1-related prognostic model, and identified potential targeted therapies for GBM, providing new avenues for therapeutic intervention.
+
+Introduction
+------------
+
+Glioblastoma (GBM) is the most common and aggressive primary brain tumor in adults. Traditional treatment strategies, such as surgery, chemotherapy, and radiotherapy, have shown limited clinical success and often adversely affect healthy tissue. Immunotherapy has revolutionized cancer treatment outcomes and may offer new therapeutic approaches for GBM. Therefore, detailed studies of the tumor immune microenvironment of GBM are essential to discover novel molecular targets and improve prognosis from an immunological perspective.
+
+The CNS was originally classified as immuneprivileged due to its limited peripheral immune surveillance and blood-brain barrier (BBB) integrity. Recent studies have identified a functional network of lymphatic vessels lining the dural sinuses, which flow into the deep cervical lymph nodes and serve as conduits for T cell transport between the periphery and the CNS cerebrospinal fluid.[[1](https://doi.org/10.4103/bc.bc_65_24)] This finding indicates that the brain undergoes constant immune surveillance and communication with the peripheral immune system, making immunotherapy a viable option for treating CNS diseases. Tumor immunotherapy aims to activate the human immune system, relying on autoimmune function to overcome tumor immune resistance and eliminate cancer cells. New immunotherapeutic strategies for GBM, including vaccines, oncolytic viruses, immune checkpoint inhibitors, and adoptive cell transfer, show promise.[[2](https://doi.org/10.4103/bc.bc_65_24)] However, the immunosuppressive microenvironment of GBM results in patient resistance to immunotherapy and poor prognosis.[[3](https://doi.org/10.4103/bc.bc_65_24),[4](https://doi.org/10.4103/bc.bc_65_24)]
+
+The suppressive immune microenvironment of GBM is a significant challenge for immunotherapy due to low immunogenicity, suppressive immune cell infiltration, and lack of antigen-presenting potential and costimulatory antigens. In the GBM microenvironment, tumor cells secrete inhibitory factors, such as ganglioside, kynurenine, transforming growth factor-β (TGF-β), and vascular endothelial growth factor, which inhibit effector T cells and promote tumor growth. In addition, recruited immunosuppressive cells, such as Tregs and myeloid-derived suppressor cells (MDSCs), secrete immunosuppressive factors, including TGF-β and interleukin 10 (IL-10), exacerbating the immunosuppressive environment.[[5](https://doi.org/10.4103/bc.bc_65_24),[6](https://doi.org/10.4103/bc.bc_65_24)]
+
+Mucosa-associated lymphoid tissue translocation gene 1 (MALT1) is a paracaspase belonging to the caspase family of proteases with arginine-specific cysteine protease activity [[Figure 1](javascript:void(0))].[[7](https://doi.org/10.4103/bc.bc_65_24)] MALT1 mediates nuclear factor kappa-B (NF-κB) signaling inhibition through proteolytic cleavage of TNFAIP3 (A20) and proteins that favor NF-κB activity, such as CYLD and V-Rel reticuloendotheliosis viral oncogene homolog B (RelB).[[8](https://doi.org/10.4103/bc.bc_65_24)] MALT1 also serves as a scaffold to recruit additional signal transducers to activate NF-κB signaling.[[9](https://doi.org/10.4103/bc.bc_65_24)] NF-κB, a transcription factor in the Rel family, regulates genes related to immunity, inflammation, cell proliferation, differentiation, and apoptosis. Its activation promotes tumor proliferation and invasion.[[10–12](https://doi.org/10.4103/bc.bc_65_24)] NF-κB activation levels in GBM signaling are significantly higher than in non-GBM tissues, correlating with increased astrocytic tumor grade.[[10](https://doi.org/10.4103/bc.bc_65_24),[11](https://doi.org/10.4103/bc.bc_65_24)] Recent studies have reported that MALT1 is involved in EGFR-induced NF-κB activation, promoting EGFR-related tumor proliferation and migration.[[13](https://doi.org/10.4103/bc.bc_65_24)] The tumor-promoting role of MALT1 has been observed in diffuse large B-cell lymphoma and certain MALT lymphomas, suggesting MALT1 as an attractive anticancer drug target.[[14–16](https://doi.org/10.4103/bc.bc_65_24)] Furthermore, inhibiting MALT1 can attenuate the mesenchymal phenotype of GBM.[[17](https://doi.org/10.4103/bc.bc_65_24)] Currently, GBM therapies targeting NF-κB aim to prevent its ubiquitination degradation by inhibiting IκBα protein phosphorylation, thus inhibiting NF-κB activity and DNA binding. However, the effect of MALT1 on the GBM tumor microenvironment via NF-κB has not been explored from an immunological perspective. Understanding MALT1’s role in GBM’s immunosuppressive microenvironment could provide prognostic insights and identify new therapeutic targets.
+
+[![Image 3: F1](javascript:void(0);)](javascript:void(0))
+
+[Figure 1:](javascript:void(0))
+
+Mechanism of mucosa-associated lymphoid tissue translocation gene 1 (MALT1) in glioblastoma (GBM) and its role in nuclear factor kappa-B (NF-κB) activation. MALT1 is a paracaspase involved in regulating the NF-κB signaling pathway, which plays a crucial role in GBM progression. MALT1 mediates the proteolytic cleavage of TNFAIP3 (A20), CYLD, and V-Rel reticuloendotheliosis viral oncogene homolog B (RelB), promoting the activation of NF-κB. The activation of NF-κB leads to the upregulation of genes involved in immunity, inflammation, cell proliferation, differentiation, and apoptosis, contributing to tumor proliferation and invasion
+
+In this study, RNA-seq data from 169 GBM patients were downloaded from The Cancer Genome Atlas (TCGA) database and categorized into MALT1_High (MALT1_H) and MALT1_Low (MALT1_L) groups based on MALT1 expression levels. We quantified the enrichment levels of 29 immune signatures for each patient in both the groups. We then identified differentially expressed immune genes (DEIGs) and developed an immune prognostic signature (IPS) using Least Absolute Shrinkage and Selection Operator (LASSO) Cox regression analysis. Using a three-gene IPS, we created a predictive nomogram model to assess the prognosis of GBM patients. In addition, we identified MALT1 as a potential therapeutic target for GBM and used computer-aided technologies, such as Discovery Studio 4.5 (DS 4.5), Schrodinger, and PyMol, to screen for favorable MALT1 inhibitors. In summary, this study explored the role of MALT1 in GBM’s immunosuppressive microenvironment, developed a novel MALT1-related prognostic model, and identified potential targeted therapies for GBM.
+
+Materials and Methods
+---------------------
+
+### Datasets of gene expression and processing of data
+
+RNA-seq data of 169 GBM patients were downloaded from the TCGA ([https://portal.gdc.cancer.gov/repository](https://portal.gdc.cancer.gov/repository)) database and divided into MALT1_H (_n_ = 85) and MALT1_L (_n_ = 84) groups based on the median expression level of MALT1. The data included survival data and survival time over 30 days for GBM patients. RNA transcriptome profiling was calculated using FPKM values with log2-based transformation.
+
+### Immunogenomic analysis
+
+First, we summarized the clinical features of the prognosis cohort associated with MALT1 expression in [Supplementary Table 1](javascript:void(0)). Twenty-nine sets of immune-associated genes that represent different functions, pathways, and immune cell types were studied [[Supplementary Table 2](javascript:void(0))]. Then, the single-sample gene set enrichment analysis score was calculated to assess the enrichment levels of 29 immune signatures in each GBM patient dataset.[[18](https://doi.org/10.4103/bc.bc_65_24)] ESTIMATE was applied to assess the stromal score (stromal content), tumor purity, and immune score (immune cell level) for every GBM patient.[[19](https://doi.org/10.4103/bc.bc_65_24)] Then, we compared the expression level of immune checkpoint genes and HLA genes between MALT1_H and MALT1_L by ANOVA test.
+
+[![Image 4: F1](javascript:void(0);)](javascript:void(0))
+
+[Supplementary Table 1:](javascript:void(0))
+
+The clinical features of the prognosis cohort associated with mucosa-associated lymphoid tissue translocation gene 1 expression
+
+[![Image 5: F1](javascript:void(0);)](javascript:void(0))
+
+[Supplementary Table 2:](javascript:void(0))
+
+The 29 immune signatures represented by 29 different gene sets
+
+### Survival analysis
+
+Overall survival (OS) of GBM samples was compared between MALT1_H and MALT1_L. The log-rank test was used to analyze the significance of survival time differences with a threshold of _P_< 0.05. Moreover, the Kaplan–Meier curve was employed to present the differences in survival time directly.
+
+### Differential expression analysis
+
+Differential expression analyses were conducted between MALT1_H and MALT1_L on RStudio by Wilcoxon rank sum and signed-rank tests.[[20](https://doi.org/10.4103/bc.bc_65_24)] Genes within the cutoff criterion of adjusted _P_< 0.05 and | log2 fold change (FC)|> 1 were chosen as DEIGs. Moreover, the ImmPort database ([https://www.immport.org/](https://www.immport.org/)) identified the DEIGs.
+
+### Analysis of functional enrichment
+
+To calculate gene ontology and signal pathway enrichment of DEIGs, we uploaded DEIGs to Sangerbox ([http://vip.sangerbox.com/login.html](http://vip.sangerbox.com/login.html)) to identify gene ontology (GO) terms and Kyoto Encyclopedia of Genes and Genomes (KEGG) pathways. Sangerbox is an online website with gene function annotation analysis, visualization, and presentation of gene properties.[[21–23](https://doi.org/10.4103/bc.bc_65_24)] The GO analysis included classical pathway (biological process [BP]), extracellular region (cellular component [CC]), and antigen-binding (molecular function [MF]). Moreover, KEGG analysis was carried out on human signaling pathways. The terms with _P_< 0.05 and the number of enriched genes ≥ 3 were considered significant and grouped according to their membership similarity. The term with the best _P_ value was selected from top 15 cluster of no more than 15 terms each, for a total of 250 terms.
+
+### Construction and validation of the immune prognostic signature
+
+To construct the IPS, we divided the TCGA dataset of GBM into training and validation sets at random. The data from the training set were then subjected to LASSO Cox regression analysis using the “glmnet” R package to construct the IPS.[[24](https://doi.org/10.4103/bc.bc_65_24)] IPS was established by weighting the Cox regression coefficients of every patient to calculate their risk scores.[[25](https://doi.org/10.4103/bc.bc_65_24)] Patients were divided into high-risk and low-risk groups according to the best cutoff values of risk score obtained by the “survminer” R package. Then, we used the “survival ROC” R package to draw (receiver operating characteristic [ROC]) curves to analyze the sensitivity and specificity. The AUC (area under the curve) values were calculated to show the reliability. Furthermore, the same way was used to validate the IPS’ prognostic prediction ability in the validation set.
+
+### Development of the nomogram
+
+Multivariate and univariate Cox analyses were applied to assess the IPS’ independent prognostic ability. Based on the results of the Cox analyses, an innovative nomogram was developed using the “rms” package. Furthermore, calibration plots of observed versus. predicted probabilities of 1- and 3-year OS were performed to analyze the accuracy. The concordance index (C-index) was also calculated to evaluate the model’s discrimination. The C-index was corrected for overfitting using bootstrap-derived estimates.
+
+### Virtual screening using Libdock
+
+We downloaded the structure of MALT1 with MLT-747 (ID: 6F7I, 2.43 Å) from the Protein Database (PDB, [https://www.rcsb.org/](https://www.rcsb.org/)).[[26](https://doi.org/10.4103/bc.bc_65_24)] Modifications of MALT1 were performed, including removing water and other heteroatoms, adding hydrogen, protonation, ionization, and energy minimization. The region containing the MALT1-MLT-747 complex was first identified. This region was then selected as the spherical binding site for virtual screening. A total of 17,799 natural, named, and purchasable molecules were downloaded from the ZINC15 database ([https://zinc.docking.org/](https://zinc.docking.org/)) to screen MALT1 inhibitors. MLT-747 is a well-studied inhibitor that was chosen as the reference drug. The Libdock module of DS 4.5 is suitable for highthroughput virtual screening of large-scale compound databases based on rigid molecular docking. Therefore, it was applied for preliminary screening. Different postures of MLT-747 and ligands that docked with MALT1 were ranked according to the Libdock scores. Moreover, the compounds with the top 20 Libdock scores were selected for further pharmacological and toxicological properties analysis.
+
+### Pharmacological and toxicological properties analysis ADME and TOPKAT
+
+Absorption, Distribution, Metabolism, and Excretion (ADME) and TOxicity Prediction by Komputer Assisted Technology (TOPKAT) modules of DS 4.5 were carried out for further pharmacological and toxicological analysis of the 20 selected molecules and MLT-747. The ADME module was utilized to evaluate the water solubility, cytochrome P450 2D6 (CYP2D6) inhibition, plasma protein binding level (PPB), human intestinal absorption, hepatotoxicity, and BBB permeability. The TOPKAT module performed toxicity prediction analysis by constructing high-quality quantitative structure toxicity relationship models from the two-dimensional structural information of compounds. Toxicological property analyses included Ames mutagenicity, developmental toxicity potential, and rodent carcinogenicity. Considering the above results, two compounds were selected as ideal inhibitors.
+
+### Binding interactions between selected compounds and mucosa-associated lymphoid tissue translocation gene 1
+
+The CDOCKER module of DS 4.5 performed precise docking between selected compounds and MALT1 based on the CHARMm36 force field. The ligand was flexible, while the receptor remained rigid during docking. Each ligand generated ten docking poses to select an optimal pose based on a suitable docking orientation and high docking score.[[10](https://doi.org/10.4103/bc.bc_65_24),[11](https://doi.org/10.4103/bc.bc_65_24)] The CDOCKER interaction energies, which reflect ligand binding affinity, were assessed separately for different poses of each tested molecule. Furthermore, Schrodinger and PyMol visualized the docking results of CDOCKER.
+
+### Pharmacophore analysis and molecular dynamics simulation
+
+The pharmacophores of selected molecules and MLT-747 were analyzed and displayed by the 3D-QSAR module of DS 4.5. Only those with energies below 10 kcal/mol were retained, with a maximum of 255 produced per molecule.
+
+The optimal binding conformation of the ligand-MALT1 complex was selected for molecular dynamics simulations to evaluate the stability of the complex in the natural environment. First, the ligand-MALT1 complex was solvated through an explicit periodic boundary solvation water model. Then, solid chloride with an ionic strength of 0.145 was added to simulate the physical environment. The production module for molecular dynamics simulations was run with a time step of 1 fs and a simulation time of 100 ps with the temperature maintained at 300 K. Based on the initial reference settings, the trajectories of potential energies and root mean square deviation (RMSD) were assessed through the analytical trajectory protocol of DS 4.5, and the corresponding images were plotted.
+
+### Functional validation of mucosa-associated lymphoid tissue translocation gene 1 and virtual screening candidates
+
+First, to validate the role of MALT1 in GBM, LN229 and U251 cells were transfected with MALT1-targeting small interfering RNAs (siRNAs). Two siRNA sequences were synthesized (SevenBio, Beijing, China), including si-MALT1#1: 5’-CCUACUGGUGUCAUGUAUA-3’ and si-MALT1#2: 5’-GAUGUGUACGAAUUGACUA-3’. A scrambled siRNA sequence was used as the negative control (si-NC). Transfection was performed using Lipofectamine 3000 (Invitrogen, USA) according to the manufacturer’s protocol.
+
+Total RNA was extracted using TRIzol reagent, and reverse transcription was carried out using a PrimeScript RT kit (Takara). Quantitative reverse transcription polymerase chain reaction (qRT-PCR) was performed using SYBR Green Master Mix. The following primers were used: MALT1-F: GTATGACAACAGCCTCAAGTT, MALT1-R: CTTGAGGCTGTTGTCATACT, GAPDH-F: GTATGACAACAGCCTCAAGTT, GAPDH-R: CTTGAGGCTGTTGTCATACT. Relative gene expression was calculated using the 2−ΔΔ Ct method with GAPDH as the internal control.
+
+Then, cell viability was assessed using the MTT assay 48 h posttransfection or drug treatment. Migration ability was evaluated by a wound healing assay: a scratch was made using a 20 μL pipette tip, and the wound area was photographed at 0 and 48 h to calculate the wound healing rate.
+
+In addition, two candidate compounds (ZINC000019340795: moricizine, ZINC00004649679: tetrahydrocurcumin), identified by virtual screening, were applied to LN229 and U251 cells at the indicated concentrations. Their effects on cell viability and migration were evaluated via MTT and wound healing assays, respectively.
+
+### Clinical trial registry
+
+Not applicable since no clinical trials were involved.
+
+Results
+-------
+
+### Immunogenomic analyses between mucosa- associated lymphoid tissue translocation gene 1 high and mucosa-associated lymphoid tissue translocation gene 1 low
+
+As shown in [Figure 2](javascript:void(0))a, functions, pathways, and immune cell types were more significantly enriched in MALT1_H than in MALT1_L. In addition, the result of ESTIMATE indicated that the ESTIMATE score (Kruskal–Wallis test, _P_< 0.001), stromal scores (Kruskal–Wallis test, _P_< 0.001), and immune scores (Kruskal–Wallis test, _P_< 0.001) were higher in MALT1_H than in MALT1_L. Furthermore, the MALT1_L’s tumor purity was higher than MALT1_H [[Figure 2](javascript:void(0))d]. Hence, MALT1_H may consist of more stromal cells and immune cells but fewer tumor cells. Next, the expression level of HLA and immune checkpoint genes were analyzed. As the result showed, the expression level of HLA genes was higher in MALT1_H than in MALT1_L, such as HLA-DRA, HLA-DQP2, HLA-DRB6, HLA-DOA, HLA-DMB, HLA-DQA1, HLA-DQA2, HLA-DPB1, HLA-DRB1, HLA-DMA (ANOVA test, _P_< 0.01), and HLA-DPA1 (ANOVA test, _P_< 0.05) [[Figure 2](javascript:void(0))b]. Moreover, most immune checkpoint genes had significantly higher expression levels in MALT1_H than in MALT1_L, such as CD274 (ANOVA test, _P_< 0.05), BTLA (ANOVA test, _P_< 0.05), and ICOS (ANOVA test, _P_< 0.01) [[Figure 2](javascript:void(0))e]. This result suggests that GBM patients in MALT1_H are immunocompromised and may be more likely to benefit from immune checkpoint inhibitors. Moreover, survival analyses showed that GBM patients in MALT1_L had a better survival prognosis than in MALT1_H [[Figure 2](javascript:void(0))c].
+
+[![Image 6: F1](javascript:void(0);)](javascript:void(0))
+
+[Figure 2:](javascript:void(0))
+
+Immunogenomic analyses of mucosa-associated lymphoid tissue translocation gene 1 high (MALT1-H) (_n_ = 84) and MALT1 low (MALT1-L) (_n_ = 85) from The Cancer Genome Atlas (TCGA). (a) The enrichment levels of the 29 immune signatures by single-sample gene set enrichment analysis score in each glioblastoma sample. ESTIMATE was used to evaluate tumor purity, stromal, and immune scores. (b) Comparison of the expression levels of HLA genes between MALT1-H and MALT1-L using ANOVA test. (c) Comparison of survival prognosis between MALT1-H and MALT1-L from TCGA using the log-rank test. (d) Comparison of the immune score, stromal score, ESTIMATE score, tumor purity between MALT1-H and MALT1-L using Kruskal–Wallis test. (e) Comparison of immune checkpoint gene expression levels between MALT1-H and MALT1-L using ANOVA test. *_P_< 0.05, **_P_< 0.01, ***_P_< 0.001
+
+### Identification of differentially expressed immune genes and functional enrichment
+
+A total of 201 genes were identified as DEIGs (FDR < 0.05, criterion of | log2-fold change (FC)| ≥ 1), with 81 upregulated genes and 120 downregulated genes [[Figure 3](javascript:void(0))a]. Then, the DEIGs were uploaded to the Sangerbox website to identify KEGG pathways and GO terms. These enriched pathways reveal critical biological roles of DEIGs in immune responses, cell migration, and tissue remodeling. We focused on the top 15 enriched terms in each category for BP, CC, MF, and KEGG pathways, as illustrated in [Figure 3](javascript:void(0)). Each of these panels shows the top 15 most significantly enriched pathways for the respective categories, helping to provide a clearer picture of the roles DEIGs play in BPs. BP: The DEIGs were enriched in processes like leukocyte migration, extracellular matrix organization, cytokine–cytokine receptor interaction, collagen metabolic process, and negative regulation of cell motility, among others. These pathways are vital for immune responses and tissue remodeling [[Figure 3](javascript:void(0))c]. CC: The DEIGs were significantly enriched in pathways related to extracellular matrix, collagen-containing extracellular matrix, and vesicles, which are important for cellular communication and tissue integrity [[Figure 3](javascript:void(0))b]. MF: In MF, the DEIGs were enriched in pathways related to growth factor binding, collagen binding, and chemokine receptor binding, which are involved in immune regulation and cell migration [[Figure 3](javascript:void(0))d]. KEGG pathways: The KEGG analysis identified significant enrichment in pathways such as phagosome, cytokine–cytokine receptor interaction, PI3K-Akt signaling pathway, and neuroactive ligand-receptor interaction, which are essential in immune regulation, cell invasion, and angiogenesis [[Figure 3](javascript:void(0))e].
+
+[![Image 7: F1](javascript:void(0);)](javascript:void(0))
+
+[Figure 3:](javascript:void(0))
+
+Identification of mucosa-associated lymphoid tissue translocation gene 1 (MALT1)-associated differentially expressed immune genes (DEIGs). (a) Volcano plot of 201 immune genes differentially expressed between MALT1-H (_n_ = 84) and MALT1-L (_n_ = 85). (b-e) Detailed relationship between differentially expressed genes and major pathways annotated by KEGG and GO are shown by Circos graph
+
+### Construction and validation of the mucosa- associated lymphoid tissue translocation gene 1-related immune prognostic signature
+
+As shown in [Figure 4](javascript:void(0))a-c, the LASSO Cox regression analysis was carried out to establish an IPS for the training set. Moreover, the risk scores of every patient were calculated (risk score = AREG × 0.077 + PODNL1 × 0.317 + PDYN × 0.296). We divided the training set’s patients into low-risk and high-risk groups according to the best cutoff value (0.7179717) of risk score evaluated by the “survminer” R package. The Kaplan–Meier analysis showed that patients’ prognoses in the high-risk group were worse than those in the low-risk group [[Figure 4](javascript:void(0))d]. The AUC was 0.727 in the ROC curve analysis of the IPS, which indicated that the IPS had a promising ability to predict the OS of GBM patients [[Figure 4](javascript:void(0))e]. Risk score distribution and gene expression patterns in the training set are shown in [Figure 4](javascript:void(0))f.
+
+[![Image 8: F1](javascript:void(0);)](javascript:void(0))
+
+[Figure 4:](javascript:void(0))
+
+Construction of the mucosa-associated lymphoid tissue translocation gene 1-related immune prognostic signature (IPS). (a-c) Least Absolute Shrinkage and Selection Operator Cox analysis identified three genes most correlated with overall survival in the training set (_n_ = 84). (d and g) Kaplan–Meier curves of overall survival based on the IPS in the training and validation sets (_n_ = 85). (e and h) ROC curve analysis of the IPS. (f and i) Risk scores distribution, survival status of each patient, and heatmaps of prognostic three-gene signature in the training set (_n_ = 84) and validation set (_n_ = 85)
+
+We used the same formula to apply to the validation set to validate the predictive ability of IPS on patient prognosis. As shown in [Figure 4](javascript:void(0))g, the result of the validation set was similar to the train set; patients in the high-risk group were more likely to have worse OS. [Figure 4](javascript:void(0))i shows gene expression patterns and risk score distribution in the validation set. The IPS was proved to be highly sensitive and specific in the ROC analysis [[Figure 4](javascript:void(0))h]. The AUC value was 0.652, demonstrating the moderate predictive ability of the model in distinguishing between the high and low MALT1 expression groups.
+
+### Establishment of a nomogram model based on immune prognostic signature
+
+The univariate Cox analysis showed that IPS had a significant association with OS (hazard ratio: 2.064, 95% confidence interval: 1.393–3.060, _P_< 0.001) [[Figure 5](javascript:void(0))a]. In the multivariate Cox analysis, IPS was an independent prognostic factor (hazard ratio: 2.044, 95% confidence interval: 1.377–3.035, _P_< 0.001). Ultimately, we constructed a nomogram model based on the IPS [[Figure 5](javascript:void(0))b]. The C-index (0.66) showed that the nomogram model could provide specific discrimination. Moreover, the observed and predicted 1-year and 3-year OS probabilities calibration plots showed strong concordance [[Figure 5](javascript:void(0))c].
+
+[![Image 9: F1](javascript:void(0);)](javascript:void(0))
+
+[Figure 5:](javascript:void(0))
+
+Construction of the nomogram model. (a) Univariate and multivariate Cox analyses indicating that the immune prognostic signature is significantly associated with overall survival (OS). (b) Nomogram model for predicting the probability of 1- and 3-year OS in glioblastomas. (c) Calibration plots of the nomogram for predicting the probability of OS at 1 and 3 years
+
+### Virtual screening of mucosa-associated lymphoid tissue translocation gene 1 inhibitors using Libdock, Absorption, Distribution, Metabolism, and Excretion, and TOPKAT
+
+A total of 17,799 natural, named, and purchasable molecules were downloaded from the ZINC 15 database for screening. According to the docking results of Libdock, a total of 6,499 small molecules could dock with the MALT1 [[Supplementary Figure 1](javascript:void(0))]. Among them, 245 molecules had higher Libdock scores than MLT-747 (Libdock score: 119.848). The top 20 compounds by Libdock score are listed in [Table 1](javascript:void(0)) and chosen for further pharmacological and toxicological properties analysis by the ADME and TOPKAT modules of DS 4.5. Finally, ZINC000019340795 (compound 1) and ZINC000004649679 (compound 2) were selected as ideal inhibitors of MALT1 due to non-CYP2D6 inhibition, no hepatotoxicity, low oncogenicity, and low mutagenicity in rodents [[Tables 2](javascript:void(0)) and [3](javascript:void(0))].
+
+[![Image 10: F1](javascript:void(0);)](javascript:void(0))
+
+[Supplementary Figure 1:](javascript:void(0))
+
+The molecular structure of MALT1 and the complex structure of Caspase-1 with MLT-747. (a) Initial molecular structure was shown. (b) The molecular structure of MALT1 and the complex structure of MALT1 with MLT-747. The surface of the complex was added, green for MLT-747 and gray for MALT1. (c) ZINC000019340795 (d) ZINC000004649679 (e) MLT-747
+
+[![Image 11: F1](javascript:void(0);)](javascript:void(0))
+
+[Table 1:](javascript:void(0))
+
+Top 20 ranked compounds with higher Libdock scores than MLT-747
+
+[![Image 12: F1](javascript:void(0);)](javascript:void(0))
+
+[Table 2:](javascript:void(0))
+
+Adsorption, distribution, metabolism, and excretion properties of compounds
+
+[![Image 13: F1](javascript:void(0);)](javascript:void(0))
+
+[Table 3:](javascript:void(0))
+
+Toxicities of compounds
+
+### Binding interactions between selected compounds and mucosa-associated lymphoid tissue translocation gene 1
+
+Combinations between selected molecules, MLT-747 and MALT1, were analyzed by the CDOCKER module of DS 4.5. The CDOCKER interaction energies of compounds 1 and 2 were -52.6735 and -54.517 kcal/mol, respectively, indicating their high affinity to MALT1. In addition, hydrogen bond, carbon–hydrogen bond, halogen interaction, pi-alkyl interaction, pi- Sulfur interaction, and alkyl interaction were assessed between selected molecules, MLT-747 and MALT1 in 2D and 3D structures [[Figures 6](javascript:void(0)) and [7](javascript:void(0)), [Tables 4](javascript:void(0)) and [5](javascript:void(0))]. Compound 1 formed two hydrogen bonds, two carbon–hydrogen bonds, five pi-alkyl interactions, one pi-Sulfur interaction, and four alkyl interactions with MALT1 [[Table 6](javascript:void(0))]. Compound 2 formed four carbon–hydrogen bonds and two alkyl interactions with MALT1. MLT-747 formed one hydrogen bond, six carbon–hydrogen bonds, one halogen interaction, eight pi-alkyl interactions, and four alkyl interactions with MALT1.
+
+[![Image 14: F1](javascript:void(0);)](javascript:void(0))
+
+[Figure 6:](javascript:void(0))
+
+The two-dimensional (2D) and 3D structures of MLT-747 and the compounds selected from virtual screening. The intermolecular interaction of the predicted binding modes of (a) ZINC000019340795 to mucosa-associated lymphoid tissue translocation gene 1 (MALT1); (b) ZINC000004649679 to MALT1; (c) MLT-747 to MALT1
+
+[![Image 15: F1](javascript:void(0);)](javascript:void(0))
+
+[Figure 7:](javascript:void(0))
+
+(a,d) ZINC000019340795 mucosa-associated lymphoid tissue translocation gene 1 (MALT1) complex: Structures and net electron cloud structures of ZINC000019340795 are shown in purple sticks and hydrogen bonds and hydrophobic bonds are shown in green and gray. (b,e) ZINC000004649679-MALT1 complex: Structures and net electron cloud structures of ZINC000004649679 are shown are shown in orange sticks and hydrogen bonds and hydrophobic bonds are shown in green and gray. (c,f) MLT-747-MALT1 complex: Structures and net electron cloud structures of MLT-747 are shown in green sticks and hydrogen bonds and hydrophobic bonds are shown in green and gray
+
+[![Image 16: F1](javascript:void(0);)](javascript:void(0))
+
+[Table 4:](javascript:void(0))
+
+CDOCKER interaction energy of compounds with mucosa-associated lymphoid tissue translocation gene 1
+
+[![Image 17: F1](javascript:void(0);)](javascript:void(0))
+
+[Table 5:](javascript:void(0))
+
+Hydrogen bond, carbon–hydrogen bond, and halogen interaction parameters for each compound and mucosa-associated lymphoid tissue translocation gene 1 residues
+
+[![Image 18: F1](javascript:void(0);)](javascript:void(0))
+
+[Table 6:](javascript:void(0))
+
+Pi-alkyl interaction, pi-Sulfur interaction, and alkyl interaction parameters for each compound and mucosa-associated lymphoid tissue translocation gene 1 residues
+
+### Pharmacophore analysis and molecular dynamics simulation
+
+The analysis of feature pharmacophores showed that compound 1 had 18 pharmacophores, including eight hydrogen bond receptors, four hydrophobic centers, one hydrogen donor, four ring aromatic centers, and one inozable positive. Compound 2 had 21 pharmacophores, including eight hydrogen bond receptors, four hydrophobic centers, five hydrogen donors, and four ring aromatic centers. The MLT-747 had 17 pharmacophores, including seven hydrogen bond receptors, five hydrophobic centers, four hydrogen donors, and one ring aromatic centers [[Figure 8](javascript:void(0))].
+
+[![Image 19: F1](javascript:void(0);)](javascript:void(0))
+
+[Figure 8:](javascript:void(0))
+
+Pharmacophore predictions using 3D-QSAR and molecular dynamics simulation results of the compounds ZINC000019340795, ZINC000004649679 and MLT-747. (a) ZINC000019340795: Blue represents hydrophobic center, purple represents hydrogen donor, and green represents hydrogen acceptor. (b) ZINC000004649679: Blue represents hydrophobic center, purple represents hydrogen donor, green represents hydrogen acceptor, and orange represents ring aromatic center. (c) MLT-747: Blue represents hydrophobic center, purple represents hydrogen donor, green represents hydrogen acceptor, and orange represents ring aromatic center. (d) Potential energy. (e) Average backbone root mean square deviation
+
+In addition, molecular dynamics simulation was carried out to evaluate the stability of the compound 1-MALT1 complex and compound 2-MALT1 complex in a simulated natural environment. The RMSD and potential energy curves of compound 1, 2-MALT1 complexes were plotted and gradually stabilized at 60 ps. The above results show that compounds 1 and 2 can bind to MALT1 with favorable affinity and stability in the natural environment.
+
+### Functional validation of mucosa-associated lymphoid tissue translocation gene 1 and virtual screening candidates
+
+To further validate the functional role of MALT1 in GBM, we knocked down MALT1 expression in LN229 and U251 cells using two siRNAs (si-MALT1#1 and si-MALT1#2). As shown in [Figure 9](javascript:void(0))a, qRT-PCR analysis confirmed that MALT1 mRNA expression was significantly reduced in both siRNA groups compared to the negative control (si-NC) group (_P_< 0.05).
+
+[![Image 20: F1](javascript:void(0);)](javascript:void(0))
+
+[Figure 9:](javascript:void(0))
+
+Validation of mucosa-associated lymphoid tissue translocation gene 1 (MALT1) knockdown and drug effects in glioblastoma (GBM) cell lines. (a) Quantitative reverse transcription polymerase chain reaction analysis of MALT1 mRNA expression in LN229 and U251 cells after transfection with small interfering RNAs. Both si-MALT1#1 and si-MALT1#2 significantly reduced MALT1 expression compared to si-NC. (b) MTT(3-(4,5-dimethylthiazol-2-yl)-2,5-diphenyltetrazolium bromide) showing that MALT1 knockdown significantly decreased the proliferation of LN229 and U251 cells compared to the si-NC group. In addition, treatment with two candidate compounds (moricizine and tetrahydrocurcumin) also significantly reduced cell viability in both GBM cell lines. (c) Wound healing assays demonstrating that both MALT1 knockdown and drug treatment impaired the migration ability of LN229 and U251 cells. The wound healing rate was significantly reduced in si-MALT1#1, si-MALT1#2, moricizine, and tetrahydrocurcumin groups compared to controls. *_P_< 0.05, **_P_< 0.01, ***_P_< 0.001
+
+MTT assays revealed that knockdown of MALT1 led to a significant decrease in cell viability in both cell lines [_P_< 0.05, [Figure 9](javascript:void(0))b and c]. Furthermore, wound healing assays demonstrated that silencing MALT1 markedly impaired the migratory capacity of GBM cells [_P_< 0.05, [Figure 9](javascript:void(0))d and e]. These findings suggest that MALT1 may serve as a potential therapeutic target in GBM.
+
+In addition, treatment with the two candidate compounds, moricizine and tetrahydrocurcumin, significantly reduced the viability and migration ability of both GBM cell lines [_P_< 0.05, [Figure 9](javascript:void(0))b-e]. These results support the potential of these compounds as inhibitors of GBM progression through MALT1-related mechanisms.
+
+Discussion
+----------
+
+Immunotherapy has revolutionized cancer treatment outcomes and holds promise for treating GBM. Several promising immunotherapeutic strategies, including vaccines, oncolytic viruses, immune checkpoint inhibitors, and adoptive cell transfer, have been applied to GBM.[[2](https://doi.org/10.4103/bc.bc_65_24)] However, the immunosuppressive microenvironment of GBM contributes to patients’ resistance to immunotherapy and poor prognosis.[[3](https://doi.org/10.4103/bc.bc_65_24),[4](https://doi.org/10.4103/bc.bc_65_24)] MALT1 has been implicated in EGFR-induced NF-κB activation, promoting proliferation, survival, and migration. However, its effect on the GBM tumor microenvironment via NF-κB has not been explored from an immunological perspective. Detailed studies of the tumor immune microenvironment in GBM are essential to identify novel therapeutic targets and improve prognosis.
+
+In this study, we examined the impact of MALT1 expression on the GBM immune microenvironment. Despite high MALT1 expression (MALT1_H) being associated with enriched functional pathways and immune cells, GBM patients in this group had poor prognoses. This contrasts with breast cancer, where prognosis positively correlates with immune status.[[27](https://doi.org/10.4103/bc.bc_65_24)] The poor prognosis in GBM may be due to dysfunctional and depleted tumor-associated lymphocytes, aligning with our findings.[[28](https://doi.org/10.4103/bc.bc_65_24)] MALT1’s role in activating the NF-κB pathway in lymphocytes likely contributes to the immunosuppressive environment by promoting the development of MDSCs and regulatory T cells (Tregs).[[29–32](https://doi.org/10.4103/bc.bc_65_24)]
+
+We identified 201 DEIGs between the MALT1_H and MALT1_L groups. GO and KEGG analysis revealed that these DEIGs are involved in a range of important BPs and CCs, which are crucial in understanding the mechanisms underlying GBM. The DEIGs were significantly enriched in processes related to immune response and tissue remodeling, such as leukocyte migration, extracellular matrix organization, and cytokine–cytokine receptor interaction. These processes are essential for immune cell trafficking, tissue integrity, and remodeling in the tumor microenvironment. In addition, collagen metabolic process and negative regulation of cell motility were also enriched, which may contribute to the regulation of tumor invasiveness. The DEIGs were enriched in CCs associated with the extracellular matrix, collagen-containing extracellular matrix, and vesicles. These components are important for the structural integrity of the cell and extracellular environment, playing a role in cell adhesion, signaling, and migration, all of which are vital for immune function and tumor progression.[[33](https://doi.org/10.4103/bc.bc_65_24)] The DEIGs were also enriched in MFs such as growth factor binding, collagen binding, and chemokine receptor binding, highlighting the functional roles of DEIGs in immune regulation, cell adhesion, and migration. These molecular interactions contribute to the tumor immune microenvironment and help in the recruitment and activation of immune cells. The KEGG analysis identified significant enrichment in pathways such as phagosome, cytokine–cytokine receptor interaction, PI3K-Akt signaling pathway, and neuroactive ligand-receptor interaction. These pathways are critical for regulating immune responses, tumor cell migration, and the development of a pro-inflammatory microenvironment. The PI3K-Akt signaling pathway, in particular, plays a key role in cell survival and proliferation, which is important for tumor progression and resistance to therapies. Furthermore, the analysis revealed new insights into pathways related to neurotransmission, fat cell differentiation, and glycosylation diseases. These newly identified pathways provide additional perspectives on the biological functions of DEIGs, potentially revealing new targets for therapeutic intervention. These findings offer valuable insights into the mechanisms of tumor progression and immune modulation in GBM, providing a more comprehensive understanding of the biological roles of DEIGs.
+
+Higher expression levels of HLA genes were observed in MALT1_H compared to MALT1_L. HLA expression correlates with tumor type and grade, and GBM patients with low HLA-DR expression respond better to immunotherapy.[[27](https://doi.org/10.4103/bc.bc_65_24),[34](https://doi.org/10.4103/bc.bc_65_24)] Hence, GBM patients with low MALT1 expression (MALT1_L) are more likely to benefit from immunotherapy. In addition, immune checkpoint genes such as CD274, BTLA, and ICOS had higher expression levels in MALT1_H, suggesting that these patients might benefit from immune checkpoint inhibitors. This provides a new metric for assessing the suitability of immunotherapy for GBM patients.
+
+We established and validated a MALT1-related IPS to predict GBM prognosis, with AUC values of 0.727 and 0.652 in the training and validation sets, respectively. Multivariate and univariate Cox analyses confirmed the IPS as an independent prognostic factor. Using a three-gene IPS, we constructed a nomogram to predict 1- and 3-year survival in GBM patients.
+
+AREG, PODNL1, and PDYN were identified as hub genes via LASSO Cox regression analysis. AREG is a target in multiple cancers and correlates with prognosis and malignancy in GBM.[[35–38](https://doi.org/10.4103/bc.bc_65_24)] PODNL1 overexpression is associated with poor survival in GBM patients.[[39](https://doi.org/10.4103/bc.bc_65_24)] PDYN, newly linked to GBM prognosis, encodes opioid peptides that regulate the immune system.[[40](https://doi.org/10.4103/bc.bc_65_24)] These findings highlight their potential as prognostic markers and therapeutic targets for GBM.
+
+Research on MALT1 inhibitors has gained attention, with several inhibitors like miR-181d, MI-2, and MLT-747 reported.[[4](https://doi.org/10.4103/bc.bc_65_24),[41](https://doi.org/10.4103/bc.bc_65_24),[42](https://doi.org/10.4103/bc.bc_65_24)] However, these are still under investigation, emphasizing the need to develop effective inhibitors for GBM-targeted therapy. We used computer-aided technologies to screen for favorable MALT1 inhibitors, identifying ZINC000019340795 and ZINC000004649679 as potential candidates. These inhibitors demonstrated high affinity and stability, showing promise for GBM treatment.
+
+In summary, our study explores the role of MALT1 in the GBM immune microenvironment, establishes a novel prognostic model, and identifies potential targeted therapies. Despite limitations, further studies, such as animal trials, are needed to verify the efficacy and safety of these inhibitors. A limitation of this study is that MALT1 expression was not normalized against healthy tissue, which could have provided additional context for understanding its role in GBM. Future studies incorporating healthy tissue controls or single-cell RNA-seq could offer more insight into the specific contribution of MALT1 from GBM cells versus other cell types in the tumor microenvironment.
+
+In our analysis, we investigated the impact of MALT1 on the GBM immune microenvironment and patient prognosis from an immunological perspective. We identified AREG, PODNL1, and PDYN as hub genes, which were used to develop a MALT1-related IPS. This IPS was demonstrated to be an independent prognostic factor based on multivariate and univariate Cox analyses. Notably, PDYN was identified for the first time as being associated with GBM prognosis, highlighting its potential as a therapeutic target. In addition, we validated the role of MALT1 in GBM through MTT, scratch assays, and siRNA knockdown experiments. These experiments confirmed that MALT1 plays a crucial role in promoting GBM cell proliferation, migration, and invasion. To identify effective MALT1 inhibitors, we employed a series of computer-aided technologies. ZINC000019340795 and ZINC000004649679 emerged as ideal inhibitors, demonstrating high affinity, stability, and favorable pharmacological and toxicological properties. Furthermore, we constructed a nomogram to predict 1- and 3-year survival rates in GBM patients, incorporating MALT1 as a crucial factor in regulating the immune microenvironment. In summary, our study explored the mechanism by which MALT1 influences the immune microenvironment in GBM, established a novel MALT1-related prognostic model, and identified potential targeted therapies for GBM. These findings provide a foundation for future research and clinical applications aimed at improving GBM treatment outcomes.
+
+### Author contributions
+
+The research was done through teamwork. Every author has made many contributions to the study. Hui Li came up with the concept and had drafted the work. In addition, Zhishan Du did the design work. Han Lu and Hong Hu completed the experiment and data collection part. Jianxin Xi and Hong Hu were involved in the analysis of data. Moreover, Hong Hu had substantively revised it.
+
+### Ethical policy and institutional review board statement
+
+Not applicable.
+
+### Data availability statement
+
+The datasets generated during and/or analyzed during the current study are available in the TCGA repository, [https://portal.gdc.cancer.gov/](https://portal.gdc.cancer.gov/).
+
+### Financial support and sponsorship
+
+Nil.
+
+### Conflicts of interest
+
+All authors declare no conflicts of interest related to this manuscript, and all authors have approved the publication of this work.
+
+References
+----------
+
+1.Louveau A, Smirnov I, Keyes TJ, Eccles JD, Rouhani SJ, Peske JD, et al. Structural and functional features of central nervous system lymphatic vessels. Nature 2015;523:337–41.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-6) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Structural+and+functional+features+of+central+nervous+system+lymphatic+vessels&publication_year=2015&author=A+Louveau&author=I+Smirnov&author=TJ+Keyes&author=JD+Eccles&author=SJ+Rouhani&author=JD+Peske)
+
+2.Gudipati V, Rydzek J, Doel-Perez I, Gonçalves VD, Scharf L, Königsberger S, et al. Inefficient CAR-proximal signaling blunts antigen sensitivity. Nat Immunol 2020;21:848–56.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-6) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Inefficient+CAR-proximal+signaling+blunts+antigen+sensitivity&publication_year=2020&author=V+Gudipati&author=J+Rydzek&author=I+Doel-Perez&author=VD+Gon%c3%a7alves&author=L+Scharf&author=S+K%c3%b6nigsberger)
+
+3.Lim M, Xia Y, Bettegowda C, Weller M. Current state of immunotherapy for glioblastoma. Nat Rev Clin Oncol 2018;15:422–42.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-6) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Current+state+of+immunotherapy+for+glioblastoma&publication_year=2018&author=M+Lim&author=Y+Xia&author=C+Bettegowda&author=M+Weller)
+
+4.Do AS, Amano T, Edwards LA, Zhang L, De Peralta-Venturina M, Yu JS. CD133 mRNA-loaded dendritic cell vaccination abrogates glioma stem cell propagation in humanized glioblastoma mouse model. Mol Ther Oncolytics 2020;18:295–303.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-6) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=CD133+mRNA-loaded+dendritic+cell+vaccination+abrogates+glioma+stem+cell+propagation+in+humanized+glioblastoma+mouse+model&publication_year=2020&author=AS+Do&author=T+Amano&author=LA+Edwards&author=L+Zhang&author=M+De+Peralta-Venturina&author=JS+Yu)
+
+5.Kesarwani P, Prabhu A, Kant S, Chinnaiyan P. Metabolic remodeling contributes towards an immune-suppressive phenotype in glioblastoma. Cancer Immunol Immunother 2019;68:1107–20.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-7) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Metabolic+remodeling+contributes+towards+an+immune-suppressive+phenotype+in+glioblastoma&publication_year=2019&author=P+Kesarwani&author=A+Prabhu&author=S+Kant&author=P+Chinnaiyan)
+
+6.Kloepper J, Riedemann L, Amoozgar Z, Seano G, Susek K, Yu V, et al. Ang-2/VEGF bispecific antibody reprograms macrophages and resident microglia to anti-tumor phenotype and prolongs glioblastoma survival. Proc Natl Acad Sci U S A 2016;113:4476–81.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-7) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Ang-2%2fVEGF+bispecific+antibody+reprograms+macrophages+and+resident+microglia+to+anti-tumor+phenotype+and+prolongs+glioblastoma+survival&publication_year=2016&author=J+Kloepper&author=L+Riedemann&author=Z+Amoozgar&author=G+Seano&author=K+Susek&author=V+Yu)
+
+7.Jaworski M, Thome M. The paracaspase MALT1: Biological function and potential for therapeutic inhibition. Cell Mol Life Sci 2016;73:459–73.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-8) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=The+paracaspase+MALT1%3a+Biological+function+and+potential+for+therapeutic+inhibition&publication_year=2016&author=M+Jaworski&author=M+Thome)
+
+8.Coornaert B, Baens M, Heyninck K, Bekaert T, Haegman M, Staal J, et al. T cell antigen receptor stimulation induces MALT1 paracaspase-mediated cleavage of the NF-kappaB inhibitor A20. Nat Immunol 2008;9:263–71.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-8) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=T+cell+antigen+receptor+stimulation+induces+MALT1+paracaspase-mediated+cleavage+of+the+NF-kappaB+inhibitor+A20&publication_year=2008&author=B+Coornaert&author=M+Baens&author=K+Heyninck&author=T+Bekaert&author=M+Haegman&author=J+Staal)
+
+9.Fontán L, Qiao Q, Hatcher JM, Casalena G, Ilkay US, Teater M, et al. Specific covalent inhibition of MALT1 paracaspase suppresses B cell lymphoma growth. J Clin Invest 2018;128:4397–412.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-8) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Specific+covalent+inhibition+of+MALT1+paracaspase+suppresses+B+cell+lymphoma+growth&publication_year=2018&author=L+Font%c3%a1n&author=Q+Qiao&author=JM+Hatcher&author=G+Casalena&author=US+Ilkay&author=M+Teater)
+
+10.Wang E, Weng G, Sun H, Du H, Zhu F, Chen F, et al. Assessing the performance of the MM/PBSA and MM/GBSA methods. 10. Impacts of enhanced sampling and variable dielectric model on protein-protein Interactions. Phys Chem Chem Phys 2019;21:18958–69.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-8) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Assessing+the+performance+of+the+MM%2fPBSA+and+MM%2fGBSA+methods.+10.+Impacts+of+enhanced+sampling+and+variable+dielectric+model+on+protein-protein+Interactions&publication_year=2019&author=E+Wang&author=G+Weng&author=H+Sun&author=H+Du&author=F+Zhu&author=F+Chen)
+
+11.Haider MK, Bertrand HO, Hubbard RE. Predicting fragment binding poses using a combined MCSS MM-GBSA approach. J Chem Inf Model 2011;51:1092–105.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-8) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Predicting+fragment+binding+poses+using+a+combined+MCSS+MM-GBSA+approach&publication_year=2011&author=MK+Haider&author=HO+Bertrand&author=RE+Hubbard)
+
+12.Xu K, Du W, Zhuang X, Liang D, Mo Y, Wang J. Glycogen synthase kinase-3β mediates toll-like receptors 4/nuclear factor kappa-B-activated cerebral ischemia-reperfusion injury through regulation of fat mass and obesity-associated protein. Brain Circ 2023;9:162–71.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-8) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Glycogen+synthase+kinase-3%ce%b2+mediates+toll-like+receptors+4%2fnuclear+factor+kappa-B-activated+cerebral+ischemia-reperfusion+injury+through+regulation+of+fat+mass+and+obesity-associated+protein&publication_year=2023&author=K+Xu&author=W+Du&author=X+Zhuang&author=D+Liang&author=Y+Mo&author=J+Wang)
+
+13.Zhu X, Li W, Li Y, Xu W, Yuan Y, Zheng V, et al. The antidepressant- and anxiolytic-like effects of resveratrol: Involvement of phosphodiesterase-4D inhibition. Neuropharmacology 2019;153:20–31.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-8) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=The+antidepressant-+and+anxiolytic-like+effects+of+resveratrol%3a+Involvement+of+phosphodiesterase-4D+inhibition&publication_year=2019&author=X+Zhu&author=W+Li&author=Y+Li&author=W+Xu&author=Y+Yuan&author=V+Zheng)
+
+14.Konczalla L, Perez DR, Wenzel N, Wolters-Eisfeld G, Klemp C, Lüddeke J, et al. Biperiden and mepazine effectively inhibit MALT1 activity and tumor growth in pancreatic cancer. Int J Cancer 2020;146:1618–30.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-8) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Biperiden+and+mepazine+effectively+inhibit+MALT1+activity+and+tumor+growth+in+pancreatic+cancer&publication_year=2020&author=L+Konczalla&author=DR+Perez&author=N+Wenzel&author=G+Wolters-Eisfeld&author=C+Klemp&author=J+L%c3%bcddeke)
+
+15.McAllister-Lucas LM, Baens M, Lucas PC. MALT1 protease: A new therapeutic target in B lymphoma and beyond? Clin Cancer Res 2011;17:6623–31.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-8) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=MALT1+protease%3a+A+new+therapeutic+target+in+B+lymphoma+and+beyond%3f&publication_year=2011&author=LM+McAllister-Lucas&author=M+Baens&author=PC+Lucas)
+
+16.Hailfinger S, Lenz G, Ngo V, Posvitz-Fejfar A, Rebeaud F, Guzzardi M, et al. Essential role of MALT1 protease activity in activated B cell-like diffuse large B-cell lymphoma. Proc Natl Acad Sci U S A 2009;106:19946–51.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-8) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Essential+role+of+MALT1+protease+activity+in+activated+B+cell-like+diffuse+large+B-cell+lymphoma&publication_year=2009&author=S+Hailfinger&author=G+Lenz&author=V+Ngo&author=A+Posvitz-Fejfar&author=F+Rebeaud&author=M+Guzzardi)
+
+17.Chen YY, Ho HL, Lin SC, Ho TD, Hsu CY. Upregulation of miR-125b, miR-181d, and miR-221 predicts poor prognosis in MGMT promoter-unmethylated glioblastoma patients. Am J Clin Pathol 2018;149:412–7.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-8) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Upregulation+of+miR-125b%2c+miR-181d%2c+and+miR-221+predicts+poor+prognosis+in+MGMT+promoter-unmethylated+glioblastoma+patients&publication_year=2018&author=YY+Chen&author=HL+Ho&author=SC+Lin&author=TD+Ho&author=CY+Hsu)
+
+18.Barbie DA, Tamayo P, Boehm JS, Kim SY, Moody SE, Dunn IF, et al. Systematic RNA interference reveals that oncogenic KRAS-driven cancers require TBK1. Nature 2009;462:108–12.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-11) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Systematic+RNA+interference+reveals+that+oncogenic+KRAS-driven+cancers+require+TBK1&publication_year=2009&author=DA+Barbie&author=P+Tamayo&author=JS+Boehm&author=SY+Kim&author=SE+Moody&author=IF+Dunn)
+
+19.Yoshihara K, Shahmoradgoli M, Martínez E, Vegesna R, Kim H, Torres-Garcia W, et al. Inferring tumour purity and stromal and immune cell admixture from expression data. Nat Commun 2013;4:2612.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-11) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Inferring+tumour+purity+and+stromal+and+immune+cell+admixture+from+expression+data&publication_year=2013&author=K+Yoshihara&author=M+Shahmoradgoli&author=E+Mart%c3%adnez&author=R+Vegesna&author=H+Kim&author=W+Torres-Garcia)
+
+20.Servant N, Gravier E, Gestraud P, Laurent C, Paccard C, Biton A, et al. EMA – A R package for easy microarray data analysis. BMC Res Notes 2010;3:277.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-13) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=EMA+%e2%80%93+A+R+package+for+easy+microarray+data+analysis&publication_year=2010&author=N+Servant&author=E+Gravier&author=P+Gestraud&author=C+Laurent&author=C+Paccard&author=A+Biton)
+
+21.Zhou Y, Zhou B, Pache L, Chang M, Khodabakhshi AH, Tanaseichuk O, et al. Metascape provides a biologist-oriented resource for the analysis of systems-level datasets. Nat Commun 2019;10:1523.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-14) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Metascape+provides+a+biologist-oriented+resource+for+the+analysis+of+systems-level+datasets&publication_year=2019&author=Y+Zhou&author=B+Zhou&author=L+Pache&author=M+Chang&author=AH+Khodabakhshi&author=O+Tanaseichuk)
+
+22.Yan Y, Wang Z, Liu X, Han S, Li J, Zhang Y, et al. Identification of brain endothelial cell-specific genes and pathways in ischemic stroke by integrated bioinformatical analysis. Brain Circ 2023;9:228–39.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-14) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Identification+of+brain+endothelial+cell-specific+genes+and+pathways+in+ischemic+stroke+by+integrated+bioinformatical+analysis&publication_year=2023&author=Y+Yan&author=Z+Wang&author=X+Liu&author=S+Han&author=J+Li&author=Y+Zhang)
+
+23.Chen D, Xu L, Xing H, Shen W, Song Z, Li H, et al. Sangerbo×2: Enhanced functionalities and update for a comprehensive clinical bioinformatics data analysis platform. Imeta 2024;3:e238.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-14) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Sangerbo%c3%972%3a+Enhanced+functionalities+and+update+for+a+comprehensive+clinical+bioinformatics+data+analysis+platform&publication_year=2024&author=D+Chen&author=L+Xu&author=H+Xing&author=W+Shen&author=Z+Song&author=H+Li)
+
+24.Friedman J, Hastie T, Tibshirani R. Regularization paths for generalized linear models via coordinate descent. J Stat Softw 2010;33:1–22.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-15) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Regularization+paths+for+generalized+linear+models+via+coordinate+descent&publication_year=2010&author=J+Friedman&author=T+Hastie&author=R+Tibshirani)
+
+25.Heagerty PJ, Lumley T, Pepe MS. Time-dependent ROC curves for censored survival data and a diagnostic marker. Biometrics 2000;56:337–44.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-15) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Time-dependent+ROC+curves+for+censored+survival+data+and+a+diagnostic+marker&publication_year=2000&author=PJ+Heagerty&author=T+Lumley&author=MS+Pepe)
+
+26.Preusser M, Lim M, Hafler DA, Reardon DA, Sampson JH. Prospects of immune checkpoint modulators in the treatment of glioblastoma. Nat Rev Neurol 2015;11:504–14.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-17) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Prospects+of+immune+checkpoint+modulators+in+the+treatment+of+glioblastoma&publication_year=2015&author=M+Preusser&author=M+Lim&author=DA+Hafler&author=DA+Reardon&author=JH+Sampson)
+
+27.Kaffes I, Szulzewsky F, Chen Z, Herting CJ, Gabanic B, Velázquez Vega JE, et al. Human mesenchymal glioblastomas are characterized by an increased immune cell presence compared to proneural and classical tumors. Oncoimmunology 2019;8:e1655360.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-40) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Human+mesenchymal+glioblastomas+are+characterized+by+an+increased+immune+cell+presence+compared+to+proneural+and+classical+tumors&publication_year=2019&author=I+Kaffes&author=F+Szulzewsky&author=Z+Chen&author=CJ+Herting&author=B+Gabanic&author=JE+Vel%c3%a1zquez+Vega)
+
+28.Woroniecka K, Chongsathidkiet P, Rhodin K, Kemeny H, Dechant C, Farber SH, et al. T-cell exhaustion signatures vary with tumor type and are severe in glioblastoma. Clin Cancer Res 2018;24:4175–86.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-40) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=T-cell+exhaustion+signatures+vary+with+tumor+type+and+are+severe+in+glioblastoma&publication_year=2018&author=K+Woroniecka&author=P+Chongsathidkiet&author=K+Rhodin&author=H+Kemeny&author=C+Dechant&author=SH+Farber)
+
+29.Lucas PC, Yonezumi M, Inohara N, McAllister-Lucas LM, Abazeed ME, Chen FF, et al. Bcl10 and MALT1, independent targets of chromosomal translocation in malt lymphoma, cooperate in a novel NF-kappa B signaling pathway. J Biol Chem 2001;276:19012–9.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-40) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Bcl10+and+MALT1%2c+independent+targets+of+chromosomal+translocation+in+malt+lymphoma%2c+cooperate+in+a+novel+NF-kappa+B+signaling+pathway&publication_year=2001&author=PC+Lucas&author=M+Yonezumi&author=N+Inohara&author=LM+McAllister-Lucas&author=ME+Abazeed&author=FF+Chen)
+
+30.Liu X, Yue C, Shi L, Liu G, Cao Q, Shan Q, et al. MALT1 is a potential therapeutic target in glioblastoma and plays a crucial role in EGFR-induced NF-κB activation. J Cell Mol Med 2020;24:7550–62.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-40) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=MALT1+is+a+potential+therapeutic+target+in+glioblastoma+and+plays+a+crucial+role+in+EGFR-induced+NF-%ce%baB+activation&publication_year=2020&author=X+Liu&author=C+Yue&author=L+Shi&author=G+Liu&author=Q+Cao&author=Q+Shan)
+
+31.Gewies A, Gorka O, Bergmann H, Pechloff K, Petermann F, Jeltsch KM, et al. Uncoupling Malt1 threshold function from paracaspase activity results in destructive autoimmune inflammation. Cell Rep 2014;9:1292–305.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-40) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Uncoupling+Malt1+threshold+function+from+paracaspase+activity+results+in+destructive+autoimmune+inflammation&publication_year=2014&author=A+Gewies&author=O+Gorka&author=H+Bergmann&author=K+Pechloff&author=F+Petermann&author=KM+Jeltsch)
+
+32.Yamasoba D, Sato K, Ichinose T, Imamura T, Koepke L, Joas S, et al. N4BP1 restricts HIV-1 and its inactivation by MALT1 promotes viral reactivation. Nat Microbiol 2019;4:1532–44.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-40) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=N4BP1+restricts+HIV-1+and+its+inactivation+by+MALT1+promotes+viral+reactivation&publication_year=2019&author=D+Yamasoba&author=K+Sato&author=T+Ichinose&author=T+Imamura&author=L+Koepke&author=S+Joas)
+
+33.Erler JT, Weaver VM. Three-dimensional context regulation of metastasis. Clin Exp Metastasis 2009;26:35–49.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-41) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Three-dimensional+context+regulation+of+metastasis&publication_year=2009&author=JT+Erler&author=VM+Weaver)
+
+34.Wu Z, Liang J, Wang Z, Li A, Fan X, Jiang T. HLA-E expression in diffuse glioma: Relationship with clinicopathological features and patient survival. BMC Neurol 2020;20:59.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-42) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=HLA-E+expression+in+diffuse+glioma%3a+Relationship+with+clinicopathological+features+and+patient+survival&publication_year=2020&author=Z+Wu&author=J+Liang&author=Z+Wang&author=A+Li&author=X+Fan&author=T+Jiang)
+
+35.Lee MS, McGuffey EJ, Morris JS, Manyam G, Baladandayuthapani V, Wei W, et al. Association of CpG island methylator phenotype and EREG/AREG methylation and expression in colorectal cancer. Br J Cancer 2016;114:1352–61.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-44) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Association+of+CpG+island+methylator+phenotype+and+EREG%2fAREG+methylation+and+expression+in+colorectal+cancer&publication_year=2016&author=MS+Lee&author=EJ+McGuffey&author=JS+Morris&author=G+Manyam&author=V+Baladandayuthapani&author=W+Wei)
+
+36.Aderhold C, Faber A, Umbreit C, Birk R, Weiss C, Sommer JU, et al. Targeting mTOR and AREG with everolimus, sunitinib and sorafenib in HPV-positive and -negative SCC. Anticancer Res 2015;35:1951–9.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-44) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Targeting+mTOR+and+AREG+with+everolimus%2c+sunitinib+and+sorafenib+in+HPV-positive+and+-negative+SCC&publication_year=2015&author=C+Aderhold&author=A+Faber&author=C+Umbreit&author=R+Birk&author=C+Weiss&author=JU+Sommer)
+
+37.Steponaitis G, Kazlauskas A, Skiriute D, Vaitkiene P, Skauminas K, Tamasauskas A. Significance of amphiregulin (AREG) for the outcome of low and high grade astrocytoma patients. J Cancer 2019;10:1479–88.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-44) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Significance+of+amphiregulin+(AREG)+for+the+outcome+of+low+and+high+grade+astrocytoma+patients&publication_year=2019&author=G+Steponaitis&author=A+Kazlauskas&author=D+Skiriute&author=P+Vaitkiene&author=K+Skauminas&author=A+Tamasauskas)
+
+38.Xu Q, Long Q, Zhu D, Fu D, Zhang B, Han L, et al. Targeting amphiregulin (AREG) derived from senescent stromal cells diminishes cancer resistance and averts programmed cell death 1 ligand (PD-L1)-mediated immunosuppression. Aging Cell 2019;18:e13027.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-44) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Targeting+amphiregulin+(AREG)+derived+from+senescent+stromal+cells+diminishes+cancer+resistance+and+averts+programmed+cell+death+1+ligand+(PD-L1)-mediated+immunosuppression&publication_year=2019&author=Q+Xu&author=Q+Long&author=D+Zhu&author=D+Fu&author=B+Zhang&author=L+Han)
+
+39.Shergalis A, Bankhead A 3rd, Luesakul U, Muangsin N, Neamati N. Current challenges and opportunities in treating glioblastoma. Pharmacol Rev 2018;70:412–45.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-44) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Current+challenges+and+opportunities+in+treating+glioblastoma&publication_year=2018&author=A+Shergalis&author=A+Bankhead&author=U+Luesakul&author=N+Muangsin&author=N+Neamati)
+
+40.Gieryk A, Ziolkowska B, Solecki W, Kubik J, Przewlocki R. Forebrain PENK and PDYN gene expression levels in three inbred strains of mice and their relationship to genotype-dependent morphine reward sensitivity. Psychopharmacology (Berl) 2010;208:291–300.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-44) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Forebrain+PENK+and+PDYN+gene+expression+levels+in+three+inbred+strains+of+mice+and+their+relationship+to+genotype-dependent+morphine+reward+sensitivity&publication_year=2010&author=A+Gieryk&author=B+Ziolkowska&author=W+Solecki&author=J+Kubik&author=R+Przewlocki)
+
+41.Zhao D, Yang J, Yang L. Insights for Oxidative Stress and mTOR Signaling in Myocardial Ischemia/Reperfusion Injury under Diabetes. Oxid Med Cell Longev 2017;2017:6437467.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-45) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=Insights+for+Oxidative+Stress+and+mTOR+Signaling+in+Myocardial+Ischemia%2fReperfusion+Injury+under+Diabetes&publication_year=2017&author=D+Zhao&author=J+Yang&author=L+Yang)
+
+42.Fontan L, Yang C, Kabaleeswaran V, Volpon L, Osborne MJ, Beltran E, et al. MALT1 small molecule inhibitors specifically suppress ABC-DLBCL _in vitro_ and _in vivo_. Cancer Cell 2012;22:812–24.
+
+*   [Cited Here](https://doi.org/10.4103/bc.bc_65_24#JCL-P-45) | 
+*   [Google Scholar](https://scholar.google.com/scholar_lookup?title=MALT1+small+molecule+inhibitors+specifically+suppress+ABC-DLBCL++and+&publication_year=2012&author=L+Fontan&author=C+Yang&author=V+Kabaleeswaran&author=L+Volpon&author=MJ+Osborne&author=E+Beltran)
+
+View full references list
+
+**Keywords:**
+Glioblastoma; immune prognostic signature; inhibitor; mucosa-associated lymphoid tissue translocation gene 1
+
+© 2025 Brain Circulation
+
+View full article text
+
+#### Source
+
+[A novel mucosa-associated lymphoid tissue translocation gene 1-related immune prognostic signature and targeted drug screening for glioblastoma](javascript:void(0);)
+
+ Brain Circulation12(1):42-57, Jan-Mar 2026. 
+
+[](https://doi.org/10.4103/bc.bc_65_24# "Zoom In")[](https://doi.org/10.4103/bc.bc_65_24# "Zoom Out")
+
+[](javascript:void(0); "Previous")[](javascript:void(0); "Next")
+
+*   [Full-Size](javascript:void(0);)
+*   [Email](javascript:void(0);)
+*   + Favorites
+*   Export
+*   [View in Gallery](javascript:void(0);)
+
+[](javascript:)
+
+**Email to Colleague**
+
+Colleague's E-mail is Invalid
+
+ Your Name: 
+
+Colleague's Email:
+
+Separate multiple e-mails with a (;).
+
+ Message: 
+
+Your message has been successfully sent to your colleague.
+
+Some error has occurred while processing your request. Please try after some time.
+
+Related Articles
+----------------
+
+*   ### [The circulating tissue factor+ microparticles levels are associated with the severity and prognosis of cerebral venous thrombosis](https://doi.org/10.4103/bc.bc_117_25) 
+*   ### [Aging-dependent expression of vascular endothelial growth factor receptor-1 is associated with T-cell immune senescence in carotid atherosclerosis](https://doi.org/10.4103/bc.bc_57_24) 
+*   ### [Holter parameters score predicts prognosis in patients with acute ischemic stroke: A prospective cohort study](https://doi.org/10.4103/bc.bc_182_24) 
+*   ### [Venous air embolism through occipital emissary venous breach](https://doi.org/10.4103/bc.bc_134_25) 
+*   ### [Ruptured basilar artery perforator aneurysm: A two-case correspondence of this rare phenomenon](https://doi.org/10.4103/bc.bc_127_24) 
+*   ### [Pituitary apoplexy in the setting of adrenocorticotropic hormone-secreting adenoma: A systematic review and illustrative case](https://doi.org/10.4103/bc.bc_43_25) 
+
+Readers Of this Article Also Read
+---------------------------------
+
+*   ### [Application of selective cerebral venous sinus cooling as a novel...](https://journals.lww.com/brci/fulltext/2025/10000/application_of_selective_cerebral_venous_sinus.12.aspx)
+
+*   ### [Dealing with oral anticoagulants in stroke patients: A narrative review based...](https://journals.lww.com/brci/fulltext/2025/10000/dealing_with_oral_anticoagulants_in_stroke.5.aspx)
+
+*   ### [Neurophysiotherapy for somatosensory impairment in patients with stroke: A...](https://journals.lww.com/brci/fulltext/2025/10000/neurophysiotherapy_for_somatosensory_impairment_in.4.aspx)
+
+*   ### [A literature review on neuron scaffolding for repairing peripheral nerves:...](https://journals.lww.com/brci/fulltext/2025/10000/a_literature_review_on_neuron_scaffolding_for.3.aspx)
+
+*   ### [Forward thinking in reperfusion therapy for acute ischemic stroke](https://journals.lww.com/brci/fulltext/2025/10000/forward_thinking_in_reperfusion_therapy_for_acute.2.aspx)
+
+Most Popular
+------------
+
+*   [China Stroke Prevention and Control Report 2024: An executive summary](https://journals.lww.com/brci/fulltext/2025/10000/china_stroke_prevention_and_control_report_2024_.1.aspx)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+   
+*   [Recent advances in the prevention of secondary ischemic stroke: A narrative review](https://journals.lww.com/brci/fulltext/2024/10040/recent_advances_in_the_prevention_of_secondary.1.aspx)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+   
+*   [The cerebral circulation and cerebrovascular disease I](https://journals.lww.com/brci/fulltext/2017/03020/the_cerebral_circulation_and_cerebrovascular.2.aspx)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+   
+*   [Forward thinking in reperfusion therapy for acute ischemic stroke](https://journals.lww.com/brci/fulltext/2025/10000/forward_thinking_in_reperfusion_therapy_for_acute.2.aspx)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+   
+*   [Cerebral venous thrombosis: A comprehensive narrative review](https://journals.lww.com/brci/fulltext/2025/07000/cerebral_venous_thrombosis__a_comprehensive.2.aspx)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
