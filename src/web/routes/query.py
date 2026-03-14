@@ -7,7 +7,7 @@ router = APIRouter(tags=["query"])
 templates = Jinja2Templates(directory="src/web/templates")
 
 
-@router.get("/query/search", response_class=HTMLResponse)
+@router.get("/search", response_class=HTMLResponse)
 async def query_search_page(request: Request):
     """DOI 查询页面"""
     return templates.TemplateResponse(

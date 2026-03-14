@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}批处理监控 - IRRISS{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-slate-900">📊 批处理监控</h1>
+        <button onclick="location.reload()" 
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            刷新
+        </button>
+    </div>
+
+    <!-- 状态卡片 -->
+    <div id="stats-cards" 
+         hx-get="/api/batch/stats" 
+         hx-trigger="load, every 60s"
+         class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <!-- 动态加载 -->
+        <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+            <p class="text-sm text-slate-600">加载中...</p>
+        </div>
+    </div>
+
+    <!-- 失败论文列表 -->
+    <div class="bg-white rounded-lg shadow-sm border border-slate-200">
+        <div class="p-6 border-b border-slate-200">
+            <h2 class="text-lg font-semibold text-slate-900">失败论文列表</h2>
+        </div>
+        
+        <div id="failed-list"
+             hx-get="/api/batch/failed-list"
+             hx-trigger="load, every 60s"
+             class="p-6">
+            <p class="text-sm text-slate-600">加载中...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// 处理统计数据渲染
+document.body.addEventListener('htmx:afterSwap', function(evt) {
+    if (evt.detail.target.id === 'stats-cards') {
+        const data = JSON.parse(evt.detail.xhr.response);
+        const html = `
+            <div class="bg-yellow-50 rounded-lg shadow-sm border border-yellow-200 p-6">
+                <p class="text-sm font-medium text-yellow-800">待处理</p>
+                <p class="text-3xl font-bold text-yellow-900 mt-2">${data.pending || 0}</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg shadow-sm border border-blue-200 p-6">
+                <p class="text-sm font-medium text-blue-800">处理中</p>
+                <p class="text-3xl font-bold text-blue-900 mt-2">${data.processing || 0}</p>
+            </div>
+            <div class="bg-green-50 rounded-lg shadow-sm border border-green-200 p-6">
+                <p class="text-sm font-medium text-green-800">已完成</p>
+                <p class="text-3xl font-bold text-green-900 mt-2">${data.completed || 0}</p>
+            </div>
+            <div class="bg-red-50 rounded-lg shadow-sm border border-red-200 p-6">
+                <p class="text-sm font-medium text-red-800">失败</p>
+                <p class="text-3xl font-bold text-red-900 mt-2">${data.failed || 0}</p>
+            </div>
+        `;
+        evt.detail.target.innerHTML = html;
+    }
+    
+    if (evt.detail.target.id === 'failed-list') {
+        const data = JSON.parse(evt.detail.xhr.response);
+        if (!data.papers || data.papers.length === 0) {
+            evt.detail.target.innerHTML = '<p class="text-sm text-slate-600">暂无失败论文</p>';
+            return;
+        }
+        
+        const rows = data.papers.map(p => `
+            <tr class="border-b border-slate-100 hover:bg-slate-50">
+                <td class="px-4 py-3 text-sm font-mono text-slate-900">${p.doi}</td>
+                <td class="px-4 py-3 text-sm text-red-600">${p.error || '未知错误'}</td>
+                <td class="px-4 py-3 text-sm text-slate-600">${p.retry_count || 0}</td>
+                <td class="px-4 py-3">
+                    <button onclick="retryPaper('${p.doi}')"
+                            class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                        重试
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+        
+        evt.detail.target.innerHTML = `
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b border-slate-200">
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">DOI</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">错误信息</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">重试次数</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">操作</th>
+                    </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+            </table>
+        `;
+    }
+});
+
+function retryPaper(doi) {
+    fetch('/api/batch/retry', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({doi: doi})
+    }).then(r => r.json())
+    .then(data => {
+        alert('重试任务已提交');
+        location.reload();
+    });
+}
+</script>
+{% endblock %}

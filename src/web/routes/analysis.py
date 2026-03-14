@@ -7,7 +7,7 @@ router = APIRouter(tags=["analysis"])
 templates = Jinja2Templates(directory="src/web/templates")
 
 
-@router.get("/analysis/stats", response_class=HTMLResponse)
+@router.get("/stats", response_class=HTMLResponse)
 async def analysis_stats_page(request: Request):
     """数据分析页面"""
     return templates.TemplateResponse(

@@ -12,6 +12,7 @@ from src.web.api import batch as batch_api
 from src.web.api import query as query_api
 from src.web.api import export as export_api
 from src.web.api import import_csv as import_api
+from src.web.api import analysis as analysis_api
 
 # 创建应用
 app = FastAPI(
@@ -48,6 +49,7 @@ app.include_router(batch_api.router, prefix="/api", tags=["batch-api"])
 app.include_router(query_api.router, prefix="/api", tags=["query-api"])
 app.include_router(export_api.router, prefix="/api", tags=["export-api"])
 app.include_router(import_api.router, prefix="/api", tags=["import-api"])
+app.include_router(analysis_api.router, prefix="/api", tags=["analysis-api"])
 
 
 @app.get("/", response_class=HTMLResponse)

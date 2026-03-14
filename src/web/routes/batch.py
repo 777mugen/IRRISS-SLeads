@@ -7,7 +7,7 @@ router = APIRouter(tags=["batch"])
 templates = Jinja2Templates(directory="src/web/templates")
 
 
-@router.get("/batch/monitor", response_class=HTMLResponse)
+@router.get("/monitor", response_class=HTMLResponse)
 async def batch_monitor_page(request: Request):
     """批处理监控页面"""
     return templates.TemplateResponse(

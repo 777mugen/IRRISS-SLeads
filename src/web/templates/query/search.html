@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}DOI 查询 - IRRISS{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <h1 class="text-2xl font-bold text-slate-900">🔍 DOI 批量查询</h1>
+
+    <!-- 查询表单 -->
+    <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+        <form id="query-form" onsubmit="queryDOIs(event)">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-slate-900 mb-2">
+                    输入 DOI（每行一个）
+                </label>
+                <textarea id="doi-input" 
+                          rows="6" 
+                          class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="10.1234/example.doi.001&#10;10.5678/sample.doi.002"></textarea>
+            </div>
+            
+            <div class="flex justify-end">
+                <button type="submit"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+                    查询
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 查询结果 -->
+    <div id="query-results" class="hidden">
+        <div class="bg-white rounded-lg shadow-sm border border-slate-200">
+            <div class="p-6 border-b border-slate-200">
+                <h2 class="text-lg font-semibold text-slate-900">查询结果</h2>
+            </div>
+            <div id="results-content" class="p-6">
+                <!-- 动态填充 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function queryDOIs(event) {
+    event.preventDefault();
+    
+    const input = document.getElementById('doi-input').value.trim();
+    if (!input) {
+        alert('请输入 DOI');
+        return;
+    }
+    
+    const dois = input.split('\n').map(d => d.trim()).filter(d => d);
+    
+    if (dois.length === 0) {
+        alert('请输入至少一个 DOI');
+        return;
+    }
+    
+    const resultsDiv = document.getElementById('query-results');
+    const resultsContent = document.getElementById('results-content');
+    
+    resultsContent.innerHTML = '<p class="text-slate-600">查询中...</p>';
+    resultsDiv.classList.remove('hidden');
+    
+    fetch('/api/query/doi', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({dois: dois})
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (!data.results || data.results.length === 0) {
+            resultsContent.innerHTML = '<p class="text-slate-600">未找到结果</p>';
+            return;
+        }
+        
+        const rows = data.results.map(r => {
+            const rawStatus = r.raw_markdown?.status || '未处理';
+            const paperLead = r.paper_lead;
+            
+            return `
+                <tr class="border-b border-slate-100 hover:bg-slate-50">
+                    <td class="px-4 py-3 text-sm font-mono text-slate-900">${r.doi}</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 text-xs rounded-full ${getStatusColor(rawStatus)}">
+                            ${rawStatus}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-sm text-slate-900">${paperLead?.name || '-'}</td>
+                    <td class="px-4 py-3 text-sm text-slate-600">${paperLead?.email || '-'}</td>
+                    <td class="px-4 py-3 text-sm text-slate-600">${paperLead?.institution_cn || '-'}</td>
+                    <td class="px-4 py-3">
+                        ${paperLead ? `
+                            <span class="px-2 py-1 text-xs rounded-full ${getGradeColor(paperLead.grade)}">
+                                ${paperLead.grade || '-'} (${paperLead.score || 0})
+                            </span>
+                        ` : '-'}
+                    </td>
+                </tr>
+            `;
+        }).join('');
+        
+        resultsContent.innerHTML = `
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b border-slate-200">
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">DOI</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">状态</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">通讯作者</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">邮箱</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">机构</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">等级</th>
+                    </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+            </table>
+        `;
+    })
+    .catch(err => {
+        resultsContent.innerHTML = `<p class="text-red-600">查询失败: ${err.message}</p>`;
+    });
+}
+
+function getStatusColor(status) {
+    const colors = {
+        'pending': 'bg-yellow-100 text-yellow-800',
+        'processing': 'bg-blue-100 text-blue-800',
+        'completed': 'bg-green-100 text-green-800',
+        'failed': 'bg-red-100 text-red-800'
+    };
+    return colors[status] || 'bg-slate-100 text-slate-800';
+}
+
+function getGradeColor(grade) {
+    const colors = {
+        'A': 'bg-green-100 text-green-800',
+        'B': 'bg-blue-100 text-blue-800',
+        'C': 'bg-yellow-100 text-yellow-800',
+        'D': 'bg-slate-100 text-slate-800'
+    };
+    return colors[grade] || 'bg-slate-100 text-slate-800';
+}
+</script>
+{% endblock %}
