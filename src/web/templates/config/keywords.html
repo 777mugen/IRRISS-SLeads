@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}配置管理 - IRRISS Dashboard{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- 标签页切换 -->
+    <div class="border-b border-slate-200">
+        <nav class="-mb-px flex gap-8">
+            <button onclick="showTab('keywords')" 
+                    class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-blue-500 text-blue-600"
+                    id="tab-keywords">
+                关键词配置
+            </button>
+            <button onclick="showTab('scoring')" 
+                    class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700"
+                    id="tab-scoring">
+                评分规则
+            </button>
+        </nav>
+    </div>
+
+    <!-- 关键词配置 -->
+    <div id="keywords-content" class="tab-content">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-lg font-semibold text-slate-900">搜索关键词</h2>
+                <button onclick="editKeywords()" 
+                        class="px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-800">
+                    编辑配置
+                </button>
+            </div>
+            
+            <!-- 英文核心关键词 -->
+            <div class="mb-6">
+                <h3 class="text-sm font-medium text-slate-700 mb-3">英文核心关键词</h3>
+                <div class="flex flex-wrap gap-2">
+                    {% for keyword in keywords.get('english', {}).get('core', []) %}
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                        {{ keyword }}
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- 英文设备关键词 -->
+            <div class="mb-6">
+                <h3 class="text-sm font-medium text-slate-700 mb-3">英文设备关键词</h3>
+                <div class="flex flex-wrap gap-2">
+                    {% for keyword in keywords.get('english', {}).get('equipment', []) %}
+                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                        {{ keyword }}
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- 中文核心关键词 -->
+            <div class="mb-6">
+                <h3 class="text-sm font-medium text-slate-700 mb-3">中文核心关键词</h3>
+                <div class="flex flex-wrap gap-2">
+                    {% for keyword in keywords.get('chinese', {}).get('core', []) %}
+                    <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
+                        {{ keyword }}
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- 中文设备关键词 -->
+            <div>
+                <h3 class="text-sm font-medium text-slate-700 mb-3">中文设备关键词</h3>
+                <div class="flex flex-wrap gap-2">
+                    {% for keyword in keywords.get('chinese', {}).get('equipment', []) %}
+                    <span class="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm">
+                        {{ keyword }}
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 评分规则 -->
+    <div id="scoring-content" class="tab-content hidden">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <h2 class="text-lg font-semibold text-slate-900 mb-6">论文评分规则</h2>
+            
+            <!-- 评分维度 -->
+            <div class="space-y-4">
+                {% for dimension, rules in scoring.items() %}
+                <div class="border border-slate-200 rounded-lg p-4">
+                    <h3 class="text-sm font-semibold text-slate-900 mb-2">{{ dimension }}</h3>
+                    <div class="text-sm text-slate-600">
+                        {% if rules is mapping %}
+                            <ul class="list-disc list-inside space-y-1">
+                                {% for key, value in rules.items() %}
+                                <li><span class="font-medium">{{ key }}:</span> {{ value }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>{{ rules }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- 评分等级 -->
+            <div class="mt-6 p-4 bg-slate-50 rounded-lg">
+                <h3 class="text-sm font-semibold text-slate-900 mb-2">评分等级</h3>
+                <div class="grid grid-cols-4 gap-4 text-sm">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-600">A</div>
+                        <div class="text-slate-600">≥ 80 分</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-blue-600">B</div>
+                        <div class="text-slate-600">65-79 分</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-amber-600">C</div>
+                        <div class="text-slate-600">50-64 分</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-red-600">D</div>
+                        <div class="text-slate-600">< 50 分</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showTab(tabName) {
+    // 隐藏所有内容
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    // 显示选中的内容
+    document.getElementById(tabName + '-content').classList.remove('hidden');
+    
+    // 更新标签样式
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('border-blue-500', 'text-blue-600');
+        btn.classList.add('border-transparent', 'text-slate-500');
+    });
+    document.getElementById('tab-' + tabName).classList.remove('border-transparent', 'text-slate-500');
+    document.getElementById('tab-' + tabName).classList.add('border-blue-500', 'text-blue-600');
+}
+
+function editKeywords() {
+    alert('关键词编辑功能开发中，请手动编辑 config/keywords.yaml 文件');
+}
+</script>
+{% endblock %}
