@@ -1,0 +1,557 @@
+Enhanced CT-based deep learning radiomics and biological correlations for predicting immunotherapy efficacy in advanced non-small cell lung cancer - Zhu - Translational Cancer Research
+===============
+
+Have a website account?[Log In](https://tcr.amegroups.org/login) or[Register](https://tcr.amegroups.org/user/register) for exclusive website content.
+
+[Subscribe](https://news.amepc.org/h/t/DC7EB183D963AFC1 "Subscribe")
+
+[![Image 1: Translational Cancer Research (TCR) logo, with the tagline Advances Clinical Medicine Toward the Goal of Improving Patients' Quality of Life and the Impact Factor and CiteScore of 1.7 and 2.5 respectively](https://cdn.amegroups.cn/journals/pbpc/public/journals/3/homeHeaderTitleImage_en_US.png/w1400?v=20260314)](https://tcr.amegroups.org/ "Translational Cancer Research")
+
+[Advanced Search](https://doi.org/10.21037/tcr-2025-aw-2287)
+
+*   [Home](https://tcr.amegroups.org/index)/
+*   [Vol 15, No 2 (February 28, 2026)](https://tcr.amegroups.org/issue/view/873)/
+*   Enhanced CT-based deep learning radiomics and biological correlations for predicting immunotherapy efficacy in advanced ...
+
+Enhanced CT-based deep learning radiomics and biological correlations for predicting immunotherapy efficacy in advanced non-small cell lung cancer
+===============
+[![Image 2: A 120x26 small image, likely a logo, icon or avatar](https://cdn.amegroups.cn/static/mirror/crossmark/widget/v2.0/CROSSMARK_Color_horizontal.svg)](https://doi.org/10.21037/tcr-2025-aw-2287)
+
+Original Article
+
+Enhanced CT-based deep learning radiomics and biological correlations for predicting immunotherapy efficacy in advanced non-small cell lung cancer
+==================================================================================================================================================
+
+Jianbin Zhu 1#, Huaxian Shi 2#, Zhuofeng Liang 1,3#, Ting Lin 1, Caihong Li 1, Chunxiu Jiang 1, Qiuxian Wang 1, Jianhua Mo 1, Dong Zeng 2*, Zhibo Wen 1*
+
+1 Department of Radiology, Zhujiang Hospital, Southern Medical University, Guangzhou, China; 2 School of Biomedical Engineering, Southern Medical University, Guangzhou, China; 3 Department of Radiology, The Second Affiliated Hospital of Guangzhou University of Chinese Medicine, Guangzhou, China
+
+_Contributions:_ (I) Conception and design: Z Wen, J Zhu, D Zeng; (II) Administrative support: D Zeng, Z Wen; (III) Provision of study materials or patients: Z Liang, J Zhu, C Li, Q Wang; (IV) Collection and assembly of data: J Zhu, H Shi, Z Liang, C Jiang, J Mo; (V) Data analysis and interpretation: H Shi, J Zhu, T Lin, D Zeng; (VI) Manuscript writing: All authors; (VII) Final approval of manuscript: All authors.
+
+#These authors contributed equally to this work.
+
+*These authors contributed equally to this work.
+
+_Correspondence to:_ Dong Zeng, PhD. School of Biomedical Engineering, Southern Medical University, No. 1023, South Shatai Road, Baiyun District, Guangzhou 510515, China. Email: zd1989@smu.edu.cn; Zhibo Wen, MD. Department of Radiology, Zhujiang Hospital, Southern Medical University, 253 Gongye Middle Avenue, Haizhu District, Guangzhou 510280, China. Email: zhibowen@163.com.
+
+* * *
+
+**Background:**Identifying predictive markers for immunotherapy in non-small cell lung cancer (NSCLC) is critical for personalized treatment. This study aimed to construct a predictive model that integrates clinical features, enhanced computed tomography (CT)-radiomics, and deep learning (DL) features for the assessment of durable clinical benefit (DCB) from immunotherapy in patients with advanced NSCLC and to provide biological interpretability to predictions by integrating radiogenomic data.
+
+**Methods:**We conducted a retrospective analysis of 201 advanced NSCLC patients who underwent immunotherapy with CT images, with data supplemented from The Cancer Imaging Archive (TCIA). Radiomics features (RFs) were extracted from enhanced CT images, and DL features were derived using a pre-trained ResNet-34 model. DCB-related signatures were constructed using the least absolute shrinkage and selection operator (LASSO) algorithm, and fusion nomogram models were developed by integrating significant clinical variables, radiomics, and DL features. Shapley additive explanations were employed to quantify the impact of radiomics-DL features on model predictions. Gene set enrichment and biological correlation analyses based on transcriptomic TCIA data were performed to explore the biological significance of radiomics-DL score.
+
+**Results:**Statistically significant clinical predictors included initial efficacy, brain metastases, programmed death-ligand 1 (PD-L1) expression, and hemoglobin levels. The fusion nomogram model demonstrated the highest predictive accuracy for DCB, with area under the curve (AUC) values of 0.843 in the train cohort and 0.894 in the test cohort, surpassing individual feature sets. Biological exploration revealed associations between radiomics-DL score and biological characteristics, including immune responses and immunoregulation.
+
+**Conclusions:**This integrated approach shows the potential of combining clinical, radiomics and deep learning features (DLFs) as a noninvasive biomarker for predicting immunotherapy efficacy in NSCLC, assisting in patient selection and clinical decision-making. Radiotranscriptomic analysis may reveal key cellular and immune patterns associated with radiomics-DL signature.
+
+**Keywords:** Deep learning radiomics (DL radiomics); biological correlations; enhanced computed tomography (enhanced CT); non-small cell lung cancer (NSCLC); immunotherapy efficacy
+
+* * *
+
+Submitted Oct 19, 2025. Accepted for publication Jan 13, 2026. Published online Feb 10, 2026.
+
+doi: 10.21037/tcr-2025-aw-2287
+
+* * *
+
+Highlight box
+-------------
+
+**Key findings**
+
+• We developed and validated an enhanced computed tomography (CT)-based fusion nomogram that integrates deep learning features (DLFs), radiomics features, and clinical variables. The proposed model demonstrated high predictive accuracy for durable clinical benefit (DCB) from immunotherapy in advanced non-small cell lung cancer (NSCLC), with biological interpretability provided through radiogenomic correlation analysis.
+
+**What is known and what is new?**
+
+• Immunotherapy has improved outcomes in patients with advanced NSCLC; however, a considerable proportion of patients do not achieve long-term benefit. Predictive biomarkers such as programmed death-ligand 1 (PD-L1) expression are not fully comprehensive, while imaging-based models that employ radiomics or DL have shown promise yet are often limited by their reliance on single-feature analysis or a lack of biological validation.
+
+• We developed a multimodal fusion nomogram integrating clinical variables with radiomics features (RFs) and DLFs derived from pre-treatment enhanced CT, achieving area under the curve (AUC) values of 0.843–0.894 for predicting DCB after immunotherapy. Using Shapley Additive exPlanations (SHAP) analysis, we generated interpretable, patient-specific predictions, and further connected the radiomics-DL signature to underlying immune and biological processes through transcriptomic data.
+
+**What is the implication, and what should change now?**
+
+• Implementation of this fusion model may provide clinicians with a non-invasive tool to guide immunotherapy decisions for advanced NSCLC, enabling a more personalized approach to patient selection before and during early treatment.
+
+* * *
+
+Introduction Other Section
+--------------------------
+
+*   [Introduction](https://doi.org/10.21037/tcr-2025-aw-2287#introduction)
+*   [Methods](https://doi.org/10.21037/tcr-2025-aw-2287#methods)
+*   [Results](https://doi.org/10.21037/tcr-2025-aw-2287#results)
+*   [Discussion](https://doi.org/10.21037/tcr-2025-aw-2287#discussion)
+*   [Conclusions](https://doi.org/10.21037/tcr-2025-aw-2287#conclusions)
+*   [Acknowledgments](https://doi.org/10.21037/tcr-2025-aw-2287#acknowledgments)
+*   [Footnote](https://doi.org/10.21037/tcr-2025-aw-2287#Footnote)
+*   [References](https://doi.org/10.21037/tcr-2025-aw-2287#references)
+
+Lung cancer is the leading global malignancy and cancer-related mortality, with non-small cell lung cancer (NSCLC) being the most prevalent subtype ([1](https://doi.org/10.21037/tcr-2025-aw-2287#B1),[2](https://doi.org/10.21037/tcr-2025-aw-2287#B2)). Immunotherapies, particularly immune checkpoint inhibitors (ICIs), have shown potential in enhancing immune recognition and combating tumors in NSCLC ([3](https://doi.org/10.21037/tcr-2025-aw-2287#B3)). Approved antibodies targeting programmed death-1/programmed death-ligand 1 (PD-1/PD-L1) can induce durable responses in advanced NSCLC, revolutionizing treatment outcomes. Despite immunotherapy’s promise, many patients do not benefit clinically ([4](https://doi.org/10.21037/tcr-2025-aw-2287#B4)). Large-scale phase 3 trials have yielded disappointing results, underscoring the need to identify responsive patients ([5](https://doi.org/10.21037/tcr-2025-aw-2287#B5),[6](https://doi.org/10.21037/tcr-2025-aw-2287#B6)). Studies have identified various biological factors influencing ICI efficacy in NSCLC ([3](https://doi.org/10.21037/tcr-2025-aw-2287#B3),[4](https://doi.org/10.21037/tcr-2025-aw-2287#B4),[7](https://doi.org/10.21037/tcr-2025-aw-2287#B7)), but no single factor can predictably assess the benefit across all patients.
+
+The Response Evaluation Criteria in Solid Tumors (RECIST) or its immunotherapy adaptation (iRECIST) are standard for treatment efficacy assessment ([8](https://doi.org/10.21037/tcr-2025-aw-2287#B8),[9](https://doi.org/10.21037/tcr-2025-aw-2287#B9)). However, these criteria are subjective and do not account for tumor heterogeneity. Computed tomography (CT) is widely used to evaluate lung cancer treatment responses, but it fails to fully capture the response to ICIs, particularly in distinguishing true progression from pseudoprogression and predicting future immunotherapy responses.
+
+Quantitative imaging biomarkers offer new opportunities. Advances in artificial intelligence have increased interest in radiomics derived from CT images for immunotherapy ([10](https://doi.org/10.21037/tcr-2025-aw-2287#B10)). Radiomics allows for the extraction and analysis of radiological features, enhancing disease diagnosis and prognosis prediction ([11](https://doi.org/10.21037/tcr-2025-aw-2287#B11),[12](https://doi.org/10.21037/tcr-2025-aw-2287#B12)). Studies have shown radiomics’ predictive power in immunotherapy response in advanced NSCLC, providing insights beyond human observation ([13](https://doi.org/10.21037/tcr-2025-aw-2287#B13)-[16](https://doi.org/10.21037/tcr-2025-aw-2287#B16)). Radiomics may be affected by variations in image acquisition and preprocessing, impacting model robustness ([17](https://doi.org/10.21037/tcr-2025-aw-2287#B17),[18](https://doi.org/10.21037/tcr-2025-aw-2287#B18)). Deep learning (DL) surpasses traditional radiomics in image classification, object detection, and segmentation ([19](https://doi.org/10.21037/tcr-2025-aw-2287#B19),[20](https://doi.org/10.21037/tcr-2025-aw-2287#B20)), enabling the quantification of high-dimensional radiological phenotypes and the development of tailored predictive models ([20](https://doi.org/10.21037/tcr-2025-aw-2287#B20),[21](https://doi.org/10.21037/tcr-2025-aw-2287#B21)). However, evidence for using pre-treatment CT-based radiomics, DL, and machine learning to predict immunotherapy efficacy in NSCLC is insufficient. We used the Shapley Additive exPlanations (SHAP) tool to provide interpretable rationales for patient-specific predictions ([22](https://doi.org/10.21037/tcr-2025-aw-2287#B22)), integrating multiple determinants to generate individualized probabilities of clinical events, bridging biological and clinical models.
+
+This study aims to develop and integrate radiomics with deep learning features (DLFs) from contrast-enhanced CT images to build an early decision support model for predicting immunotherapy response in NSCLC patients, and elucidate the biological basis of CT imaging phenotypes associated with immunotherapy efficacy through radiogenomic data integration. We present this article in accordance with the TRIPOD reporting checklist (available at [https://tcr.amegroups.com/article/view/10.21037/tcr-2025-aw-2287/rc](https://tcr.amegroups.com/article/view/10.21037/tcr-2025-aw-2287/rc)).
+
+* * *
+
+Methods Other Section
+---------------------
+
+*   [Introduction](https://doi.org/10.21037/tcr-2025-aw-2287#introduction)
+*   [Methods](https://doi.org/10.21037/tcr-2025-aw-2287#methods)
+*   [Results](https://doi.org/10.21037/tcr-2025-aw-2287#results)
+*   [Discussion](https://doi.org/10.21037/tcr-2025-aw-2287#discussion)
+*   [Conclusions](https://doi.org/10.21037/tcr-2025-aw-2287#conclusions)
+*   [Acknowledgments](https://doi.org/10.21037/tcr-2025-aw-2287#acknowledgments)
+*   [Footnote](https://doi.org/10.21037/tcr-2025-aw-2287#Footnote)
+*   [References](https://doi.org/10.21037/tcr-2025-aw-2287#references)
+
+### Study population
+
+This retrospective investigation included patients with a pathological diagnosis of advanced NSCLC who underwent biopsy and received immunotherapy between October 2019 and April 2024 at Zhujiang Hospital, Southern Medical University. The study was conducted in accordance with the Declaration of Helsinki and its subsequent amendments. The study was approved by the Ethics Committee at Zhujiang Hospital, Southern Medical University (No. 2024-KY-046-01). Informed consent was waived in this retrospective study.
+
+This study enrolled patients meeting the following criteria: (I) confirmed NSCLC diagnosis via biopsy; (II) non-surgical stage III or IV disease; (III) receipt of PD-1/PD-L1 inhibitor-based immunotherapy; (IV) baseline CT scans (plain and enhanced) within 2 weeks before starting immunotherapy and follow-up scans post 2–3 cycles; (V) availability of CT images and associated clinical, pathological, and laboratory data. Exclusions included: (I) incomplete diagnoses; (II) prior surgical resection; (III) severe treatment-related side effects; (IV) poor-quality CT images; (V) lost to follow-up. The cohort comprised 201 patients, stratified into train (n=141) and test (n=60) cohorts. The predominant histologies were lung adenocarcinoma (LUAD, 54.23%) and lung squamous cell carcinoma (LUSC, 37.8%).
+
+The primary endpoint was durable clinical benefit (DCB), defined as complete response (CR), partial response (PR), or stable disease (SD) lasting at least 6 months since immunotherapy ([23](https://doi.org/10.21037/tcr-2025-aw-2287#B23)); its counterpart, no durable benefit (NDB), was defined as progression or death within 6 months. Progression-free survival (PFS) was measured from the initiation of immunotherapy to disease progression or death. Tumor response and progression, including the initial efficacy assessed by CT after 2–3 cycles of ICIs, were evaluated per RECIST v1.1 criteria ([8](https://doi.org/10.21037/tcr-2025-aw-2287#B8)).
+
+Finally, patients with NSCLC from The Cancer Genome Atlas (TCGA) and The Cancer Imaging Archive (TCIA) databases, including those with LUAD (n=27) and LUSC (n=35), who had available baseline CT scans and RNA sequencing data, were included in the genomics sample for gene analysis to explore the biological mechanisms underlying radiomics-DL prediction. A flowchart of the patient selection process is provided in [Figure S1](https://cdn.amegroups.cn/static/public/TCR-2025-AW-2287-Supplementary.pdf?v=1773493883763).
+
+### CT acquisition
+
+Scans were conducted using multislice spiral CT scanners (Brilliance 64/256; Philips, Amsterdam, Netherlands), with settings optimized for lung cancer imaging: 120 kV tube voltage, 120 mA tube current, and a 512×512 matrix. The layer thickness was set at 5.0 mm, employing standard or soft tissue reconstruction algorithms to enhance image clarity. A power syringe facilitated the injection of iodine contrast medium at a rate of 2.5–3.0 mL/s, with scans initiated approximately 30 seconds post-injection to capture enhanced images critical for the study. Two radiologists, with substantial experience, retrospectively analyzed the chest CT images, utilizing a window width of 1,500 HU and a window level of −700 HU to assess tumor characteristics, including size (maximum diameter and vertical diameter), type (ground glass, partially solid, or solid), location (peripheral or central), and the presence of specific morphological features such as lobulation, spicules, pleural stretch, bubble-like features, and vascular convergence signs.
+
+### Clinical information
+
+The clinical data of the patients included various factors such as age, weight, height, body mass index, sex, smoking history, chronic obstructive pulmonary disease, hypertension, diabetes, history of other malignancies, intrapulmonary and extrapulmonary metastases (including pleural, brain, bone, adrenal, hepatic, and other sites of metastasis), and treatment lines.
+
+Peripheral blood indicators of the patients, including hemoglobin count, neutrophil count, lymphocyte count, monocyte count, platelet count, serum albumin count, neutrophil-to-lymphocyte ratio (NLR), platelet-to-lymphocyte ratio (PLR), and lymphocyte-to-monocyte ratio (LMR) before ICIs treatment, were also recorded. The pathological data of the patients included various factors such as tumor classification, tumor differentiation, TNM stage (according to the 8th edition guidelines developed by the International Association for the Study of Lung Cancer), PD-L1 level, Ki-67 level, and anaplastic lymphoma kinase (ALK) expression.
+
+### Clinical model construction
+
+We analyzed 38 clinical and pathological variables via logistic regression to identify independent predictors of immunotherapy efficacy in NSCLC, utilizing these to build a clinical model. Odds ratios (ORs) and 95% confidence intervals (CIs) were determined for each predictor to assess their risk association. The model integrated significant clinical and semantic features identified through regression analysis. A 10-fold cross-validation approach was applied for model validation, maintaining a consistent test cohort.
+
+### Image preprocessing and tumor segmentation
+
+The images and data underwent preprocessing, including resampling and standardization, to ensure the repeatability of the result. Linear interpolation was applied to reduce the differences in scanning equipment and procedures between patients. The pixel spacing and slice thickness were set to 1.0 and 5.0 mm, respectively. To obtain high-quality images, the voxel intensity of each scan was normalized to ensure that the voxel intensity ranged between 0 and 1. The radiologists manually outlined and segmented the primary tumor areas in pre-immunotherapy enhanced CT images to produce the corresponding regions of interest (ROIs) slice by slice using 3D-Slicer software (version 5.5.0, [https://www.slicer.org/](https://www.slicer.org/)). They were blinded to the pathology and treatment outcomes, and any disagreements were resolved through consensus during a discussion. To ensure the reproducibility of feature analysis, all delineated ROIs were reviewed by the same radiologists after 2 months to eliminate variability in the ROIs.
+
+### Radiomics feature (RF) and DLF extraction
+
+Standardized image RFs are extracted from the desired ROIs based on the Image Biomarker Standardization Initiative (IBSI). A total of 94 RFs were extracted from the segmented ROI using MATLAB 2019 (MathWorks, Natick, MA, USA). The RFs were categorized into first-order statistics and texture features. Following dimensionality reduction, the Synthetic Minority Over-sampling Technique (SMOTE) was applied to the train cohort to address class imbalance.
+
+DLFs are extracted to be combined with radiomics. For each patient, we considered three bi-dimensional slices: the one with the largest cross-sectional area of the ROI and the two adjacent slices. The three ROIs are resized to the size of 224×224 pixels. These tumor images were input into convolutional neural network models, specifically ResNet-34. Then, high-level features were extracted from the last convolutional layer in a pre-trained ResNet-34 neural network. This pre-trained model was trained on the ImageNet dataset and is capable of obtaining high-level DLFs. Finally, the extracted DLFs were subjected to global average pooling to obtain feature vectors, and these vectors were stored. As a result, we extracted a total of 512 DLFs from the ResNet-34 network. The specific network structure is shown in [Figure S2](https://cdn.amegroups.cn/static/public/TCR-2025-AW-2287-Supplementary.pdf?v=1773493883763).
+
+### Construction of the radiomics signature (RS) and deep learning signature (DLS)
+
+To prevent overfitting, we performed feature dimensionality reduction on both RFs and DLFs, retaining only those with intra- and inter-reader intraclass correlation coefficients (ICCs) above 0.75 to minimize subjectivity in ROI selection. The Spearman correlation test identified the 29 most pertinent RFs and 367 DLFs for predictive modeling, eliminating irrelevant and redundant features. The least absolute shrinkage and selection operator (LASSO) algorithm further refined the selection, yielding the optimal sets of RFs, DLFs, and their combination. Consequently, we developed the RS, DLS, and the combined RS-DLS. For each patient, we calculated the radiomics score (Rad-score), deep learning score (DL-score), and the integrated radiomics-deep learning score (Rad-DL-score).
+
+### Prediction models construction
+
+Based on the analysis of the clinical information, RFs, and DLFs, five different models are constructed: the clinical model, RS model, DLS model, radiomics nomogram model (clinical + RF model), and fusion model (clinical + RFs + DLFs model). Specifically, the clinical model was constructed using logistic regression analysis with clinical information selected after univariate and multivariate screening; the RS model was developed using logistic regression analysis with RFs selected through LASSO; the DLS model was built using logistic regression analysis with DLFs selected through LASSO. By combining clinical information and RFs with logistic regression analysis, the radiomics nomogram model was obtained. Similarly, by integrating the three types of features in logistic regression analysis, the fusion model was constructed. All the models are trained using 10-fold cross-validation.
+
+To evaluate the prediction performance of the different models, the area under the curve (AUC), accuracy, specificity, sensitivity, positive predictive value (PPV), and negative predictive value (NPV) were analyzed. Furthermore, to assess the clinical utility of the five models when applied to the test cohort, decision curve analysis (DCA) was conducted. Finally, a nomogram model was constructed by integrating clinical features, RFs, and DLFs. The calibration performance of the nomogram model was evaluated using a calibration curve. In addition, we utilize the SHAP method to enhance the interpretability and transparency of the model. The flow chart of the whole procedure is shown in [_Figure 1_](https://doi.org/10.21037/tcr-2025-aw-2287#figure1).
+
+[![Image 3: Click on image to zoom](https://cdn.amegroups.cn/journals/pbpc/files/journals/3/articles/112394/public/112394-PB7-3538-R1.jpg/w300)](https://cdn.amegroups.cn/static/magazine_modules/imgRender/dist/index.html?imgSource=https://cdn.amegroups.cn/journals/pbpc/files/journals/3/articles/112394/public/112394-PB7-3538-R1.jpg)
+
+**Figure 1** Workflow of radiomics and deep learning analysis in this study. CluShade, cluster shade; DifVari, difference variance; GLN, gray level non-uniformity; HDLGLE, high difference low gray level emphasis; InfoCorr, first measure of information correlation; KEGG, Kyoto Encyclopedia of Genes and Genomes; LDE, long distance emphasis; LDLGLE, low difference low gray level emphasis; LGLCE, low gray level count emphasis; NorHomo, normalized homogeneity; SDE, short distance emphasis; SHAP, Shapley Additive exPlanations; ZoSiEntr, zone-size entropy; ZSN, zone size non-uniformity.
+
+### Biological basis exploration
+
+Gene analysis was performed on a cohort of 62 patients from TCGA and TCIA who had available RNA sequencing data to preliminarily investigate the underlying biological mechanisms relevant to the radiomics-DL model. Patients in the genomics sample were stratified into low- and high-score groups based on the median value of the Rad-DL-score. Differentially expressed genes (DEGs) between the low- and high-score groups were identified using DESeq2. Genes with an adjusted P value <0.05 and an absolute log 2 fold change (|log 2 FC|) >1 were considered significant. Significant DEGs were further classified as upregulated (log 2 FC >1) or downregulated (log 2 FC <−1). To investigate the biological functions and pathways associated with the DEGs, we performed Gene Ontology (GO) and Kyoto Encyclopedia of Genes and Genomes (KEGG) enrichment analyses. The DEGs were annotated to three GO categories: biological process, molecular function, and cellular component. This analysis aims to provide insights into the molecular mechanisms underlying disease processes relevant to radiomics-DL model. DEGs and GO and KEGG enrichment analyses were performed using OmicShare tools, an online platform for data analysis ([https://www.omicshare.com/tools](https://www.omicshare.com/tools)).
+
+### Statistical analysis
+
+Statistical analyses were conducted using IBM SPSS Statistics 26.0, R 4.2.1, and Python 3.7.6. Student’s _t_-test and ANOVA assessed continuous variables, with normally distributed data presented as mean ± standard deviation and non-normally distributed data as median with interquartile range. Categorical variables were analyzed using chi-square or Fisher’s exact test and reported as ratios. Receiver operating characteristic (ROC) curves and AUC evaluated model predictive performance, while the DeLong test assessed differences in efficiency between models. SHAP visualizations, generated with Python’s shap 0.42.1, highlighted feature importance and contribution. Single-sample SHAP analysis evaluated individual prediction performance. Significance was set at P<0.05.
+
+* * *
+
+Results Other Section
+---------------------
+
+*   [Introduction](https://doi.org/10.21037/tcr-2025-aw-2287#introduction)
+*   [Methods](https://doi.org/10.21037/tcr-2025-aw-2287#methods)
+*   [Results](https://doi.org/10.21037/tcr-2025-aw-2287#results)
+*   [Discussion](https://doi.org/10.21037/tcr-2025-aw-2287#discussion)
+*   [Conclusions](https://doi.org/10.21037/tcr-2025-aw-2287#conclusions)
+*   [Acknowledgments](https://doi.org/10.21037/tcr-2025-aw-2287#acknowledgments)
+*   [Footnote](https://doi.org/10.21037/tcr-2025-aw-2287#Footnote)
+*   [References](https://doi.org/10.21037/tcr-2025-aw-2287#references)
+
+### Patients’ clinicopathological and radiological characteristics
+
+The study included a total of 201 patients, among whom 142 (71%) were confirmed to have DCB response through clinical follow-up. [Table S1](https://cdn.amegroups.cn/static/public/TCR-2025-AW-2287-Supplementary.pdf?v=1773493883763) summarizes that the distribution of related variables is similar in both the train cohort and the test cohort (all P>0.05).
+
+### Clinical model construction
+
+[_Table 1_](https://doi.org/10.21037/tcr-2025-aw-2287#table1) lists the univariate and multivariate logistic regression results for the risk factors associated with outcomes. In the univariate logistic regression analysis, seven factors were found to be statistically significant. However, in the multivariate logistic regression analysis, only four factors were statistically significant, namely initial efficacy, presence of brain metastases, PD-L1 level, and hemoglobin.
+
+### **Table 1**
+
+**Univariate and multivariate logistic regression for the risk factors of outcome**
+
+| Characteristics | Univariate analysis |  | Multivariate analysis |
+| :--- | :---: | :--- | :---: |
+| OR | 95% CI | P value | OR | 95% CI | P value |
+| Age | 1.03 | 1.00–1.07 | 0.07 |  |  |  |  |
+| Weight | 1.02 | 0.98–1.06 | 0.30 |  |  |  |  |
+| Height | 1.64 | 0.01–190.13 | 0.84 |  |  |  |  |
+| BMI | 1.06 | 0.95–1.19 | 0.28 |  |  |  |  |
+| Neutrophil count | 1.07 | 0.94–1.21 | 0.33 |  |  |  |  |
+| Lymphocyte count | 2 | 1.14–3.52 | 0.02 |  | 1.1 | 0.53–2.28 | 0.80 |
+| Monocyte count | 0.63 | 0.22–1.81 | 0.39 |  |  |  |  |
+| Platelet count | 1 | 1.00–1.00 | 0.47 |  |  |  |  |
+| NLR | 0.99 | 0.94–1.05 | 0.84 |  |  |  |  |
+| PLR | 1 | 1.00–1.00 | 0.27 |  |  |  |  |
+| LMR | 1.35 | 1.02–1.79 | 0.04 |  | 1.24 | 0.82–1.88 | 0.30 |
+| Hemoglobin | 1.03 | 1.01–1.05 | <0.001 |  | 1.03 | 1.01–1.06 | 0.005 |
+| Serum albumin | 1.03 | 0.97–1.10 | 0.28 |  |  |  |  |
+| Sex |  |  |  |  |  |  |  |
+| Female | Ref. |  |  |  |  |  |  |
+| Male | 1.86 | 0.89–3.87 | 0.1 |  |  |  |  |
+| Treatment lines |  |  |  |  |  |  |  |
+| 1 | Ref. |  |  |  |  |  |  |
+| 2 | 0.61 | 0.23–1.59 | 0.31 |  |  |  |  |
+| 3 | 1.5 | 0.31–7.41 | 0.62 |  |  |  |  |
+| 4 | 0.38 | 0.10–1.37 | 0.14 |  |  |  |  |
+| Combined chemotherapy |  |  |  |  |  |  |  |
+| No | Ref. |  |  |  |  |  |  |
+| Yes | 0.69 | 0.29–1.64 | 0.40 |  |  |  |  |
+| Initial efficacy |  |  |  |  |  |  |  |
+| Stable | Ref. |  |  |  | Ref. |  |  |
+| Complete or partial response | 2.05 | 0.83–5.06 | 0.12 |  | 2.45 | 0.87–6.89 | 0.09 |
+| Progressive | 0.15 | 0.05–0.45 | <0.001 |  | 0.19 | 0.05–0.64 | 0.008 |
+| Intrapulmonary metastases |  |  |  |  |  |  |  |
+| No | Ref. |  |  |  | Ref. |  |  |
+| Yes | 0.41 | 0.21–0.80 | 0.009 |  | 0.53 | 0.23–1.23 | 0.14 |
+| Pleural metastases |  |  |  |  |  |  |  |
+| No | Ref. |  |  |  |  |  |  |
+| Yes | 0.71 | 0.30–1.66 | 0.43 |  |  |  |  |
+| Brain metastases |  |  |  |  |  |  |  |
+| No | Ref. |  |  |  | Ref. |  |  |
+| Yes | 0.38 | 0.19–0.78 | 0.008 |  | 0.33 | 0.14–0.78 | 0.01 |
+| Bone metastases |  |  |  |  |  |  |  |
+| No | Ref. |  |  |  |  |  |  |
+| Yes | 0.6 | 0.30–1.21 | 0.16 |  |  |  |  |
+| Adrenal metastases |  |  |  |  |  |  |  |
+| No | Ref. |  |  |  |  |  |  |
+| Yes | 0.61 | 0.24–1.50 | 0.28 |  |  |  |  |
+| Hepatic metastases |  |  |  |  |  |  |  |
+| No | Ref. |  |  |  |  |  |  |
+| Yes | 0.44 | 0.15–1.29 | 0.14 |  |  |  |  |
+| Other metastases |  |  |  |  |  |  |  |
+| No | Ref. |  |  |  |  |  |  |
+| Yes | 1.16 | 0.45–2.94 | 0.76 |  |  |  |  |
+| Smoking history |  |  |  |  |  |  |  |
+| No | Ref. |  |  |  |  |  |  |
+| Yes | 1.53 | 0.78–3.01 | 0.22 |  |  |  |  |
+| COPD |  |  |  |  |  |  |  |
+| No | Ref. |  |  |  |  |  |  |
+| Yes | 0.88 | 0.44–1.78 | 0.72 |  |  |  |  |
+| Hypertension |  |  |  |  |  |  |  |
+| No | Ref. |  |  |  |  |  |  |
+| Yes | 1.02 | 0.51–2.06 | 0.95 |  |  |  |  |
+| Diabetes |  |  |  |  |  |  |  |
+| No | Ref. |  |  |  |  |  |  |
+| Yes | 0.59 | 0.26–1.36 | 0.28 |  |  |  |  |
+| Other malignancies history |  |  |  |  |  |  |  |
+| No | Ref. |  |  |  |  |  |  |
+| Yes | 0.82 | 0.24–2.86 | 0.76 |  |  |  |  |
+| Tumor classification |  |  |  |  |  |  |  |
+| Adenocarcinoma | Ref. |  |  |  |  |  |  |
+| Squamous cell carcinoma | 1.32 | 0.66–2.62 | 0.43 |  |  |  |  |
+| Large cell carcinoma | 0.48 | 0.03–8.00 | 0.61 |  |  |  |  |
+| Others | 2.67 | 0.56–12.75 | 0.22 |  |  |  |  |
+| Tumor differentiation |  |  |  |  |  |  |  |
+| High differentiation | Ref. |  |  |  |  |  |  |
+| Medium differentiation | 0.75 | 0.07–7.53 | 0.81 |  |  |  |  |
+| Low differentiation | 0.86 | 0.08–8.65 | 0.89 |  |  |  |  |
+| Undifferentiated | 0.67 | 0.02–18.06 | 0.81 |  |  |  |  |
+| T stage |  |  |  |  |  |  |  |
+| 1 | Ref. |  |  |  |  |  |  |
+| 2 | 0.45 | 0.08–2.40 | 0.35 |  |  |  |  |
+| 3 | 0.38 | 0.07–2.10 | 0.27 |  |  |  |  |
+| 4 | 0.24 | 0.05–1.11 | 0.07 |  |  |  |  |
+| N stage |  |  |  |  |  |  |  |
+| 1 | Ref. |  |  |  | Ref. |  |  |
+| 2 | 0.35 | 0.07–1.72 | 0.20 |  | 0.49 | 0.09–2.82 | 0.43 |
+| 3 | 0.22 | 0.05–0.99 | 0.048 |  | 0.42 | 0.08–2.28 | 0.32 |
+| M stage |  |  |  |  |  |  |  |
+| 0 | Ref. |  |  |  |  |  |  |
+| 1 | 0.51 | 0.24–1.09 | 0.08 |  |  |  |  |
+| Tumor staging |  |  |  |  |  |  |  |
+| Stage III | Ref. |  |  |  |  |  |  |
+| Stage IV | 0.57 | 0.27–1.20 | 0.14 |  |  |  |  |
+| PD-L1 level |  |  |  |  |  |  |  |
+| Negative (<1%) | Ref. |  |  |  | Ref. |  |  |
+| Low expression (1-49%) | 2.43 | 0.97–6.06 | 0.058 |  | 1.64 | 0.54–4.96 | 0.38 |
+| High expression (≥50%) | 4.26 | 1.62–11.22 | 0.003 |  | 3.65 | 1.13–11.83 | 0.03 |
+| Ki-67 level |  |  |  |  |  |  |  |
+| Low expression (<25%) | Ref. |  |  |  |  |  |  |
+| High expression (≥25%) | 1.14 | 0.43–2.97 | 0.79 |  |  |  |  |
+| ALK |  |  |  |  |  |  |  |
+| Yes | Ref. |  |  |  |  |  |  |
+| No | 0.96 | 0.18–5.09 | 0.96 |  |  |  |  |
+
+OR, odds ratios; CI, confidence interval; BMI, body mass index; NLR, neutrophil-to-lymphocyte ratio; PLR, platelet-to-lymphocyte ratio; LMR, lymphocyte-to-monocyte ratio; COPD, chronic obstructive pulmonary disease; T, tumor; N, node; M, metastasis; PD-L1, programmed death-ligand 1; ALK, anaplastic lymphoma kinase.
+
+Among 201 patients with initial efficacy assessment (early imaging RECIST response evaluated within 2 months of the ICI treatment, mainly after 2 cycles of ICI treatments), of which 54, 127, and 20 patients had a CR/PR, SD, and progression disease (PD), respectively. For predicting DCB, initial efficacy demonstrated a sensitivity of 31.7% (95% CI: 24.1–39.3%), specificity of 84.7% (95% CI: 75.5–93.9%), and overall accuracy of 47.3% (95% CI: 40.4–54.2%). This suggests that initial efficacy can predict DCB with high specificity but limited sensitivity.
+
+### RS and DLS construction
+
+With the 94 RFs extracted from the desired ROIs, 15 RFs were excluded because of ICC values less than 0.75. Subsequently, 29 critical RFs were selected using the Spearman rank correlation test, and 18 of the most valuable RFs were determined using the LASSO algorithm ([Figure S3](https://cdn.amegroups.cn/static/public/TCR-2025-AW-2287-Supplementary.pdf?v=1773493883763)_,_[Table S2](https://cdn.amegroups.cn/static/public/TCR-2025-AW-2287-Supplementary.pdf?v=1773493883763)). Finally, the Rad-score was calculated. The Rad-score of the DCB group demonstrated a significant increase compared with the NDB group in the train cohort (P<0.001, 95% CI: −1.004 to −0.565) and the test cohort (P=0.03, 95% CI: −0.98 to −0.06), respectively. Moreover, as shown in [_Figure 2_](https://doi.org/10.21037/tcr-2025-aw-2287#figure2), the selection of DLFs is based on the activation maps of features from the ResNet-34. The DL-score of the DCB group also demonstrated a significant increase in comparison to the NDB group in the train cohort (P<0.001, 95% CI: −0.324 to −0.171) and the test cohort (P=0.048, 95% CI: −0.332 to −0.002), respectively. Ultimately, the Rad-DL-score for the DCB group showed a significant increase compared to the NDB group, both in the train cohort (P=0.002, 95% CI: 0.072–0.310) and the test cohort (P<0.001, 95% CI: 0.186–0.518).
+
+[![Image 4: Click on image to zoom](https://cdn.amegroups.cn/journals/pbpc/files/journals/3/articles/112394/public/112394-PB8-1221-R1.jpg/w300)](https://cdn.amegroups.cn/static/magazine_modules/imgRender/dist/index.html?imgSource=https://cdn.amegroups.cn/journals/pbpc/files/journals/3/articles/112394/public/112394-PB8-1221-R1.jpg)
+
+**Figure 2** Activation maps of features recognized and focused by the deep convolutional neural networks for DCB versus NDB after immunotherapy in advanced NSCLC. DCB, durable clinical benefit; NDB, no durable benefit; NSCLC, non-small cell lung cancer.
+
+### The prediction performance of the five different models
+
+[_Table 2_](https://doi.org/10.21037/tcr-2025-aw-2287#table2) summarizes the quantitative measurements of the five different models, including AUC, as well as accuracy, specificity, sensitivity, PPV, and NPV. From the results, the RS model achieved AUC values of 0.786 (95% CI: 0.720–0.851) in the train cohort and 0.712 (95% CI: 0.558–0.866) in the test cohort. The DLS model achieved AUC values of 0.732 (95% CI: 0.660–0.804) and 0.731 (95% CI: 0.567–0.896) in the train and test cohorts, respectively. The clinical model achieved AUC values of 0.808 (95% CI: 0.743–0.873) and 0.809 (95% CI: 0.699–0.918) in the train and test cohorts, respectively. Furthermore, we integrated clinical features and the RS to build a radiomics nomogram model. The AUC of this model was 0.834 (95% CI: 0.776–0.892) in the train dataset, and 0.837 (95% CI: 0.726–0.949) in the test dataset. Moreover, the fusion model achieved the best performance, with the highest AUC measurements of 0.843 (95% CI: 0.788–0.898) and 0.894 (95% CI: 0.810–0.977) in the train and test cohorts, respectively. These results demonstrate that the fusion model has the potential to enhance DCB prediction accuracy.
+
+### **Table 2**
+
+**The train and test cohort results of different models**
+
+| Group | Model | AUC (95% CI) | ACC | SPE | SEN | PPV | NPV |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Train cohort | Radiomics | 0.786 (0.720–0.851) | 0.736 | 0.756 | 0.72 | 0.783 | 0.689 |
+| ResNet34 | 0.732 (0.660–0.804) | 0.699 | 0.956 | 0.458 | 0.917 | 0.623 |
+| Clinical | 0.808 (0.743–0.873) | 0.742 | 0.743 | 0.74 | 0.802 | 0.671 |
+| Clinical + radiomics | 0.834 (0.776–0.892) | 0.77 | 0.845 | 0.707 | 0.843 | 0.71 |
+| Clinical + radiomics + ResNet34 | 0.843 (0.788–0.898) | 0.765 | 0.902 | 0.632 | 0.87 | 0.703 |
+| Test cohort | Radiomics | 0.712 (0.558–0.866) | 0.733 | 0.833 | 0.69 | 0.906 | 0.536 |
+| ResNet34 | 0.731 (0.567–0.896) | 0.767 | 0.786 | 0.761 | 0.921 | 0.5 |
+| Clinical | 0.809 (0.699–0.918) | 0.717 | 0.909 | 0.605 | 0.92 | 0.571 |
+| Clinical + radiomics | 0.837 (0.726–0.949) | 0.783 | 0.882 | 0.744 | 0.941 | 0.577 |
+| Clinical + radiomics + ResNet34 | 0.894 (0.810–0.977) | 0.783 | 0.923 | 0.745 | 0.972 | 0.5 |
+
+ACC, accuracy; AUC, area under curve; CI, confidence interval; NPV, negative predictive value; PPV, positive predictive value; SEN, sensitivity; SPE, specificity.
+
+[_Figure 3_](https://doi.org/10.21037/tcr-2025-aw-2287#figure3) shows the ROC curves of different models in the train and test cohorts. The radiomics nomogram demonstrated a higher AUC value compared to both the clinical model and the RS model. The DeLong test confirmed that the radiomics nomogram outperformed the clinical model (P<0.05). However, there was no significant difference in performance when compared to the RS model (P>0.05). In contrast, the fusion model achieved the highest AUC value, and the DeLong test indicated that it was significantly superior to the other models (P<0.05).
+
+[![Image 5: Click on image to zoom](https://cdn.amegroups.cn/journals/pbpc/files/journals/3/articles/112394/public/112394-PB9-6528-R1.jpg/w300)](https://cdn.amegroups.cn/static/magazine_modules/imgRender/dist/index.html?imgSource=https://cdn.amegroups.cn/journals/pbpc/files/journals/3/articles/112394/public/112394-PB9-6528-R1.jpg)
+
+**Figure 3** Construction and comparison of the models based on clinical features, radiomics features, and deep learning features. (A) The ROC curves of prediction models in the train cohort. (B) The ROC curves of prediction models in the test cohort. ROC, receiver operating characteristic.
+
+[_Figure 4A_](https://doi.org/10.21037/tcr-2025-aw-2287#figure4) shows that the models provided a net benefit in predicting DCB, as demonstrated by the DCA. Among these models, the fusion model exhibited the best net benefit rate. Moreover, we constructed a nomogram based on the score results and classification results of the built fusion model, which quantifies the DCB response to immunotherapy in patients with advanced NSCLC. [_Figure 4B,4C_](https://doi.org/10.21037/tcr-2025-aw-2287#figure4) depict the nomogram and calibration curves specifically designed for clinical use within the fusion model, where the total score corresponds to the probability of DCB in predictive nomogram. The calibration of the fusion model was further quantified with Brier scores of 0.163 (train cohort) and 0.173 (test cohort), demonstrating good calibration performance ([Table S3](https://cdn.amegroups.cn/static/public/TCR-2025-AW-2287-Supplementary.pdf?v=1773493883763)). The results of the DeLong test revealed that the fusion model exhibited superior predictive performance compared to the other models.
+
+[![Image 6: Click on image to zoom](https://cdn.amegroups.cn/journals/pbpc/files/journals/3/articles/112394/public/112394-PB10-7878-R1.jpg/w300)](https://cdn.amegroups.cn/static/magazine_modules/imgRender/dist/index.html?imgSource=https://cdn.amegroups.cn/journals/pbpc/files/journals/3/articles/112394/public/112394-PB10-7878-R1.jpg)
+
+**Figure 4** Construction and comparison of the models based on clinical features, radiomics features and deep learning features. (A) DCA of different models. (B) The predictive nomogram of DCB within the fusion model based on five variables: initial efficacy (1: stable disease, 2: complete response/partial response, 3: progressive disease), brain metastases (0: absent, 1: present), PD-L1 level [1: negative (<1%), 2: low expression (1–49%), 3: high expression (≥50%)], hemoglobin (1: >120 g/L, 2: 90–120 g/L, 3: <90 g/L), and a continuous radiomics-deep learning score. (C) Calibration curves of the fusion model. DCA, decision curve analysis; DCB, durable clinical benefit; PD-L1, programmed death-ligand 1.
+
+We employed SHAP to elucidate the predictive role of variables in our logistic regression model for DCB response to immunotherapy within the fusion model. [_Figure 5A_](https://doi.org/10.21037/tcr-2025-aw-2287#figure5) highlights the top five significant variables from the test cohort. The feature importance plot uses colored points to denote patient contributions, with red signifying high- and blue low-risk values. Key predictors of DCB include higher Rad-DL-score, increased hemoglobin, no brain metastases, higher PD-L1 expression, and positive initial treatment response in NSCLC patients receiving immunotherapy. [_Figure 5B_](https://doi.org/10.21037/tcr-2025-aw-2287#figure5) orders these factors by their average absolute SHAP values, indicating model importance. Two case studies illustrate model interpretability: a DCB patient with a high SHAP score of 0.56 ([_Figure 5C_](https://doi.org/10.21037/tcr-2025-aw-2287#figure5)) and an NDB patient with a low score of −0.16 ([_Figure 5D_](https://doi.org/10.21037/tcr-2025-aw-2287#figure5)).
+
+[![Image 7: Click on image to zoom](https://cdn.amegroups.cn/journals/pbpc/files/journals/3/articles/112394/public/112394-PB11-1077-R1.jpg/w300)](https://cdn.amegroups.cn/static/magazine_modules/imgRender/dist/index.html?imgSource=https://cdn.amegroups.cn/journals/pbpc/files/journals/3/articles/112394/public/112394-PB11-1077-R1.jpg)
+
+**Figure 5** SHAP interprets the model. (A) Attributes of features as indicated by SHAP. Each line represents a feature, with the abscissa representing the SHAP value. Red dots indicate higher eigenvalues, while blue dots indicate lower eigenvalues. (B) Feature importance ranking as determined by SHAP. The matrix diagram illustrates the importance of each covariate in the development of the final prediction model. (C) Contributions of individual patients with DCB and (D) with NDB. The SHAP value reflects the predictive characteristics of individual patients and the contribution of each to the overall prediction rate. The number in bold represents the probability forecast value [f(x)], while the baseline value is the predicted value obtained without providing input to the model. DCB, durable clinical benefit; NDB, no durable benefit; PD-L1, programmed death-ligand 1; SHAP, Shapley Additive exPlanations.
+
+### Biological basis associated with the radiomics-DL model
+
+We divided the biological validation cohort into balanced low- and high-score groups based on the Rad-DL-score, identifying 974 DEGs, comprising 380 upregulated and 594 downregulated genes ([_Figure 6A,6B_](https://doi.org/10.21037/tcr-2025-aw-2287#figure6)). [_Table 3_](https://doi.org/10.21037/tcr-2025-aw-2287#table3) details the top 10 DEGs, implicated in immune responses, metabolism, transcription, and protein synthesis. GO analysis revealed that the 974 DEGs were significantly enriched across three major categories: biological processes (e.g., cellular processes, immune system function), cellular components (e.g., extracellular region), and molecular functions (e.g., binding, catalytic activity) ([_Figure 6C_](https://doi.org/10.21037/tcr-2025-aw-2287#figure6)). Additionally, KEGG enrichment analysis indicated that the DEGs were significantly enriched in 20 distinct pathways. These pathways are broadly involved in diverse biological processes, including neurobiology (e.g., neuroactive ligand-receptor interaction), immune responses (e.g., complement and coagulation cascades), metabolic regulation (e.g., pancreatic secretion), and hormonal signaling (e.g., estrogen signaling pathway), among others ([_Figure 6D_](https://doi.org/10.21037/tcr-2025-aw-2287#figure6)).
+
+[![Image 8: Click on image to zoom](https://cdn.amegroups.cn/journals/pbpc/files/journals/3/articles/112394/public/112394-PB12-7549-R1.jpg/w300)](https://cdn.amegroups.cn/static/magazine_modules/imgRender/dist/index.html?imgSource=https://cdn.amegroups.cn/journals/pbpc/files/journals/3/articles/112394/public/112394-PB12-7549-R1.jpg)
+
+**Figure 6** Identification of DEGs and GO and KEGG enrichment analysis. (A) The statistical analysis of DEGs between low- and high-score groups associated with the radiomics deep learning model. (B) The volcano map of DEGs. The gene with P value <0.01 and log 2 FC >1 is marked in red; the gene with P value <0.01 and log 2 FC <−1 is marked in blue. (C) GO enrichment analysis of DEGs. (D) Bubble chart of KEGG enrichment analysis depicting the top 20 KEGG pathways, with distinct colors representing different KEGG A-class categories. DEGs, differentially expressed genes; FC, fold change; GO, Gene Ontology; KEGG, Kyoto Encyclopedia of Genes and Genomes.
+
+### **Table 3**
+
+**Top 10 upregulated and downregulated DEGs**
+
+| Gene symbol | log2FC | P value | Regulation |
+| :--- | :---: | :---: | :---: |
+| _CRNN_ | 7.87 | <0.001 | Upregulated |
+| _DYNAP_ | 6.216 | 0.01 | Upregulated |
+| _PRR20G_ | 5.806 | <0.001 | Upregulated |
+| _DPEP3_ | 5.7 | <0.001 | Upregulated |
+| _COX8C_ | 5.461 | 0.004 | Upregulated |
+| _HS3ST4_ | 5.221 | 0.001 | Upregulated |
+| _MYBPC1_ | 5.218 | <0.001 | Upregulated |
+| _RTL1_ | 4.953 | <0.001 | Upregulated |
+| _S100A7_ | 4.879 | <0.001 | Upregulated |
+| _CDH9_ | 4.776 | 0.01 | Upregulated |
+| _VGLL2_ | −9.483 | 0.001 | Downregulated |
+| _SLC7A14_ | −8.875 | 0.002 | Downregulated |
+| _CALCA_ | −8.467 | 0.04 | Downregulated |
+| _CYP2B6_ | −7.754 | <0.001 | Downregulated |
+| _SLC2A2_ | −6.986 | 0.001 | Downregulated |
+| _TBXT_ | −6.601 | 0.02 | Downregulated |
+| _IL37_ | −6.485 | <0.001 | Downregulated |
+| _OLFM4_ | −6.282 | <0.001 | Downregulated |
+| _FAM237B_ | −6.216 | 0.03 | Downregulated |
+| _EIF4E1B_ | −5.814 | <0.001 | Downregulated |
+
+DEGs, differentially expressed genes; log2FC, log2 fold change; CRNN, cornulin; DYNAP, dynactin associated protein; PRR20G, proline rich 20G; DPEP3, dipeptidase 3; COX8C, cytochrome c oxidase subunit 8C; HS3ST4, heparan sulfate (glucosamine) 3-O-sulfotransferase 4; MYBPC1, myosin binding protein C1​; RTL1, retrotransposon gag like 1; S100A7, calcium binding protein A7; CDH9, cadherin 9; VGLL2, vestigial like family member 2; SLC7A14, solute carrier family 7 member 14; CALCA, calcitonin related polypeptide alpha; CYP2B6, cytochrome P450 family 2 subfamily B member 6; SLC2A2, solute carrier family 2 (facilitated glucose transporter), member 2; TBXT, T-box transcription factor T; IL37, interleukin 37; OLFM4, olfactomedin 4; FAM237B, family with sequence similarity 237 member B; EIF4E1B, eukaryotic translation initiation factor 4E family member 1B.
+
+* * *
+
+Discussion Other Section
+------------------------
+
+*   [Introduction](https://doi.org/10.21037/tcr-2025-aw-2287#introduction)
+*   [Methods](https://doi.org/10.21037/tcr-2025-aw-2287#methods)
+*   [Results](https://doi.org/10.21037/tcr-2025-aw-2287#results)
+*   [Discussion](https://doi.org/10.21037/tcr-2025-aw-2287#discussion)
+*   [Conclusions](https://doi.org/10.21037/tcr-2025-aw-2287#conclusions)
+*   [Acknowledgments](https://doi.org/10.21037/tcr-2025-aw-2287#acknowledgments)
+*   [Footnote](https://doi.org/10.21037/tcr-2025-aw-2287#Footnote)
+*   [References](https://doi.org/10.21037/tcr-2025-aw-2287#references)
+
+In this study, we harnessed the power of radiomics and DL to craft a nomogram model designed to precisely forecast the efficacy of immunotherapy in patients with advanced NSCLC. This integrated model, which combines RFs, DLFs, and clinical parameters, achieved a noteworthy AUC of 0.843 in the train cohort and 0.894 in the test cohort. Our nomogram outperformed clinical models in AUC values across both cohorts, underscoring its robustness. Moreover, this model holds promise for predicting DCB from preoperative contrast-enhanced CT scans, which could inform patient selection for immunotherapy and enhance clinical decision-making. Most notably, our analysis of RNA-sequencing data points to a correlation between our radiomics-DL model and critical biological processes, such as immune responses, cellular metabolism, and transcriptional regulation, thereby linking our model’s predictive capabilities to fundamental biological mechanisms.
+
+PD-1/PD-L1 inhibitors are now standard first-line treatments for NSCLC, used either alone or in combination. Yet, the potential for immune-related adverse events highlights the need for precise biomarkers to predict immunotherapy outcomes. Despite numerous studies, a reliable biomarker that accurately identifies NSCLC patients likely to benefit from immunotherapy is still lacking ([24](https://doi.org/10.21037/tcr-2025-aw-2287#B24)). PD-L1 status, an approved biomarker, is associated with higher response rates in PD-L1-positive patients, but its predictive value is disputed ([25](https://doi.org/10.21037/tcr-2025-aw-2287#B25)). Our study found that PD-L1-positive patients more often experienced DCB, aligning with existing literature ([26](https://doi.org/10.21037/tcr-2025-aw-2287#B26),[27](https://doi.org/10.21037/tcr-2025-aw-2287#B27)). However, studies like Checkmate-017 show no link between PD-L1 levels and response in LUSC, indicating potential benefits even in PD-L1-negative patients ([28](https://doi.org/10.21037/tcr-2025-aw-2287#B28)). The lack of a standardized method for PD-L1 detection and the undefined threshold for initiating immunotherapy further complicate its use as a predictive biomarker.
+
+A variety of potential predictive biomarkers, particularly hematological parameters, have been identified as related to immunotherapy. Our research revealed a significant link between hemoglobin levels and ICI efficacy, echoing a large-scale study that found peripheral blood inflammatory markers, including hemoglobin, predict immunotherapy outcomes in NSCLC ([29](https://doi.org/10.21037/tcr-2025-aw-2287#B29)). These markers reflect a systemic inflammatory environment that may promote tumorigenesis and subvert immune surveillance through mixed inflammatory signals ([4](https://doi.org/10.21037/tcr-2025-aw-2287#B4)). Additionally, they correlate with immunotherapy prognosis. We also found that brain metastases in lung cancer patients could affect immunotherapy efficacy, consistent with literature suggesting they are poor prognostic indicators ([30](https://doi.org/10.21037/tcr-2025-aw-2287#B30),[31](https://doi.org/10.21037/tcr-2025-aw-2287#B31)). Notably, initial therapy response plays a pivotal role in predicting long-term outcomes. The high specificity of the first imaging evaluation significantly contributed to our model’s performance, affirming the utility of early radiologic surveillance. Specifically, 83.3% (45/54) of early CR/PR patients achieved DCB, whereas early PD was misleading in 25% (5/20) of cases due to potential pseudoprogression. Moreover, among patients with SD, 27.6% (35/127) failed to achieve DCB. This profile of high specificity but moderate sensitivity is consistent with recent literature, which reported corresponding rates of 86.4% and 41.5% ([32](https://doi.org/10.21037/tcr-2025-aw-2287#B32)).
+
+CT is a standard diagnostic and post-treatment response evaluation tool for lung cancer, traditionally measuring tumor changes unidimensionally ([8](https://doi.org/10.21037/tcr-2025-aw-2287#B8),[9](https://doi.org/10.21037/tcr-2025-aw-2287#B9)). However, CT alone has limited utility in predicting immunotherapy responders among NSCLC patients with diverse radiological presentations. DL and radiomics can reveal subtle imaging characteristics from CT to enhance response prediction. While most prior studies have relied on radiomics combined with clinical data to predict outcomes, reporting AUCs between 0.67 and 0.74 ([33](https://doi.org/10.21037/tcr-2025-aw-2287#B33)-[35](https://doi.org/10.21037/tcr-2025-aw-2287#B35)). Our study enhances this approach by integrating DLFs, creating a nomogram that achieved a higher predictive AUC of 0.894 in the test cohort.
+
+While DL’s capacity to identify immunotherapy-related features is established ([36](https://doi.org/10.21037/tcr-2025-aw-2287#B36)-[38](https://doi.org/10.21037/tcr-2025-aw-2287#B38)), we posit that its synergy with radiomics offers a comprehensive assessment, particularly in characterizing primary solid tumors on enhanced CT scans. Our model, which integrates DLFs with RFs, outperforms radiomics-alone models in predicting DCB, highlighting DL’s role in capturing treatment efficacy. This approach also sheds light on tumor heterogeneity, suggesting broader clinical applications. To enhance model interpretability, we integrated SHAP with logistic regression, pinpointing key variables for DCB in NSCLC. Additionally, RNA sequencing analyses revealed links between our radiomics-DL phenotype and the tumor microenvironment’s immune responses, immune factors, and immunoregulation.
+
+Our study acknowledges several limitations. Its retrospective and single-center design may lead to selection bias, and future multicenter, prospective trials are needed to validate our model. CT acquisition and contrast timing variability may affect feature generalizability. Our single-center study used consistent protocols and preprocessing (resampling, normalization) to minimize this effect. Future multi-center validation must prioritize protocol harmonization for robust clinical application. Manual segmentation’s subjectivity in defining tumor boundaries presents challenges, though we endeavored to accurately identify tumor regions from enhanced CT scans. Our DL analysis was based on two-dimensional (2D) slices from a pre-trained network, which is a simplification of the three-dimensional (3D) tumor structure. Future studies with sufficient computational resources and data could explore end-to-end 3D DL models. Interpreting DLFs is complex, as they are optimized for prediction accuracy rather than intuitive understanding or alignment with existing knowledge. Lastly, the biological analysis was exploratory, using a small public cohort without uniform immunotherapy, while the observed immune pathway associations require prospective validation, they offer a feasible biological framework for the imaging signature.
+
+* * *
+
+Conclusions Other Section
+-------------------------
+
+*   [Introduction](https://doi.org/10.21037/tcr-2025-aw-2287#introduction)
+*   [Methods](https://doi.org/10.21037/tcr-2025-aw-2287#methods)
+*   [Results](https://doi.org/10.21037/tcr-2025-aw-2287#results)
+*   [Discussion](https://doi.org/10.21037/tcr-2025-aw-2287#discussion)
+*   [Conclusions](https://doi.org/10.21037/tcr-2025-aw-2287#conclusions)
+*   [Acknowledgments](https://doi.org/10.21037/tcr-2025-aw-2287#acknowledgments)
+*   [Footnote](https://doi.org/10.21037/tcr-2025-aw-2287#Footnote)
+*   [References](https://doi.org/10.21037/tcr-2025-aw-2287#references)
+
+In conclusion, an ensemble of clinical features, radiomics, and DLFs has been employed to predict the durable benefit of immunotherapy at 6 months after treatment, suggesting its potential as a non-invasive biomarker for predicting drug responsiveness. This comprehensive approach can assist clinicians in identifying suitable candidates for immunotherapy in NSCLC. Furthermore, the Rad-DL-score shows potential associations with biological characteristics, including immune responses and immunoregulation, providing insights for further research on their functions and therapeutic targeting.
+
+* * *
+
+Acknowledgments Other Section
+-----------------------------
+
+*   [Introduction](https://doi.org/10.21037/tcr-2025-aw-2287#introduction)
+*   [Methods](https://doi.org/10.21037/tcr-2025-aw-2287#methods)
+*   [Results](https://doi.org/10.21037/tcr-2025-aw-2287#results)
+*   [Discussion](https://doi.org/10.21037/tcr-2025-aw-2287#discussion)
+*   [Conclusions](https://doi.org/10.21037/tcr-2025-aw-2287#conclusions)
+*   [Acknowledgments](https://doi.org/10.21037/tcr-2025-aw-2287#acknowledgments)
+*   [Footnote](https://doi.org/10.21037/tcr-2025-aw-2287#Footnote)
+*   [References](https://doi.org/10.21037/tcr-2025-aw-2287#references)
+
+None.
+
+* * *
+
+Footnote Other Section
+----------------------
+
+*   [Introduction](https://doi.org/10.21037/tcr-2025-aw-2287#introduction)
+*   [Methods](https://doi.org/10.21037/tcr-2025-aw-2287#methods)
+*   [Results](https://doi.org/10.21037/tcr-2025-aw-2287#results)
+*   [Discussion](https://doi.org/10.21037/tcr-2025-aw-2287#discussion)
+*   [Conclusions](https://doi.org/10.21037/tcr-2025-aw-2287#conclusions)
+*   [Acknowledgments](https://doi.org/10.21037/tcr-2025-aw-2287#acknowledgments)
+*   [Footnote](https://doi.org/10.21037/tcr-2025-aw-2287#Footnote)
+*   [References](https://doi.org/10.21037/tcr-2025-aw-2287#references)
+
+_Reporting Checklist:_ The authors have completed the TRIPOD reporting checklist. Available at [https://tcr.amegroups.com/article/view/10.21037/tcr-2025-aw-2287/rc](https://tcr.amegroups.com/article/view/10.21037/tcr-2025-aw-2287/rc)
+
+_Data Sharing Statement:_ Available at [https://tcr.amegroups.com/article/view/10.21037/tcr-2025-aw-2287/dss](https://tcr.amegroups.com/article/view/10.21037/tcr-2025-aw-2287/dss)
+
+_Peer Review File:_ Available at [https://tcr.amegroups.com/article/view/10.21037/tcr-2025-aw-2287/prf](https://tcr.amegroups.com/article/view/10.21037/tcr-2025-aw-2287/prf)
+
+_Funding:_ This work was supported in part by the National Natural Science Foundation of China (Nos. 82502336, U21A6005 and 62571228), the National Key R&D Program of China (Nos. 2024YFA1012000 and 2024YFC2417804), Beijing Natural Science Foundation (No. Z250002), the Guangdong Basic and Applied Basic Research Foundation (No. 2024A1515140146), and the Science and Technology Program of Guangzhou (Nos. 2023A04J2448 and 2024A04J5118).
+
+_Conflicts of Interest:_ All authors have completed the ICMJE uniform disclosure form (available at [https://tcr.amegroups.com/article/view/10.21037/tcr-2025-aw-2287/coif](https://tcr.amegroups.com/article/view/10.21037/tcr-2025-aw-2287/coif)). The authors have no conflicts of interest to declare.
+
+_Ethical Statement:_ The authors are accountable for all aspects of the work in ensuring that questions related to the accuracy or integrity of any part of the work are appropriately investigated and resolved. The study was conducted in accordance with the Declaration of Helsinki and its subsequent amendments. The study was approved by the Ethics Committee at Zhujiang Hospital, Southern Medical University (No. 2024-KY-046-01). Informed consent was waived in this retrospective study.
+
+_Open Access Statement:_ This is an Open Access article distributed in accordance with the Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International License (CC BY-NC-ND 4.0), which permits the non-commercial replication and distribution of the article with the strict proviso that no changes or edits are made and the original work is properly cited (including links to both the formal publication through the relevant DOI and the license). See: [https://creativecommons.org/licenses/by-nc-nd/4.0/](https://creativecommons.org/licenses/by-nc-nd/4.0/).
+
+* * *
+
+References Other Section
+------------------------
+
+*   [Introduction](https://doi.org/10.21037/tcr-2025-aw-2287#introduction)
+*   [Methods](https://doi.org/10.21037/tcr-2025-aw-2287#methods)
+*   [Results](https://doi.org/10.21037/tcr-2025-aw-2287#results)
+*   [Discussion](https://doi.org/10.21037/tcr-2025-aw-2287#discussion)
+*   [Conclusions](https://doi.org/10.21037/tcr-2025-aw-2287#conclusions)
+*   [Acknowledgments](https://doi.org/10.21037/tcr-2025-aw-2287#acknowledgments)
+*   [Footnote](https://doi.org/10.21037/tcr-2025-aw-2287#Footnote)
+*   [References](https://doi.org/10.21037/tcr-2025-aw-2287#references)
+
+1.   Ettinger DS, Wood DE, Aisner DL, et al. NCCN Guidelines(R) Insights: Non-Small Cell Lung Cancer, Version 2.2023. J Natl Compr Canc Netw 2023;21:340-50. [[Crossref](http://dx.doi.org/10.6004/jnccn.2023.0020)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/37015337)]
+2.   Bray F, Laversanne M, Sung H, et al. Global cancer statistics 2022: GLOBOCAN estimates of incidence and mortality worldwide for 36 cancers in 185 countries. CA Cancer J Clin 2024;74:229-63. [[Crossref](http://dx.doi.org/10.3322/caac.21834)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/38572751)]
+3.   Topalian SL, Taube JM, Anders RA, et al. Mechanism-driven biomarkers to guide immune checkpoint blockade in cancer therapy. Nat Rev Cancer 2016;16:275-87. [[Crossref](http://dx.doi.org/10.1038/nrc.2016.36)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/27079802)]
+4.   Chowell D, Yoo SK, Valero C, et al. Improved prediction of immune checkpoint blockade efficacy across multiple cancer types. Nat Biotechnol 2022;40:499-506. [[Crossref](http://dx.doi.org/10.1038/s41587-021-01070-8)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/34725502)]
+5.   Carbone DP, Reck M, Paz-Ares L, et al. First-Line Nivolumab in Stage IV or Recurrent Non-Small-Cell Lung Cancer. N Engl J Med 2017;376:2415-26. [[Crossref](http://dx.doi.org/10.1056/NEJMoa1613493)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/28636851)]
+6.   Powles T, Durán I, van der Heijden MS, et al. Atezolizumab versus chemotherapy in patients with platinum-treated locally advanced or metastatic urothelial carcinoma (IMvigor211): a multicentre, open-label, phase 3 randomised controlled trial. Lancet 2018;391:748-57. [[Crossref](http://dx.doi.org/10.1016/S0140-6736(17)33297-X)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/29268948)]
+7.   Havel JJ, Chowell D, Chan TA. The evolving landscape of biomarkers for checkpoint inhibitor immunotherapy. Nat Rev Cancer 2019;19:133-50. [[Crossref](http://dx.doi.org/10.1038/s41568-019-0116-x)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/30755690)]
+8.   Eisenhauer EA, Therasse P, Bogaerts J, et al. New response evaluation criteria in solid tumours: revised RECIST guideline (version 1.1). Eur J Cancer 2009;45:228-47. [[Crossref](http://dx.doi.org/10.1016/j.ejca.2008.10.026)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/19097774)]
+9.   Seymour L, Bogaerts J, Perrone A, et al. iRECIST: guidelines for response criteria for use in trials testing immunotherapeutics. Lancet Oncol 2017;18:e143-52. [[Crossref](http://dx.doi.org/10.1016/S1470-2045(17)30074-8)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/28271869)]
+10.   Geng M, Geng M, Wei R, et al. Artificial intelligence neural network analysis and application of CT imaging features to predict lymph node metastasis in non-small cell lung cancer. J Thorac Dis 2022;14:4384-94. [[Crossref](http://dx.doi.org/10.21037/jtd-22-1511)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/36524065)]
+11.   Lambin P, Leijenaar RTH, Deist TM, et al. Radiomics: the bridge between medical imaging and personalized medicine. Nat Rev Clin Oncol 2017;14:749-62. [[Crossref](http://dx.doi.org/10.1038/nrclinonc.2017.141)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/28975929)]
+12.   Le VH, Minh TNT, Kha QH, et al. A transfer learning approach on MRI-based radiomics signature for overall survival prediction of low-grade and high-grade gliomas. Med Biol Eng Comput 2023;61:2699-712. [[Crossref](http://dx.doi.org/10.1007/s11517-023-02875-2)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/37432527)]
+13.   Khorrami M, Prasanna P, Gupta A, et al. Changes in CT Radiomic Features Associated with Lymphocyte Distribution Predict Overall Survival and Response to Immunotherapy in Non-Small Cell Lung Cancer. Cancer Immunol Res 2020;8:108-19. [[Crossref](http://dx.doi.org/10.1158/2326-6066.CIR-19-0476)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/31719058)]
+14.   Wu S, Zhan W, Liu L, et al. Pretreatment radiomic biomarker for immunotherapy responder prediction in stage IB-IV NSCLC (LCDigital-IO Study): a multicenter retrospective study. J Immunother Cancer 2023;11:e007369. [[Crossref](http://dx.doi.org/10.1136/jitc-2023-007369)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/37865396)]
+15.   Gong J, Bao X, Wang T, et al. A short-term follow-up CT based radiomics approach to predict response to immunotherapy in advanced non-small-cell lung cancer. Oncoimmunology 2022;11:2028962. [[Crossref](http://dx.doi.org/10.1080/2162402X.2022.2028962)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/35096486)]
+16.   Zhu Z, Chen M, Hu G, et al. A pre-treatment CT-based weighted radiomic approach combined with clinical characteristics to predict durable clinical benefits of immunotherapy in advanced lung cancer. Eur Radiol 2023;33:3918-30. [[Crossref](http://dx.doi.org/10.1007/s00330-022-09337-7)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/36515714)]
+17.   Zwanenburg A. Radiomics in nuclear medicine: robustness, reproducibility, standardization, and how to avoid data analysis traps and replication crisis. Eur J Nucl Med Mol Imaging 2019;46:2638-55. [[Crossref](http://dx.doi.org/10.1007/s00259-019-04391-8)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/31240330)]
+18.   Zwanenburg A, Vallières M, Abdalah MA, et al. The Image Biomarker Standardization Initiative: Standardized Quantitative Radiomics for High-Throughput Image-based Phenotyping. Radiology 2020;295:328-38. [[Crossref](http://dx.doi.org/10.1148/radiol.2020191145)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/32154773)]
+19.   Prelaj A, Miskovic V, Zanitti M, et al. Artificial intelligence for predictive biomarker discovery in immuno-oncology: a systematic review. Ann Oncol 2024;35:29-65. [[Crossref](http://dx.doi.org/10.1016/j.annonc.2023.10.125)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/37879443)]
+20.   Gillies RJ, Kinahan PE, Hricak H. Radiomics: Images Are More than Pictures, They Are Data. Radiology 2016;278:563-77. [[Crossref](http://dx.doi.org/10.1148/radiol.2015151169)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/26579733)]
+21.   Le NQK. Hematoma expansion prediction: still navigating the intersection of deep learning and radiomics. Eur Radiol 2024;34:2905-7. [[Crossref](http://dx.doi.org/10.1007/s00330-024-10586-x)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/38252277)]
+22.   Moons KG, Altman DG, Reitsma JB, et al. Transparent Reporting of a multivariable prediction model for Individual Prognosis or Diagnosis (TRIPOD): explanation and elaboration. Ann Intern Med 2015;162:W1. [[Crossref](http://dx.doi.org/10.7326/M14-0698)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/25560730)]
+23.   Lundberg SM, Erion G, Chen H, et al. From Local Explanations to Global Understanding with Explainable AI for Trees. Nat Mach Intell 2020;2:56-67. [[Crossref](http://dx.doi.org/10.1038/s42256-019-0138-9)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/32607472)]
+24.   Rizvi NA, Hellmann MD, Snyder A, et al. Cancer immunology. Mutational landscape determines sensitivity to PD-1 blockade in non-small cell lung cancer. Science 2015;348:124-8. [[Crossref](http://dx.doi.org/10.1126/science.aaa1348)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/25765070)]
+25.   Chang TG, Cao Y, Sfreddo HJ, et al. LORIS robustly predicts patient outcomes with immune checkpoint blockade therapy using common clinical, pathologic and genomic features. Nat Cancer 2024;5:1158-75. [[Crossref](http://dx.doi.org/10.1038/s43018-024-00772-7)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/38831056)]
+26.   Gandhi L, Rodríguez-Abreu D, Gadgeel S, et al. Pembrolizumab plus Chemotherapy in Metastatic Non-Small-Cell Lung Cancer. N Engl J Med 2018;378:2078-92. [[Crossref](http://dx.doi.org/10.1056/NEJMoa1801005)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/29658856)]
+27.   Borghaei H, Paz-Ares L, Horn L, et al. Nivolumab versus Docetaxel in Advanced Nonsquamous Non-Small-Cell Lung Cancer. N Engl J Med 2015;373:1627-39. [[Crossref](http://dx.doi.org/10.1056/NEJMoa1507643)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/26412456)]
+28.   Rittmeyer A, Barlesi F, Waterkamp D, et al. Atezolizumab versus docetaxel in patients with previously treated non-small-cell lung cancer (OAK): a phase 3, open-label, multicentre randomised controlled trial. Lancet 2017;389:255-65. [[Crossref](http://dx.doi.org/10.1016/S0140-6736(16)32517-X)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/27979383)]
+29.   Reck M, Taylor F, Penrod JR, et al. Impact of Nivolumab versus Docetaxel on Health-Related Quality of Life and Symptoms in Patients with Advanced Squamous Non-Small Cell Lung Cancer: Results from the CheckMate 017 Study. J Thorac Oncol 2018;13:194-204. [[Crossref](http://dx.doi.org/10.1016/j.jtho.2017.10.029)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/29129758)]
+30.   Mu W, Tunali I, Gray JE, et al. Radiomics of (18)F-FDG PET/CT images predicts clinical benefit of advanced NSCLC patients to checkpoint blockade immunotherapy. Eur J Nucl Med Mol Imaging 2020;47:1168-82. [[Crossref](http://dx.doi.org/10.1007/s00259-019-04625-9)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/31807885)]
+31.   Bauml J, Mick R, Zhang Y, et al. Determinants of survival in advanced non--small-cell lung cancer in the era of targeted therapies. Clin Lung Cancer 2013;14:581-91. [[Crossref](http://dx.doi.org/10.1016/j.cllc.2013.05.002)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/23827517)]
+32.   Ai X, Jia B, He Z, et al. Noninvasive early identification of durable clinical benefit from immune checkpoint inhibition: a prospective multicenter study (NCT04566432). Signal Transduct Target Ther 2024;9:350. [[Crossref](http://dx.doi.org/10.1038/s41392-024-02060-3)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/39676097)]
+33.   Sun R, Limkin EJ, Vakalopoulou M, et al. A radiomics approach to assess tumour-infiltrating CD8 cells and response to anti-PD-1 or anti-PD-L1 immunotherapy: an imaging biomarker, retrospective multicohort study. Lancet Oncol 2018;19:1180-91. [[Crossref](http://dx.doi.org/10.1016/S1470-2045(18)30413-3)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/30120041)]
+34.   Ligero M, Garcia-Ruiz A, Viaplana C, et al. A CT-based Radiomics Signature Is Associated with Response to Immune Checkpoint Inhibitors in Advanced Solid Tumors. Radiology 2021;299:109-19. [[Crossref](http://dx.doi.org/10.1148/radiol.2021200928)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/33497314)]
+35.   Zhang C. Systematic review of radiomic biomarkers for predicting immune checkpoint inhibitor treatment outcomes. Methods 2021;188:61-72. [[Crossref](http://dx.doi.org/10.1016/j.ymeth.2020.11.005)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/33271285)]
+36.   Tian P, He B, Mu W, et al. Assessing PD-L1 expression in non-small cell lung cancer and predicting responses to immune checkpoint inhibitors using deep learning on computed tomography images. Theranostics 2021;11:2098-107. [[Crossref](http://dx.doi.org/10.7150/thno.48027)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/33500713)]
+37.   Mu W, Jiang L, Shi Y, et al. Non-invasive measurement of PD-L1 status and prediction of immunotherapy response using deep learning of PET/CT images. J Immunother Cancer 2021;9:e002118. [[Crossref](http://dx.doi.org/10.1136/jitc-2020-002118)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/34135101)]
+38.   Caii W, Wu X, Guo K, et al. Integration of deep learning and habitat radiomics for predicting the response to immunotherapy in NSCLC patients. Cancer Immunol Immunother 2024;73:153. [[Crossref](http://dx.doi.org/10.1007/s00262-024-03724-3)] [[PubMed](http://www.ncbi.nlm.nih.gov/pubmed/38833187)]
+
+**Cite this article as:** Zhu J, Shi H, Liang Z, Lin T, Li C, Jiang C, Wang Q, Mo J, Zeng D, Wen Z. Enhanced CT-based deep learning radiomics and biological correlations for predicting immunotherapy efficacy in advanced non-small cell lung cancer. Transl Cancer Res 2026;15(2):81. doi: 10.21037/tcr-2025-aw-2287
+
+### Article Options
+
+*   [**PDF**86 views](https://tcr.amegroups.org/article/view/112394/pdf)
+*   [**Full Text**53 views](https://tcr.amegroups.org/article/view/112394/html)
+*   [**Reporting Checklist**26 views](https://tcr.amegroups.org/article/view/112394/rc)
+*   [**Data Sharing Statement**20 views](https://tcr.amegroups.org/article/view/112394/dss)
+*   [**Peer Review File**26 views](https://tcr.amegroups.org/article/view/112394/prf)
+*   [**COI Form**23 views](https://tcr.amegroups.org/article/view/112394/coif)
+*   [![Image 9: License](https://cdn.amegroups.cn/static/image/41bc1963fd89d68b77ed544999f514f0.png/w300)](https://creativecommons.org/licenses/by-nc-nd/4.0/ "License")
+*   [![Image 10: Get Permission](https://cdn.amegroups.cn/static/image/5945e34c7a75afe40a8f7f6fa4a01e7a/get-permission-btn-big.png/w150)](https://marketplace.copyright.com/rs-ui-web/mp/search/article/10.21037%2Ftcr-2025-aw-2287)
+
+### Download Citation
+
+*   [Bibtex](https://tcr.amegroups.org/rt/captureCite/112394/0/BibtexCitationPlugin)
+*   [EndNote](https://tcr.amegroups.org/rt/captureCite/112394/0/EndNoteCitationPlugin)
+*   [ProCite](https://tcr.amegroups.org/rt/captureCite/112394/0/ProCiteCitationPlugin)
+*   [refMan](https://tcr.amegroups.org/rt/captureCite/112394/0/RefManCitationPlugin)
+*   [refWorks](https://tcr.amegroups.org/rt/captureCite/112394/0/RefWorksCitationPlugin)
+
+### Share
+
+*   [Share on Facebook](https://doi.org/10.21037/tcr-2025-aw-2287#)
+*   [Share on Twitter](https://doi.org/10.21037/tcr-2025-aw-2287#)
+
+[](https://doi.org/)
+
+Session Timed Out
+-----------------
+
+Your session has expired. Please sign in again.
+
+Close Sign in

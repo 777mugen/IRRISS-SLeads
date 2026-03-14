@@ -1,0 +1,51 @@
+{
+  "timestamp": "20260314_220657",
+  "total_papers": 5,
+  "verifications": [
+    {
+      "doi": "10.1136/jitc-2025-014040",
+      "v1_author": "Jumei Shi",
+      "v1_email": "shijumei@tongji.edu.cn",
+      "content_length": 113957,
+      "author_in_content": true,
+      "email_in_content": true,
+      "content_file": "/Users/irriss/Git/IRRISS/IRRISS-SLeads/tmp/verification/20260314_220657_10_1136_jitc-2025-014040.txt"
+    },
+    {
+      "doi": "10.21037/tcr-2025-aw-2287",
+      "v1_author": "Dong Zeng",
+      "v1_email": "zd1989@smu.edu.cn",
+      "content_length": 74390,
+      "author_in_content": true,
+      "email_in_content": true,
+      "content_file": "/Users/irriss/Git/IRRISS/IRRISS-SLeads/tmp/verification/20260314_220657_10_21037_tcr-2025-aw-2287.txt"
+    },
+    {
+      "doi": "10.1097/CM9.0000000000004035",
+      "v1_author": "Dongming Kuang",
+      "v1_email": "kdming@mail.sysu.edu.cn",
+      "content_length": 215016,
+      "author_in_content": true,
+      "email_in_content": true,
+      "content_file": "/Users/irriss/Git/IRRISS/IRRISS-SLeads/tmp/verification/20260314_220657_10_1097_CM9_0000000000004035.txt"
+    },
+    {
+      "doi": "10.3389/fcimb.2026.1747682",
+      "v1_author": "Tao Li",
+      "v1_email": "zyyp04435@nxmu.edu.cn",
+      "content_length": 88554,
+      "author_in_content": true,
+      "email_in_content": true,
+      "content_file": "/Users/irriss/Git/IRRISS/IRRISS-SLeads/tmp/verification/20260314_220657_10_3389_fcimb_2026_1747682.txt"
+    },
+    {
+      "doi": "10.7150/thno.124789",
+      "v1_author": "Yong Gao",
+      "v1_email": "drgaoyong@tongji.edu.cn",
+      "content_length": 100135,
+      "author_in_content": true,
+      "email_in_content": true,
+      "content_file": "/Users/irriss/Git/IRRISS/IRRISS-SLeads/tmp/verification/20260314_220657_10_7150_thno_124789.txt"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "timestamp": "20260314_220509",
+  "total_papers": 3,
+  "verifications": [
+    {
+      "doi": "10/3390.cells13010001",
+      "v1_author": "Gloria Salazar",
+      "v1_email": "gsalazar@fsu.edu",
+      "content_length": 1822,
+      "content_file": "/Users/irriss/Git/IRRISS/IRRISS-SLeads/tmp/verification/20260314_220509_10.3390.cells13010001.txt",
+      "found_authors": [],
+      "found_emails": [
+        "doi-help@doi.org"
+      ],
+      "match": false,
+      "errors": [
+        "email_not_found_in_content"
+      ]
+    },
+    {
+      "doi": "10/18632.oncotarget.12345",
+      "v1_author": "Tingyu Qu",
+      "v1_email": "tqu@uic.edu",
+      "content_length": 1826,
+      "content_file": "/Users/irriss/Git/IRRISS/IRRISS-SLeads/tmp/verification/20260314_220509_10.18632.oncotarget.12345.txt",
+      "found_authors": [],
+      "found_emails": [
+        "doi-help@doi.org"
+      ],
+      "match": false,
+      "errors": [
+        "email_not_found_in_content"
+      ]
+    },
+    {
+      "doi": "10/1136.jitc-2025-014040",
+      "v1_author": "Jumei Shi",
+      "v1_email": "shijumei@tongji.edu.cn",
+      "content_length": 1825,
+      "content_file": "/Users/irriss/Git/IRRISS/IRRISS-SLeads/tmp/verification/20260314_220509_10.1136.jitc-2025-014040.txt",
+      "found_authors": [],
+      "found_emails": [
+        "doi-help@doi.org"
+      ],
+      "match": false,
+      "errors": [
+        "email_not_found_in_content"
+      ]
+    }
+  ]
+}
