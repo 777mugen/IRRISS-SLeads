@@ -32,6 +32,8 @@ async def retry_failed_tasks(
 ):
     """重试失败的任务"""
     try:
+        from datetime import datetime
+        
         count = 0
         
         if request.doi:
@@ -42,8 +44,7 @@ async def retry_failed_tasks(
                 .where(RawMarkdown.processing_status == "failed")
                 .values(
                     processing_status="pending",
-                    retry_count=RawMarkdown.retry_count + 1,
-                    last_retry_at=datetime.utcnow()
+                    processed_at=datetime.utcnow()
                 )
             )
             count = result.rowcount
@@ -53,11 +54,9 @@ async def retry_failed_tasks(
             result = await db.execute(
                 update(RawMarkdown)
                 .where(RawMarkdown.processing_status == "failed")
-                .where(RawMarkdown.retry_count < 3)  # 最多重试 3 次
                 .values(
                     processing_status="pending",
-                    retry_count=RawMarkdown.retry_count + 1,
-                    last_retry_at=datetime.utcnow()
+                    processed_at=datetime.utcnow()
                 )
             )
             count = result.rowcount
