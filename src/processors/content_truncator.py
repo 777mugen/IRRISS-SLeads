@@ -35,6 +35,7 @@ class ContentTruncator:
         'Acknowledgments',
         'References',
         'Supplementary',
+        'Plain Language Summary',  # CMJ 特殊格式
     ]
     
     def __init__(self):
@@ -65,7 +66,7 @@ class ContentTruncator:
                 continue
             
             # 检查是否到达学术内容部分
-            if self._is_section_start(p):
+            if self._is_section_start(p, paragraphs, i):
                 self.logger.info(f"在第 {i} 个段落检测到学术内容开始: {p[:50]}...")
                 break
             
@@ -86,12 +87,14 @@ class ContentTruncator:
         
         return result
     
-    def _is_section_start(self, paragraph: str) -> bool:
+    def _is_section_start(self, paragraph: str, paragraphs: List[str], index: int) -> bool:
         """
         判断段落是否是学术内容的开始
         
         Args:
             paragraph: 段落文本
+            paragraphs: 所有段落列表
+            index: 当前段落索引
             
         Returns:
             是否是学术内容开始
@@ -105,14 +108,29 @@ class ContentTruncator:
             if re.match(rf'^#+\s+{keyword}\s*$', p, re.IGNORECASE):
                 return True
             
-            # 匹配 2：独立一行（Introduction）
-            if re.match(rf'^{keyword}\s*$', p, re.IGNORECASE):
-                return True
+            # 匹配 2：独立一行或后面跟其他文本（Abstract Plain Language Summary）
+            if re.match(rf'^{keyword}(\s|$)', p, re.IGNORECASE):
+                # 排除误匹配（例如 "Introduction to ..." 不是章节标题）
+                # 只有当整行长度较短时才认为是标题
+                if len(p.split()[0]) == len(keyword):  # 确保第一个词就是关键词
+                    return True
             
             # 匹配 3：关键词 + Other Section（AME 出版社格式）
             # 例如："Introduction Other Section"
             if re.search(rf'{keyword}\s+Other\s+Section', p, re.IGNORECASE):
                 return True
+            
+            # 匹配 4：下划线风格标题（Introduction 后面跟 -----）
+            # 例如：
+            # Introduction
+            # ------------
+            if index + 1 < len(paragraphs):
+                next_p = paragraphs[index + 1].strip()
+                # 检查当前段落是否匹配关键词
+                if re.match(rf'^{keyword}\s*$', p, re.IGNORECASE):
+                    # 检查下一个段落是否是下划线
+                    if re.match(r'^[-]+$', next_p) or re.match(r'^[=]+$', next_p):
+                        return True
         
         return False
     

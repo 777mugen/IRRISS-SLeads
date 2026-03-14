@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-14T19:11:32.504087",
+  "timestamp": "2026-03-14T19:15:40.252535",
   "test_dois": [
     "10.21037/tcr-2025-1389",
     "10.1097/CM9.0000000000004035",
@@ -32,9 +32,9 @@
     ]
   },
   "v3": {
-    "avg_tokens": 35460.0,
-    "avg_reduction": 41.12907972297402,
-    "token_reduction": 25.812795514456678,
+    "avg_tokens": 3868.3333333333335,
+    "avg_reduction": 95.32204998478865,
+    "token_reduction": 91.90691381787244,
     "results": [
       {
         "doi": "10.21037/tcr-2025-1389",
@@ -48,20 +48,20 @@
       {
         "doi": "10.1097/CM9.0000000000004035",
         "original_length": 215016,
-        "truncated_length": 215016,
-        "reduction": 0.0,
-        "content_tokens": 71672,
+        "truncated_length": 4266,
+        "reduction": 98.01596160285746,
+        "content_tokens": 1422,
         "prompt_tokens": 2225,
-        "total_tokens": 73897
+        "total_tokens": 3647
       },
       {
         "doi": "10.1136/jitc-2025-014040",
         "original_length": 113957,
-        "truncated_length": 76162,
-        "reduction": 33.16601876146266,
-        "content_tokens": 25387,
+        "truncated_length": 2588,
+        "reduction": 97.72896794404907,
+        "content_tokens": 862,
         "prompt_tokens": 2225,
-        "total_tokens": 27612
+        "total_tokens": 3087
       }
     ]
   }
