@@ -129,46 +129,45 @@ class JinaClient:
 
     async def read_paper(self, doi_url: str) -> str:
         """
-        读取学术论文 DOI 链接（优化版）
+        读取学术论文 DOI 链接（原始数据版）
 
-        特点:
-        - 模拟浏览器减少反爬
-        - 去除图片和链接
-        - 利用缓存提升速度
+        架构原则:
+        - 保留所有原始数据（图片、链接、完整结构）
+        - 提取和处理逻辑放在后续环节（智谱批处理、解析器）
+        - 实现最大的灵活性
 
         Args:
             doi_url: DOI 链接（如 "https://doi.org/10.1234/example"）
 
         Returns:
-            Markdown 格式的论文内容（无图片、无链接）
+            Markdown 格式的论文内容（包含图片、链接等所有信息）
         """
         reader_url = f"{self.READER_URL}/{doi_url}"
 
-        # 针对学术论文优化的 Headers
+        # 保留原始数据的 Headers（不删除任何信息）
         headers = {
             **self.headers,
             'Accept': 'text/plain',
             'X-Respond-With': 'markdown',
-            'X-Respond-Timing': 'resource-idle',
-            'X-Timeout': '60',
+            'X-Respond-Timing': 'network-idle',  # ✅ 等待网络完全空闲
+            'X-Timeout': '90',  # ✅ 增加超时时间
             'X-Engine': 'browser',  # 模拟浏览器，减少反爬
             'X-Cache-Tolerance': '3600',  # 1小时缓存
             'X-Remove-Selector': (
                 'nav, aside, footer, .sidebar, '
                 '.advertisement, .comments, '
-                '.related-articles, .social-share, '
-                'img, a img, figure'
-            ),
-            'X-Retain-Links': 'none',  # 去除链接
-            'X-Retain-Images': 'none',  # 去除图片
+                '.related-articles, .social-share'
+            ),  # ✅ 只删除导航栏、广告等无关元素
+            'X-Retain-Links': 'all',  # ✅ 保留所有链接（图片链接、邮箱链接等）
+            'X-Retain-Images': 'all',  # ✅ 保留所有图片
             'X-With-Generated-Alt': 'false',
             'X-Locale': 'en-US',
             'X-Referer': 'https://doi.org/',
-            'X-Token-Budget': '50000',
+            'X-Token-Budget': '100000',  # ✅ 增加 token 预算
             'X-Robots-Txt': 'false'
         }
 
-        response = await self._client.get(reader_url, headers=headers, timeout=65)
+        response = await self._client.get(reader_url, headers=headers, timeout=95)
         response.raise_for_status()
 
         return response.text

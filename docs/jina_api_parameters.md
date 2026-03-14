@@ -371,39 +371,43 @@ self._client = httpx.AsyncClient(timeout=30.0, ...)
 
 ## 🚀 高级优化参数配置（付费用户）
 
-### 学术论文专属优化
+### 学术论文专属优化（原始数据版）
 
-针对学术论文抓取场景，我们优化了 15 个参数配置：
+**架构原则**（2026-03-14 更新）:
+- ✅ **保留所有原始数据**（图片、链接、完整HTML结构）
+- ✅ **提取和处理逻辑放在后续环节**（智谱批处理、解析器）
+- ✅ **实现最大的灵活性**
+
+详见: `docs/ARCHITECTURE_PRINCIPLES.md`
 
 ```python
 async def read_paper(self, doi_url: str) -> str:
-    """读取学术论文（优化版）"""
+    """读取学术论文（原始数据版）"""
     reader_url = f"https://r.jina.ai/{doi_url}"
     
     headers = {
         'Authorization': f'Bearer {api_key}',
         'Accept': 'text/plain',
         'X-Respond-With': 'markdown',              # 纯净 Markdown
-        'X-Respond-Timing': 'resource-idle',       # 平衡速度和完整性
-        'X-Timeout': '60',                         # 60秒超时
+        'X-Respond-Timing': 'network-idle',        # ✅ 等待网络完全空闲
+        'X-Timeout': '90',                         # ✅ 90秒超时
         'X-Engine': 'browser',                     # 模拟浏览器
         'X-Cache-Tolerance': '3600',               # 1小时缓存
         'X-Remove-Selector': (
             'nav, aside, footer, .sidebar, '
             '.advertisement, .comments, '
-            '.related-articles, .social-share, '
-            'img, a img, figure'
-        ),
-        'X-Retain-Links': 'none',                 # 去除链接
-        'X-Retain-Images': 'none',                # 去除图片
+            '.related-articles, .social-share'
+        ),  # ✅ 只删除导航栏、广告等无关元素
+        'X-Retain-Links': 'all',                  # ✅ 保留所有链接（图片链接、邮箱链接等）
+        'X-Retain-Images': 'all',                 # ✅ 保留所有图片
         'X-With-Generated-Alt': 'false',
         'X-Locale': 'en-US',
         'X-Referer': 'https://doi.org/',
-        'X-Token-Budget': '50000',
+        'X-Token-Budget': '100000',               # ✅ 增加 token 预算
         'X-Robots-Txt': 'false'
     }
     
-    response = await self._client.get(reader_url, headers=headers, timeout=65)
+    response = await self._client.get(reader_url, headers=headers, timeout=95)
     response.raise_for_status()
     
     return response.text
@@ -414,24 +418,25 @@ async def read_paper(self, doi_url: str) -> str:
 | Header | 推荐值 | 作用 | 为什么推荐 |
 |--------|--------|------|-----------|
 | **X-Engine** | `browser` | 模拟浏览器引擎 | 减少反爬虫拦截（60% → <10%） |
-| **X-Respond-Timing** | `resource-idle` | 响应时机 | 平衡速度和完整性（比 network-idle 快） |
-| **X-Timeout** | `60` | 超时时间（秒） | 学术论文加载慢，需要足够时间 |
+| **X-Respond-Timing** | `network-idle` | 响应时机 | ✅ 等待网络完全空闲，确保完整提取 |
+| **X-Timeout** | `90` | 超时时间（秒） | ✅ 学术论文加载慢，需要足够时间 |
 | **X-Cache-Tolerance** | `3600` | 缓存时间（秒） | 1小时缓存，提升重复请求速度 |
-| **X-Retain-Links** | `none` | 去除链接 | 只保留文本，适合提取 |
-| **X-Retain-Images** | `none` | 去除图片 | 只保留文本，适合提取 |
-| **X-Remove-Selector** | `nav, aside...` | 移除干扰元素 | 剔除导航、广告、侧边栏等 |
+| **X-Retain-Links** | `all` | ✅ 保留所有链接 | 实现最大的灵活性（邮箱、图片链接等） |
+| **X-Retain-Images** | `all` | ✅ 保留所有图片 | 实现最大的灵活性（包含图片） |
+| **X-Remove-Selector** | `nav, aside...` | 移除干扰元素 | 只剔除导航、广告、侧边栏等无关元素 |
 | **X-Referer** | `https://doi.org/` | 模拟来源 | 模拟从 DOI 跳转，减少 403 |
-| **X-Token-Budget** | `50000` | Token 预算 | 防止单篇论文消耗过多资源 |
+| **X-Token-Budget** | `100000` | ✅ 增加 Token 预算 | 防止单篇论文消耗过多资源 |
 
 ### 性能对比
 
-| 指标 | 优化前 | 优化后 | 提升幅度 |
-|------|--------|--------|---------|
+| 指标 | 优化前 | 优化后（原始数据版） | 提升幅度 |
+|------|--------|------------------|---------|
 | **反爬虫拦截率** | 60% (3/5) | <10% (预期) | -50% |
-| **内容纯度** | 低（含图片/链接） | 高（纯文本） | ✅ |
+| **数据完整性** | 低（缺失作者信息） | ✅ 高（保留所有信息） | ✅ |
 | **重复请求速度** | 慢（每次重新爬取） | 快（1小时缓存） | 3-5x |
-| **超时成功率** | 低（30秒不够） | 高（60秒） | +30% |
-| **Token 消耗** | 不可控 | 可控（50K 预算） | ✅ |
+| **超时成功率** | 低（30秒不够） | 高（90秒） | +60% |
+| **Token 消耗** | 不可控 | 可控（100K 预算） | ✅ |
+| **灵活性** | 低（丢失数据） | ✅ 高（保留所有数据） | ✅ |
 
 ---
 
@@ -459,62 +464,45 @@ headers = {
 
 ---
 
-### 场景 2: 学术论文提取（付费用户，推荐）
+### 场景 2: 学术论文提取（原始数据版，当前使用）
 
-**适用**: 批量抓取论文，需要高质量内容
+**适用**: 批量抓取论文，需要完整原始数据
 
 **配置**:
 ```python
 headers = {
     'Authorization': f'Bearer {api_key}',
     'X-Engine': 'browser',
-    'X-Retain-Links': 'none',
-    'X-Retain-Images': 'none',
-    'X-Respond-Timing': 'resource-idle',
+    'X-Retain-Links': 'all',       # ✅ 保留所有链接
+    'X-Retain-Images': 'all',      # ✅ 保留所有图片
+    'X-Respond-Timing': 'network-idle',
     'X-Cache-Tolerance': '3600',
-    'X-Timeout': '60',
-    'X-Remove-Selector': 'nav, aside, footer, .sidebar, .advertisement, .comments, .related-articles, .social-share, img, a img, figure',
+    'X-Timeout': '90',
+    'X-Remove-Selector': 'nav, aside, footer, .sidebar, .advertisement, .comments, .related-articles, .social-share',
     'X-Referer': 'https://doi.org/',
-    'X-Token-Budget': '50000',
+    'X-Token-Budget': '100000',
 }
 ```
 
 **特点**:
 - ✅ 反爬虫拦截率低（<10%）
-- ✅ 内容纯度高（无图片/链接）
-- ✅ 利用缓存提升速度
+- ✅ **保留完整原始数据**（图片、链接）
+- ✅ **实现最大的灵活性**
+- ✅ 提取和处理逻辑放在后续环节
 - ✅ Token 消耗可控
 - ✅ 超时时间充足
 
-**推荐**: 批量处理学术论文（本项目使用）
+**推荐**: 批量处理学术论文（**本项目使用** ⭐）
+
+**架构原则**: 详见 `docs/ARCHITECTURE_PRINCIPLES.md`
 
 ---
 
-### 场景 3: 网页全文抓取（保留图片）
+### 场景 3: 网页全文抓取（与场景 2 相同）
 
-**适用**: 需要完整内容，包括图片和链接
+**说明**: 由于架构原则要求保留所有原始数据，场景 2 和场景 3 合并。
 
-**配置**:
-```python
-headers = {
-    'Authorization': f'Bearer {api_key}',
-    'X-Engine': 'browser',
-    'X-Retain-Links': 'all',
-    'X-Retain-Images': 'all',
-    'X-With-Generated-Alt': 'false',
-    'X-Respond-Timing': 'network-idle',
-    'X-Cache-Tolerance': '3600',
-    'X-Timeout': '90',
-}
-```
-
-**特点**:
-- ✅ 保留完整内容
-- ✅ 保留图片和链接
-- ❌ Token 消耗较高
-- ❌ 响应较慢（等待所有资源）
-
-**推荐**: 需要完整网页内容（非本项目）
+**配置**: 同场景 2
 
 ---
 
@@ -547,11 +535,12 @@ headers = {
 | 用户类型 | 抓取频率 | 内容要求 | 推荐配置 | 场景 |
 |---------|---------|---------|---------|------|
 | **免费用户** | 偶尔 | 基础 | 默认配置 | 场景 1 |
-| **付费用户** | 批量 | 高质量 | 优化配置 | 场景 2 ⭐ |
-| **付费用户** | 批量 | 完整内容 | 全保留配置 | 场景 3 |
+| **付费用户** | 批量 | **完整原始数据** | **原始数据配置** | **场景 2 ⭐** |
 | **付费用户** | 高频 | 快速预览 | 极速配置 | 场景 4 |
 
-**本项目**: 付费用户 + 批量抓取 + 高质量内容 → **场景 2** ⭐
+**本项目**: 付费用户 + 批量抓取 + **完整原始数据** → **场景 2** ⭐
+
+**架构原则**: 详见 `docs/ARCHITECTURE_PRINCIPLES.md`
 
 ---
 
@@ -634,14 +623,14 @@ headers['X-Timeout'] = '60'  # 增加到 60 秒
 
 ### 问题 3: Token 消耗过高
 
-**原因**: 内容包含图片、链接等无用信息
+**原因**: 内容包含图片、链接等（这是预期的）
 
-**解决**:
-```python
-headers['X-Retain-Links'] = 'none'
-headers['X-Retain-Images'] = 'none'
-headers['X-Remove-Selector'] = 'nav, aside, footer, img'
-```
+**说明**: 根据架构原则，我们**保留所有原始数据**，Token 消耗会较高。
+
+**解决方案**: 
+- ✅ 增加 Token 预算：`X-Token-Budget': '100000'`
+- ✅ 利用缓存：`X-Cache-Tolerance': '3600'`
+- ✅ 在后续环节处理数据（智谱批处理、解析器）
 
 ### 问题 4: 重复请求慢
 
