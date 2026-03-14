@@ -76,47 +76,97 @@ function queryDOIs(event) {
             return;
         }
         
+        // XSS 防护：HTML 转义函数
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
         const rows = data.results.map(r => {
             const rawStatus = r.raw_markdown?.status || '未处理';
             const paperLead = r.paper_lead;
             
-            return `
-                <tr class="border-b border-slate-100 hover:bg-slate-50">
-                    <td class="px-4 py-3 text-sm font-mono text-slate-900">${r.doi}</td>
-                    <td class="px-4 py-3">
-                        <span class="px-2 py-1 text-xs rounded-full ${getStatusColor(rawStatus)}">
-                            ${rawStatus}
-                        </span>
-                    </td>
-                    <td class="px-4 py-3 text-sm text-slate-900">${paperLead?.name || '-'}</td>
-                    <td class="px-4 py-3 text-sm text-slate-600">${paperLead?.email || '-'}</td>
-                    <td class="px-4 py-3 text-sm text-slate-600">${paperLead?.institution_cn || '-'}</td>
-                    <td class="px-4 py-3">
-                        ${paperLead ? `
-                            <span class="px-2 py-1 text-xs rounded-full ${getGradeColor(paperLead.grade)}">
-                                ${paperLead.grade || '-'} (${paperLead.score || 0})
-                            </span>
-                        ` : '-'}
-                    </td>
-                </tr>
-            `;
-        }).join('');
+            // 使用 DOM API 安全创建元素（自动转义）
+            const tr = document.createElement('tr');
+            tr.className = 'border-b border-slate-100 hover:bg-slate-50';
+            
+            // DOI 列
+            const doiTd = document.createElement('td');
+            doiTd.className = 'px-4 py-3 text-sm font-mono text-slate-900';
+            doiTd.textContent = r.doi || '';
+            tr.appendChild(doiTd);
+            
+            // 状态列
+            const statusTd = document.createElement('td');
+            statusTd.className = 'px-4 py-3';
+            const statusSpan = document.createElement('span');
+            statusSpan.className = `px-2 py-1 text-xs rounded-full ${getStatusColor(rawStatus)}`;
+            statusSpan.textContent = rawStatus;
+            statusTd.appendChild(statusSpan);
+            tr.appendChild(statusTd);
+            
+            // 作者列
+            const nameTd = document.createElement('td');
+            nameTd.className = 'px-4 py-3 text-sm text-slate-900';
+            nameTd.textContent = paperLead?.name || '-';
+            tr.appendChild(nameTd);
+            
+            // 邮箱列
+            const emailTd = document.createElement('td');
+            emailTd.className = 'px-4 py-3 text-sm text-slate-600';
+            emailTd.textContent = paperLead?.email || '-';
+            tr.appendChild(emailTd);
+            
+            // 机构列
+            const instTd = document.createElement('td');
+            instTd.className = 'px-4 py-3 text-sm text-slate-600';
+            instTd.textContent = paperLead?.institution_cn || '-';
+            tr.appendChild(instTd);
+            
+            // 等级列
+            const gradeTd = document.createElement('td');
+            gradeTd.className = 'px-4 py-3';
+            if (paperLead) {
+                const gradeSpan = document.createElement('span');
+                gradeSpan.className = `px-2 py-1 text-xs rounded-full ${getGradeColor(paperLead.grade)}`;
+                gradeSpan.textContent = `${paperLead.grade || '-'} (${paperLead.score || 0})`;
+                gradeTd.appendChild(gradeSpan);
+            } else {
+                gradeTd.textContent = '-';
+            }
+            tr.appendChild(gradeTd);
+            
+            return tr;
+        });
         
-        resultsContent.innerHTML = `
-            <table class="w-full">
-                <thead>
-                    <tr class="border-b border-slate-200">
-                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">DOI</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">状态</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">通讯作者</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">邮箱</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">机构</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">等级</th>
-                    </tr>
-                </thead>
-                <tbody>${rows}</tbody>
-            </table>
+        // 创建表格
+        const table = document.createElement('table');
+        table.className = 'w-full';
+        
+        // 表头
+        const thead = document.createElement('thead');
+        thead.innerHTML = `
+            <tr class="border-b border-slate-200">
+                <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">DOI</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">状态</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">通讯作者</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">邮箱</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">机构</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">等级</th>
+            </tr>
         `;
+        table.appendChild(thead);
+        
+        // 表体
+        const tbody = document.createElement('tbody');
+        rows.forEach(row => tbody.appendChild(row));
+        table.appendChild(tbody);
+        
+        // 清空并添加表格
+        resultsContent.innerHTML = '';
+        resultsContent.appendChild(table);
     })
     .catch(err => {
         resultsContent.innerHTML = `<p class="text-red-600">查询失败: ${err.message}</p>`;

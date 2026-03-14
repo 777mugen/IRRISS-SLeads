@@ -71,33 +71,63 @@ document.body.addEventListener('htmx:afterSwap', function(evt) {
             return;
         }
         
-        const rows = data.papers.map(p => `
-            <tr class="border-b border-slate-100 hover:bg-slate-50">
-                <td class="px-4 py-3 text-sm font-mono text-slate-900">${p.doi}</td>
-                <td class="px-4 py-3 text-sm text-red-600">${p.error || '未知错误'}</td>
-                <td class="px-4 py-3 text-sm text-slate-600">${p.retry_count || 0}</td>
-                <td class="px-4 py-3">
-                    <button onclick="retryPaper('${p.doi}')"
-                            class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
-                        重试
-                    </button>
-                </td>
-            </tr>
-        `).join('');
+        // 创建表格
+        const table = document.createElement('table');
+        table.className = 'w-full';
         
-        evt.detail.target.innerHTML = `
-            <table class="w-full">
-                <thead>
-                    <tr class="border-b border-slate-200">
-                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">DOI</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">错误信息</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">重试次数</th>
-                        <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">操作</th>
-                    </tr>
-                </thead>
-                <tbody>${rows}</tbody>
-            </table>
+        // 表头
+        const thead = document.createElement('thead');
+        thead.innerHTML = `
+            <tr class="border-b border-slate-200">
+                <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">DOI</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">错误信息</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">重试次数</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold text-slate-900">操作</th>
+            </tr>
         `;
+        table.appendChild(thead);
+        
+        // 表体
+        const tbody = document.createElement('tbody');
+        data.papers.forEach(p => {
+            const tr = document.createElement('tr');
+            tr.className = 'border-b border-slate-100 hover:bg-slate-50';
+            
+            // DOI 列（安全：使用 textContent）
+            const doiTd = document.createElement('td');
+            doiTd.className = 'px-4 py-3 text-sm font-mono text-slate-900';
+            doiTd.textContent = p.doi || '';
+            tr.appendChild(doiTd);
+            
+            // 错误信息列（安全：使用 textContent）
+            const errorTd = document.createElement('td');
+            errorTd.className = 'px-4 py-3 text-sm text-red-600';
+            errorTd.textContent = p.error || '未知错误';
+            tr.appendChild(errorTd);
+            
+            // 重试次数列
+            const retryTd = document.createElement('td');
+            retryTd.className = 'px-4 py-3 text-sm text-slate-600';
+            retryTd.textContent = p.retry_count || 0;
+            tr.appendChild(retryTd);
+            
+            // 操作列
+            const actionTd = document.createElement('td');
+            actionTd.className = 'px-4 py-3';
+            const btn = document.createElement('button');
+            btn.className = 'px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700';
+            btn.textContent = '重试';
+            btn.onclick = () => retryPaper(p.doi);
+            actionTd.appendChild(btn);
+            tr.appendChild(actionTd);
+            
+            tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        
+        // 清空并添加表格
+        evt.detail.target.innerHTML = '';
+        evt.detail.target.appendChild(table);
     }
 });
 
