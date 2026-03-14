@@ -1,0 +1,68 @@
+{
+  "timestamp": "2026-03-14T19:11:32.504087",
+  "test_dois": [
+    "10.21037/tcr-2025-1389",
+    "10.1097/CM9.0000000000004035",
+    "10.1136/jitc-2025-014040"
+  ],
+  "v1": {
+    "avg_tokens": 47798.0,
+    "results": [
+      {
+        "doi": "10.21037/tcr-2025-1389",
+        "original_length": 81186,
+        "content_tokens": 27062,
+        "prompt_tokens": 2225,
+        "total_tokens": 29287
+      },
+      {
+        "doi": "10.1097/CM9.0000000000004035",
+        "original_length": 215016,
+        "content_tokens": 71672,
+        "prompt_tokens": 2225,
+        "total_tokens": 73897
+      },
+      {
+        "doi": "10.1136/jitc-2025-014040",
+        "original_length": 113957,
+        "content_tokens": 37985,
+        "prompt_tokens": 2225,
+        "total_tokens": 40210
+      }
+    ]
+  },
+  "v3": {
+    "avg_tokens": 35460.0,
+    "avg_reduction": 41.12907972297402,
+    "token_reduction": 25.812795514456678,
+    "results": [
+      {
+        "doi": "10.21037/tcr-2025-1389",
+        "original_length": 81186,
+        "truncated_length": 7939,
+        "reduction": 90.22122040745941,
+        "content_tokens": 2646,
+        "prompt_tokens": 2225,
+        "total_tokens": 4871
+      },
+      {
+        "doi": "10.1097/CM9.0000000000004035",
+        "original_length": 215016,
+        "truncated_length": 215016,
+        "reduction": 0.0,
+        "content_tokens": 71672,
+        "prompt_tokens": 2225,
+        "total_tokens": 73897
+      },
+      {
+        "doi": "10.1136/jitc-2025-014040",
+        "original_length": 113957,
+        "truncated_length": 76162,
+        "reduction": 33.16601876146266,
+        "content_tokens": 25387,
+        "prompt_tokens": 2225,
+        "total_tokens": 27612
+      }
+    ]
+  }
+}
