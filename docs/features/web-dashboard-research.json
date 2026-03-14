@@ -1,0 +1,371 @@
+{
+  "research_summary": "Research completed for Web Dashboard implementation in IRRISS-SLeads repository",
+  "timestamp": "2026-03-15T01:45:00Z",
+  
+  "existing_fastapi_routes": {
+    "status": "NOT_FOUND",
+    "files": [],
+    "notes": "No FastAPI implementation exists. The project uses async Python scripts without web framework. Main entry point is src/main.py with basic async function."
+  },
+  
+  "template_patterns": {
+    "status": "NOT_FOUND",
+    "files": [],
+    "notes": "No Jinja2 templates or HTML files exist. No 'templates' directory found. The project is purely backend-focused with CSV exports."
+  },
+  
+  "database_models": {
+    "status": "COMPREHENSIVE",
+    "location": "src/db/models.py",
+    "models": {
+      "PaperLead": {
+        "table": "paper_leads",
+        "key_fields": [
+          "id (Integer, PK)",
+          "doi (Text, unique)",
+          "pmid (Text)",
+          "title (Text)",
+          "name (Text) - 通讯作者姓名",
+          "email (Text)",
+          "phone (Text)",
+          "address (Text)",
+          "institution_cn (Text)",
+          "all_authors_info (Text) - JSON格式",
+          "score (Integer)",
+          "grade (String) - A/B/C/D",
+          "feedback_status (String)",
+          "processing_status (not in this table)"
+        ],
+        "indexes": ["grade", "feedback_status", "created_at", "pmid"]
+      },
+      "RawMarkdown": {
+        "table": "raw_markdown",
+        "key_fields": [
+          "id (Integer, PK)",
+          "doi (Text, unique)",
+          "pmid (Text)",
+          "markdown_content (Text)",
+          "source_url (Text)",
+          "processing_status (String) - pending/processing/completed/failed",
+          "batch_id (Text)",
+          "processed_at (DateTime)",
+          "error_message (Text)"
+        ],
+        "indexes": ["doi", "pmid", "processing_status", "batch_id"],
+        "notes": "Critical for batch processing monitoring"
+      },
+      "Feedback": {
+        "table": "feedback",
+        "key_fields": [
+          "id (Integer, PK)",
+          "paper_lead_id (Integer, FK)",
+          "accuracy (String) - 好/中/差",
+          "demand_match (String)",
+          "contact_validity (String)",
+          "deal_speed (String)",
+          "deal_price (String)",
+          "notes (Text)"
+        ],
+        "notes": "5 dimensions of sales feedback for strategy optimization"
+      },
+      "TenderLead": {
+        "table": "tender_leads",
+        "key_fields": [
+          "id (Integer, PK)",
+          "source_url (Text, unique)",
+          "project_name (Text)",
+          "organization (Text)",
+          "keywords_matched (Array)",
+          "score (Integer)",
+          "grade (String)"
+        ]
+      },
+      "CrawledURL": {
+        "table": "crawled_urls",
+        "notes": "Incremental crawling control"
+      },
+      "StrategyVersion": {
+        "table": "strategy_versions",
+        "notes": "Strategy version management and rollback"
+      }
+    }
+  },
+  
+  "config_files": {
+    "status": "FOUND",
+    "location": "config/",
+    "files": [
+      {
+        "name": "keywords.yaml",
+        "purpose": "Search keywords (English/Chinese core and equipment)",
+        "structure": "Hierarchical with english/chinese sections, core/equipment categories"
+      },
+      {
+        "name": "scoring_paper.yaml",
+        "purpose": "Paper lead scoring rules",
+        "structure": {
+          "weights": "6 dimensions (completeness, relevance, timeliness, decision_chain, institution, history)",
+          "grade_thresholds": "A>=80, B=65-79, C=50-64, D<50",
+          "scoring_rules": "Detailed rules for each dimension"
+        }
+      },
+      {
+        "name": "scoring_tender.yaml",
+        "purpose": "Tender lead scoring rules"
+      },
+      {
+        "name": "sources.yaml",
+        "purpose": "Data source configuration"
+      },
+      {
+        "name": "scheduler.yaml",
+        "purpose": "Scheduled task configuration"
+      }
+    ],
+    "loader": "src/config/loader.py - YAML config loader with lazy loading"
+  },
+  
+  "suggested_file_structure": {
+    "web_dashboard": {
+      "routes": {
+        "location": "src/web/routes/",
+        "files": [
+          "__init__.py",
+          "dashboard.py - Main dashboard routes",
+          "batch.py - Batch processing monitoring",
+          "query.py - DOI query interface",
+          "analysis.py - Data analysis and statistics",
+          "config.py - Configuration management",
+          "export.py - CSV import/export"
+        ]
+      },
+      "templates": {
+        "location": "src/web/templates/",
+        "files": [
+          "base.html - Base template with Tailwind + HTMX",
+          "dashboard/index.html - Main dashboard",
+          "batch/monitor.html - Batch processing status",
+          "batch/failed.html - Failed papers list",
+          "query/search.html - DOI query interface",
+          "query/result.html - Query results",
+          "analysis/stats.html - Statistics and charts",
+          "analysis/map.html - Institution distribution map",
+          "config/keywords.html - Keywords management",
+          "config/scoring.html - Scoring rules editor",
+          "export/index.html - CSV import/export interface"
+        ]
+      },
+      "static": {
+        "location": "src/web/static/",
+        "files": [
+          "css/dashboard.css",
+          "js/htmx-config.js",
+          "js/charts.js - Chart.js or Plotly integration",
+          "js/map.js - Leaflet.js for institution map"
+        ]
+      },
+      "api": {
+        "location": "src/web/api/",
+        "files": [
+          "__init__.py",
+          "batch.py - Batch processing REST API",
+          "query.py - Query API endpoints",
+          "config.py - Configuration API",
+          "export.py - CSV export API"
+        ]
+      },
+      "services": {
+        "location": "src/web/services/",
+        "files": [
+          "batch_service.py - Business logic for batch operations",
+          "query_service.py - Query business logic",
+          "export_service.py - Export/import logic"
+        ]
+      }
+    },
+    "integration_points": {
+      "database": "Reuse existing src/db/models.py and src/db/utils.py",
+      "config": "Reuse existing src/config/loader.py",
+      "batch_processing": "Reuse src/processors/batch_processor.py and src/monitoring/batch_monitor.py",
+      "export": "Reuse src/exporters/csv_exporter.py",
+      "logging": "Reuse src/logging_config.py"
+    }
+  },
+  
+  "dependencies_status": {
+    "fastapi": {
+      "installed": false,
+      "required": true,
+      "version_recommendation": "fastapi>=0.109.0",
+      "notes": "Not in requirements.txt, needs to be added"
+    },
+    "jinja2": {
+      "installed": false,
+      "required": true,
+      "version_recommendation": "jinja2>=3.1.0",
+      "notes": "Not in requirements.txt, needs to be added"
+    },
+    "pandas": {
+      "installed": true,
+      "version": "pandas>=2.2.0",
+      "notes": "Already available in requirements.txt"
+    },
+    "uvicorn": {
+      "installed": false,
+      "required": true,
+      "version_recommendation": "uvicorn[standard]>=0.27.0",
+      "notes": "ASGI server for FastAPI, needs to be added"
+    },
+    "python-multipart": {
+      "installed": false,
+      "required": true,
+      "version_recommendation": "python-multipart>=0.0.6",
+      "notes": "For file uploads (CSV import), needs to be added"
+    },
+    "aiofiles": {
+      "installed": false,
+      "required": true,
+      "version_recommendation": "aiofiles>=23.0.0",
+      "notes": "For async file operations, needs to be added"
+    },
+    "existing_dependencies": {
+      "sqlalchemy": ">=2.0.0 - Already installed",
+      "alembic": ">=1.13.0 - Already installed",
+      "asyncpg": ">=0.29.0 - Already installed",
+      "pyyaml": ">=6.0 - Already installed",
+      "structlog": ">=24.1.0 - Already installed"
+    }
+  },
+  
+  "existing_infrastructure": {
+    "database": {
+      "engine": "PostgreSQL with SQLAlchemy async",
+      "url": "postgresql+asyncpg://localhost/sleads_dev",
+      "session_management": "src/db/utils.py - get_session() async context manager"
+    },
+    "batch_processing": {
+      "monitor": "src/monitoring/batch_monitor.py - BatchMonitor class",
+      "processor": "src/processors/batch_processor.py - BatchProcessor class",
+      "pipeline": "src/pipeline_batch.py - BatchPipeline class",
+      "features": [
+        "Real-time status tracking (pending/processing/completed/failed)",
+        "Stale task detection and auto-reset",
+        "Business metrics tracking (success rate, failure rate)",
+        "Automatic retry mechanism",
+        "Notification integration"
+      ]
+    },
+    "export": {
+      "csv_exporter": "src/exporters/csv_exporter.py - CSVExporter class",
+      "features": [
+        "Paper leads export (full/incremental)",
+        "Tender leads export",
+        "Chinese encoding (utf-8-sig)",
+        "All authors expanded format"
+      ]
+    },
+    "logging": {
+      "config": "src/logging_config.py - Structured logging with structlog",
+      "level": "Configurable via LOG_LEVEL env var"
+    }
+  },
+  
+  "implementation_recommendations": {
+    "phase_1_mvp": [
+      "Add FastAPI, Jinja2, uvicorn to requirements.txt",
+      "Create src/web/ directory structure",
+      "Implement basic dashboard with batch monitoring",
+      "Add DOI query interface for raw_markdown and paper_leads",
+      "Integrate existing BatchMonitor for real-time status"
+    ],
+    "phase_2_features": [
+      "Data analysis and statistics (institution distribution map)",
+      "Configuration management (keywords, scoring rules editor)",
+      "CSV export interface (reuse existing CSVExporter)",
+      "CSV import for sales feedback"
+    ],
+    "phase_3_optimization": [
+      "Add caching layer (Redis)",
+      "Implement WebSocket for real-time updates",
+      "Add authentication if needed in future",
+      "Performance optimization for large datasets"
+    ],
+    "ui_framework": {
+      "css": "Tailwind CSS via CDN or npm",
+      "javascript": "HTMX for dynamic interactions without complex JS",
+      "charts": "Chart.js or Plotly.js for data visualization",
+      "maps": "Leaflet.js for institution distribution map"
+    },
+    "api_design": {
+      "style": "RESTful API with FastAPI",
+      "format": "JSON for API responses",
+      "error_handling": "HTTPException with structured error messages",
+      "validation": "Pydantic models for request/response validation"
+    }
+  },
+  
+  "key_integrations": {
+    "batch_monitoring": {
+      "source": "src/monitoring/batch_monitor.py",
+      "methods": [
+        "check_stale_tasks() - Detect stuck batches",
+        "reset_stale_tasks() - Auto-retry failed batches",
+        "get_batch_statistics() - Get metrics",
+        "generate_report() - Status reports"
+      ]
+    },
+    "doi_query": {
+      "raw_markdown_table": "src/db/models.py - RawMarkdown model",
+      "paper_leads_table": "src/db/models.py - PaperLead model",
+      "query_method": "SQLAlchemy async queries via get_session()"
+    },
+    "csv_export": {
+      "exporter": "src/exporters/csv_exporter.py",
+      "output_dir": "output/paper_leads/",
+      "formats": ["full export", "incremental export", "custom filters"]
+    },
+    "config_management": {
+      "loader": "src/config/loader.py",
+      "files": ["keywords.yaml", "scoring_paper.yaml", "scoring_tender.yaml"],
+      "reload": "Hot-reload configuration without restart"
+    }
+  },
+  
+  "security_considerations": {
+    "authentication": "Not required (internal use only)",
+    "authorization": "Optional - can add basic auth if needed",
+    "csrf": "Not needed for internal use",
+    "sql_injection": "Protected by SQLAlchemy parameterized queries",
+    "xss": "Protected by Jinja2 auto-escaping"
+  },
+  
+  "performance_optimizations": {
+    "database_queries": [
+      "Use existing indexes on doi, pmid, processing_status, batch_id",
+      "Add pagination for large result sets",
+      "Use async queries throughout"
+    ],
+    "caching": [
+      "Cache configuration files in memory",
+      "Consider Redis for batch status caching"
+    ],
+    "async_operations": [
+      "All database operations already async",
+      "Use aiofiles for file operations",
+      "Background tasks for CSV export/import"
+    ]
+  },
+  
+  "next_steps": [
+    "1. Update requirements.txt with FastAPI ecosystem dependencies",
+    "2. Create src/web/ directory structure following suggested_file_structure",
+    "3. Implement base FastAPI app with Jinja2 templates",
+    "4. Add Tailwind CSS via CDN to base template",
+    "5. Integrate HTMX for dynamic interactions",
+    "6. Build batch monitoring dashboard reusing BatchMonitor",
+    "7. Implement DOI query interface",
+    "8. Add CSV export/import endpoints",
+    "9. Add data analysis and visualization",
+    "10. Test and optimize performance"
+  ]
+}

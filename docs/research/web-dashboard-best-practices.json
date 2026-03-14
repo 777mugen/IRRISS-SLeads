@@ -1,0 +1,607 @@
+{
+  "fastapi_patterns": {
+    "project_structure": {
+      "recommended_structure": {
+        "src/web/": "Web module root",
+        "src/web/main.py": "FastAPI app entry point with lifespan context manager",
+        "src/web/routes/": "Page routes (HTML responses)",
+        "src/web/api/": "REST API endpoints (JSON responses)",
+        "src/web/services/": "Business logic layer",
+        "src/web/templates/": "Jinja2 templates",
+        "src/web/static/": "CSS, JS, images",
+        "src/web/dependencies.py": "Shared dependencies (database sessions, auth)"
+      },
+      "best_practices": [
+        "Separate routes (HTML) from API endpoints (JSON) for clarity",
+        "Use dependency injection for database sessions and shared services",
+        "Implement lifespan context manager for startup/shutdown events",
+        "Group related endpoints using APIRouter with prefix and tags",
+        "Use Pydantic models for request/response validation",
+        "Implement custom exception handlers for consistent error responses"
+      ],
+      "code_examples": {
+        "main_py": {
+          "description": "FastAPI application entry point with lifespan",
+          "code": "from contextlib import asynccontextmanager\nfrom fastapi import FastAPI\nfrom fastapi.staticfiles import StaticFiles\nfrom fastapi.templating import Jinja2Templates\nfrom src.db.database import async_engine, AsyncSessionLocal\nfrom src.web.routes import dashboard, batch, query, analysis\nfrom src.web.api import batch as batch_api, query as query_api\nimport structlog\n\nlogger = structlog.get_logger()\n\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    # Startup\n    logger.info(\"dashboard_starting\")\n    # Initialize services, connection pools, etc.\n    yield\n    # Shutdown\n    logger.info(\"dashboard_shutting_down\")\n    await async_engine.dispose()\n\napp = FastAPI(\n    title=\"IRRISS-SLeads Dashboard\",\n    description=\"Web dashboard for lead management\",\n    version=\"1.0.0\",\n    lifespan=lifespan\n)\n\n# Mount static files\napp.mount(\"/static\", StaticFiles(directory=\"src/web/static\"), name=\"static\")\n\n# Templates\ntemplates = Jinja2Templates(directory=\"src/web/templates\")\n\n# Include routes\napp.include_router(dashboard.router, tags=[\"dashboard\"])\napp.include_router(batch.router, prefix=\"/batch\", tags=[\"batch\"])\napp.include_router(query.router, prefix=\"/query\", tags=[\"query\"])\napp.include_router(analysis.router, prefix=\"/analysis\", tags=[\"analysis\"])\n\n# Include API routes\napp.include_router(batch_api.router, prefix=\"/api/batch\", tags=[\"api-batch\"])\napp.include_router(query_api.router, prefix=\"/api/query\", tags=[\"api-query\"])"
+        },
+        "dependencies_py": {
+          "description": "Shared dependencies for dependency injection",
+          "code": "from typing import AsyncGenerator\nfrom fastapi import Depends\nfrom sqlalchemy.ext.asyncio import AsyncSession\nfrom src.db.database import AsyncSessionLocal\nfrom src.web.services.batch_service import BatchService\nfrom src.web.services.query_service import QueryService\n\nasync def get_db() -> AsyncGenerator[AsyncSession, None]:\n    async with AsyncSessionLocal() as session:\n        try:\n            yield session\n        finally:\n            await session.close()\n\ndef get_batch_service(db: AsyncSession = Depends(get_db)) -> BatchService:\n    return BatchService(db)\n\ndef get_query_service(db: AsyncSession = Depends(get_db)) -> QueryService:\n    return QueryService(db)"
+        },
+        "route_example": {
+          "description": "Route example with dependency injection",
+          "code": "from fastapi import APIRouter, Request, Depends\nfrom fastapi.responses import HTMLResponse\nfrom fastapi.templating import Jinja2Templates\nfrom src.web.dependencies import get_batch_service\nfrom src.web.services.batch_service import BatchService\n\nrouter = APIRouter()\ntemplates = Jinja2Templates(directory=\"src/web/templates\")\n\n@router.get(\"/\", response_class=HTMLResponse)\nasync def dashboard(\n    request: Request,\n    service: BatchService = Depends(get_batch_service)\n):\n    stats = await service.get_batch_stats()\n    return templates.TemplateResponse(\n        \"dashboard/index.html\",\n        {\"request\": request, \"stats\": stats}\n    )"
+        }
+      },
+      "gotchas": [
+        "Don't forget to mount static files before including routers",
+        "Use async context managers for database sessions to ensure proper cleanup",
+        "Separate business logic from routes to improve testability",
+        "Avoid circular imports by using dependency injection"
+      ]
+    },
+    "async_patterns": {
+      "best_practices": [
+        "Use async/await consistently throughout the application",
+        "Use asyncio.gather() for concurrent database queries",
+        "Implement connection pooling with asyncpg",
+        "Use background tasks for long-running operations (CSV processing)",
+        "Implement timeout handling for external API calls"
+      ],
+      "code_examples": {
+        "concurrent_queries": {
+          "description": "Concurrent database queries with asyncio.gather",
+          "code": "import asyncio\nfrom sqlalchemy import select\nfrom src.db.models import PaperLead, RawMarkdown\n\nasync def get_dashboard_data(db: AsyncSession):\n    # Execute queries concurrently\n    total_papers, total_leads, failed_count = await asyncio.gather(\n        db.execute(select(func.count(PaperLead.id))),\n        db.execute(select(func.count(PaperLead.id)).where(PaperLead.email.isnot(None))),\n        db.execute(select(func.count(RawMarkdown.id)).where(RawMarkdown.processing_status == 'failed'))\n    )\n    return {\n        'total_papers': total_papers.scalar(),\n        'total_leads': total_leads.scalar(),\n        'failed_count': failed_count.scalar()\n    }"
+        },
+        "background_tasks": {
+          "description": "Background task for CSV processing",
+          "code": "from fastapi import BackgroundTasks\n\n@router.post(\"/api/import/csv\")\nasync def upload_csv(\n    background_tasks: BackgroundTasks,\n    file: UploadFile = File(...),\n    service: ExportService = Depends(get_export_service)\n):\n    # Save file temporarily\n    temp_path = f\"/tmp/{file.filename}\"\n    async with aiofiles.open(temp_path, 'wb') as f:\n        content = await file.read()\n        await f.write(content)\n    \n    # Process in background\n    background_tasks.add_task(\n        service.process_csv_background,\n        temp_path\n    )\n    \n    return {\"status\": \"processing\", \"file\": file.filename}"
+        }
+      }
+    },
+    "error_handling": {
+      "best_practices": [
+        "Implement custom exception handlers for consistent error responses",
+        "Use HTTPException for HTTP errors with proper status codes",
+        "Log all exceptions with context using structlog",
+        "Return user-friendly error messages for API responses",
+        "Implement validation errors with Pydantic"
+      ],
+      "code_examples": {
+        "exception_handlers": {
+          "description": "Custom exception handlers",
+          "code": "from fastapi import FastAPI, Request\nfrom fastapi.responses import JSONResponse\nfrom fastapi.exceptions import RequestValidationError\nimport structlog\n\nlogger = structlog.get_logger()\n\napp = FastAPI()\n\n@app.exception_handler(RequestValidationError)\nasync def validation_exception_handler(request: Request, exc: RequestValidationError):\n    logger.error(\"validation_error\", errors=exc.errors(), path=request.url.path)\n    return JSONResponse(\n        status_code=422,\n        content={\n            \"detail\": \"Validation error\",\n            \"errors\": exc.errors()\n        }\n    )\n\n@app.exception_handler(Exception)\nasync def general_exception_handler(request: Request, exc: Exception):\n    logger.error(\"unhandled_exception\", error=str(exc), path=request.url.path, exc_info=True)\n    return JSONResponse(\n        status_code=500,\n        content={\n            \"detail\": \"Internal server error\",\n            \"message\": str(exc) if app.debug else \"An error occurred\"\n        }\n    )"
+        }
+      }
+    }
+  },
+  "jinja2_patterns": {
+    "template_organization": {
+      "recommended_structure": {
+        "templates/base.html": "Base layout with Tailwind + HTMX",
+        "templates/components/": "Reusable components (navbar, cards, tables)",
+        "templates/dashboard/": "Dashboard-specific pages",
+        "templates/batch/": "Batch monitoring pages",
+        "templates/query/": "DOI query pages",
+        "templates/analysis/": "Data analysis pages",
+        "templates/config/": "Configuration pages",
+        "templates/export/": "Import/export pages",
+        "templates/errors/": "Error pages (404, 500)"
+      },
+      "best_practices": [
+        "Use template inheritance with {% extends 'base.html' %}",
+        "Create reusable components as macros",
+        "Use named blocks for flexible customization",
+        "Implement CSRF protection with hidden fields",
+        "Use filters for data formatting (dates, numbers)",
+        "Cache template compilation in production"
+      ],
+      "code_examples": {
+        "base_html": {
+          "description": "Base template with Tailwind CSS and HTMX",
+          "code": "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>{% block title %}IRRISS-SLeads Dashboard{% endblock %}</title>\n    \n    <!-- Tailwind CSS -->\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n    \n    <!-- HTMX -->\n    <script src=\"https://unpkg.com/htmx.org@1.9.10\" integrity=\"sha384-D1Kt99CQMDuVetoL1lrYwg5t+9Qdhe7Kk+tvh3vm50DU5deOQErL5tnf-cx6hT6X\" crossorigin=\"anonymous\"></script>\n    \n    <!-- ECharts -->\n    <script src=\"https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js\"></script>\n    <script src=\"https://cdn.jsdelivr.net/npm/echarts@5.4.3/map/js/china.js\"></script>\n    \n    {% block head %}{% endblock %}\n</head>\n<body class=\"bg-gray-100\">\n    {% include 'components/navbar.html' %}\n    \n    <main class=\"container mx-auto px-4 py-8\">\n        {% block content %}{% endblock %}\n    </main>\n    \n    {% block scripts %}{% endblock %}\n</body>\n</html>"
+        },
+        "macro_example": {
+          "description": "Reusable card component",
+          "code": "{# templates/components/card.html #}\n{% macro card(title, value, icon, color='blue') -%}\n<div class=\"bg-white rounded-lg shadow-md p-6\">\n    <div class=\"flex items-center justify-between\">\n        <div>\n            <p class=\"text-gray-500 text-sm\">{{ title }}</p>\n            <p class=\"text-3xl font-bold text-{{ color }}-600\">{{ value }}</p>\n        </div>\n        <div class=\"text-{{ color }}-500 text-4xl\">\n            {{ icon }}\n        </div>\n    </div>\n</div>\n{%- endmacro %}"
+        },
+        "page_template": {
+          "description": "Dashboard page extending base template",
+          "code": "{% extends 'base.html' %}\n{% from 'components/card.html' import card %}\n\n{% block title %}监控中心 - IRRISS-SLeads{% endblock %}\n\n{% block content %}\n<div class=\"mb-8\">\n    <h1 class=\"text-3xl font-bold text-gray-800\">批处理监控</h1>\n</div>\n\n<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6 mb-8\" \n     hx-get=\"/api/batch/stats\" \n     hx-trigger=\"every 60s, click from:#refresh-btn\"\n     hx-swap=\"innerHTML\">\n    {{ card('待处理', stats.pending, '⏳', 'yellow') }}\n    {{ card('处理中', stats.processing, '⚙️', 'blue') }}\n    {{ card('已完成', stats.completed, '✅', 'green') }}\n    {{ card('失败', stats.failed, '❌', 'red') }}\n</div>\n\n<button id=\"refresh-btn\" class=\"btn btn-primary\">\n    🔄 刷新状态\n</button>\n{% endblock %}"
+        }
+      },
+      "gotchas": [
+        "Always use {{ variable | escape }} or rely on auto-escaping to prevent XSS",
+        "Avoid complex logic in templates - move to services/filters",
+        "Don't forget to include CSRF tokens in forms",
+        "Cache expensive template operations in production"
+      ]
+    },
+    "filters": {
+      "best_practices": [
+        "Register custom filters for common transformations",
+        "Use filters for date formatting, number formatting, truncation",
+        "Keep filters pure (no side effects)",
+        "Document filter usage in template comments"
+      ],
+      "code_examples": {
+        "custom_filters": {
+          "description": "Custom Jinja2 filters",
+          "code": "from datetime import datetime\nfrom fastapi.templating import Jinja2Templates\n\ntemplates = Jinja2Templates(directory=\"src/web/templates\")\n\ndef format_datetime(value: datetime, format='%Y-%m-%d %H:%M:%S'):\n    \"\"\"Format datetime object to string\"\"\"\n    if value is None:\n        return \"\"\n    return value.strftime(format)\n\ndef truncate_text(value: str, length=100):\n    \"\"\"Truncate text with ellipsis\"\"\"\n    if len(value) <= length:\n        return value\n    return value[:length] + '...'\n\ndef format_number(value: int):\n    \"\"\"Format number with thousand separators\"\"\"\n    return f\"{value:,}\"\n\n# Register filters\ntemplates.env.filters['datetime'] = format_datetime\ntemplates.env.filters['truncate'] = truncate_text\ntemplates.env.filters['number'] = format_number"
+        }
+      }
+    }
+  },
+  "htmx_patterns": {
+    "real_time_refresh": {
+      "best_practices": [
+        "Use hx-trigger='every Ns' for polling-based refresh",
+        "Implement hx-trigger='load' for initial data load",
+        "Add manual refresh buttons as fallback",
+        "Use hx-swap='innerHTML' for partial updates",
+        "Implement loading indicators with hx-indicator",
+        "Consider WebSocket for real-time updates (>10s interval)"
+      ],
+      "code_examples": {
+        "auto_refresh": {
+          "description": "Auto-refresh every 60 seconds",
+          "code": "<!-- Auto-refresh batch stats every 60 seconds -->\n<div hx-get=\"/api/batch/stats\"\n     hx-trigger=\"every 60s\"\n     hx-swap=\"innerHTML\"\n     hx-indicator=\"#loading-spinner\">\n    <!-- Initial content loaded on page load -->\n    <div id=\"stats-content\">\n        {% include 'batch/stats_partial.html' %}\n    </div>\n</div>\n\n<!-- Loading indicator -->\n<div id=\"loading-spinner\" class=\"htmx-indicator\">\n    <div class=\"spinner\"></div>\n</div>"
+        },
+        "manual_refresh": {
+          "description": "Manual refresh button + auto-refresh",
+          "code": "<!-- Stats container -->\n<div id=\"stats-container\"\n     hx-get=\"/api/batch/stats\"\n     hx-trigger=\"every 60s, click from:#refresh-btn\"\n     hx-swap=\"innerHTML\">\n    <!-- Stats content -->\n</div>\n\n<!-- Manual refresh button -->\n<button id=\"refresh-btn\"\n        class=\"btn btn-secondary\"\n        hx-get=\"/api/batch/stats\"\n        hx-target=\"#stats-container\">\n    🔄 手动刷新\n</button>"
+        },
+        "progressive_enhancement": {
+          "description": "Graceful degradation without JavaScript",
+          "code": "<!-- Form that works with and without HTMX -->\n<form action=\"/api/query/doi\" method=\"GET\"\n      hx-get=\"/api/query/doi\"\n      hx-target=\"#result-container\"\n      hx-swap=\"innerHTML\">\n    <input type=\"text\" name=\"doi\" placeholder=\"输入 DOI\">\n    <button type=\"submit\">查询</button>\n</form>\n\n<div id=\"result-container\">\n    <!-- Results will be loaded here -->\n</div>"
+        }
+      }
+    },
+    "partial_updates": {
+      "best_practices": [
+        "Use hx-swap='outerHTML' to replace entire element",
+        "Use hx-swap='innerHTML' to replace content only",
+        "Use hx-swap-oob='true' for out-of-band updates",
+        "Return HTML fragments from API endpoints (not full pages)",
+        "Use hx-push-url='true' to update browser history"
+      ],
+      "code_examples": {
+        "partial_update": {
+          "description": "Update specific element without page reload",
+          "code": "<!-- Click to toggle status -->\n<button hx-post=\"/api/batch/123/toggle-status\"\n        hx-target=\"this\"\n        hx-swap=\"outerHTML\"\n        class=\"btn btn-{{ 'success' if batch.status == 'completed' else 'warning' }}\">\n    {{ batch.status }}\n</button>\n\n<!-- API returns new button HTML -->\n@router.post(\"/api/batch/{batch_id}/toggle-status\")\nasync def toggle_status(batch_id: int, service: BatchService = Depends(get_batch_service)):\n    new_status = await service.toggle_status(batch_id)\n    return HTMLResponse(content=f\"\"\"\n        <button hx-post=\"/api/batch/{batch_id}/toggle-status\"\n                hx-target=\"this\"\n                hx-swap=\"outerHTML\"\n                class=\"btn btn-success\">\n            {new_status}\n        </button>\n    \"\"\")"
+        },
+        "out_of_band_update": {
+          "description": "Update multiple elements with single request",
+          "code": "<!-- API response with out-of-band update -->\n@router.post(\"/api/batch/retry\")\nasync def retry_batch(request: Request, service: BatchService):\n    result = await service.retry_batch()\n    return templates.TemplateResponse(\n        \"batch/result.html\",\n        {\n            \"request\": request,\n            \"result\": result,\n            \"stats\": await service.get_stats()  # Updated stats\n        }\n    )\n\n<!-- batch/result.html -->\n<div id=\"result\">\n    <p>Retry successful: {{ result.count }} papers</p>\n</div>\n\n<!-- Out-of-band update: update stats without replacing -->\n<div id=\"stats-container\" hx-swap-oob=\"true\">\n    {% include 'batch/stats_partial.html' %}\n</div>"
+        }
+      }
+    },
+    "event_handling": {
+      "best_practices": [
+        "Use hx-on:* for inline event handlers",
+        "Use htmx.on() for JavaScript event handling",
+        "Implement confirmation dialogs with hx-confirm",
+        "Add error handling with hx-on::error",
+        "Show loading states with htmx:beforeRequest and htmx:afterRequest"
+      ],
+      "code_examples": {
+        "event_handlers": {
+          "description": "Event handling with HTMX",
+          "code": "<!-- Delete with confirmation -->\n<button hx-delete=\"/api/batch/123\"\n        hx-confirm=\"确定要删除这个批处理任务吗?\"\n        hx-target=\"#batch-list\"\n        hx-swap=\"innerHTML\">\n    🗑️ 删除\n</button>\n\n<!-- Show loading state -->\n<div hx-get=\"/api/batch/stats\"\n     hx-trigger=\"load\"\n     hx-indicator=\"#loading\"\n     hx-on::before-request=\"document.getElementById('loading').style.display='block'\"\n     hx-on::after-request=\"document.getElementById('loading').style.display='none'\">\n    <!-- Content -->\n</div>\n\n<!-- Error handling -->\n<script>\nhtmx.on('htmx:beforeSwap', function(evt) {\n    if (evt.detail.xhr.status === 404) {\n        alert(\"资源未找到\");\n    }\n});\n\nhtmx.on('htmx:responseError', function(evt) {\n    console.error('Request failed:', evt.detail.error);\n});\n</script>"
+        }
+      }
+    }
+  },
+  "csv_handling": {
+    "upload_patterns": {
+      "best_practices": [
+        "Use UploadFile with async/await for file uploads",
+        "Implement file size limits (e.g., 10MB)",
+        "Validate file type (CSV only)",
+        "Use streaming for large files (Pandas chunksize)",
+        "Process CSV in background tasks to avoid blocking",
+        "Store temporary files with unique identifiers",
+        "Implement cleanup of temporary files"
+      ],
+      "code_examples": {
+        "async_upload": {
+          "description": "Async CSV upload with validation",
+          "code": "from fastapi import UploadFile, File, HTTPException\nimport aiofiles\nimport pandas as pd\nfrom pathlib import Path\n\nMAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB\n\n@router.post(\"/api/import/csv\")\nasync def upload_csv(\n    file: UploadFile = File(...),\n    service: ExportService = Depends(get_export_service)\n):\n    # Validate file type\n    if not file.filename.endswith('.csv'):\n        raise HTTPException(status_code=400, detail=\"只支持 CSV 文件\")\n    \n    # Read file content\n    content = await file.read()\n    \n    # Check file size\n    if len(content) > MAX_FILE_SIZE:\n        raise HTTPException(status_code=400, detail=\"文件大小不能超过 10MB\")\n    \n    # Save to temporary location\n    temp_path = Path(f\"/tmp/uploads/{file.filename}\")\n    temp_path.parent.mkdir(parents=True, exist_ok=True)\n    \n    async with aiofiles.open(temp_path, 'wb') as f:\n        await f.write(content)\n    \n    # Parse and validate CSV\n    try:\n        df = pd.read_csv(temp_path)\n        preview = df.head(10).to_dict('records')\n        validation = service.validate_csv(df)\n        \n        return {\n            \"status\": \"success\",\n            \"filename\": file.filename,\n            \"rows\": len(df),\n            \"preview\": preview,\n            \"validation\": validation,\n            \"temp_path\": str(temp_path)\n        }\n    except Exception as e:\n        raise HTTPException(status_code=400, detail=f\"CSV 解析失败: {str(e)}\")"
+        },
+        "streaming_upload": {
+          "description": "Streaming CSV upload for large files",
+          "code": "import pandas as pd\n\n@router.post(\"/api/import/csv/large\")\nasync def upload_large_csv(file: UploadFile = File(...)):\n    temp_path = f\"/tmp/{file.filename}\"\n    \n    # Stream upload\n    async with aiofiles.open(temp_path, 'wb') as f:\n        while chunk := await file.read(1024 * 1024):  # 1MB chunks\n            await f.write(chunk)\n    \n    # Process in chunks\n    chunk_iter = pd.read_csv(temp_path, chunksize=1000)\n    total_rows = 0\n    \n    for chunk in chunk_iter:\n        # Process each chunk\n        await process_chunk(chunk)\n        total_rows += len(chunk)\n    \n    return {\"status\": \"success\", \"rows\": total_rows}"
+        }
+      }
+    },
+    "download_patterns": {
+      "best_practices": [
+        "Use StreamingResponse for large CSV downloads",
+        "Set appropriate headers (Content-Type, Content-Disposition)",
+        "Implement filters and pagination for large datasets",
+        "Use async generators for streaming",
+        "Cache frequently downloaded reports",
+        "Compress CSV files for large exports"
+      ],
+      "code_examples": {
+        "async_download": {
+          "description": "Async CSV download with StreamingResponse",
+          "code": "from fastapi.responses import StreamingResponse\nimport io\nimport pandas as pd\nfrom datetime import datetime\n\n@router.get(\"/api/export/csv\")\nasync def export_csv(\n    date: str = None,\n    service: ExportService = Depends(get_export_service)\n):\n    # Get data\n    df = await service.export_paper_leads(date=date)\n    \n    # Create in-memory buffer\n    output = io.BytesIO()\n    df.to_csv(output, index=False, encoding='utf-8-sig')\n    output.seek(0)\n    \n    # Generate filename\n    filename = f\"paper_leads_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv\"\n    \n    return StreamingResponse(\n        io.BytesIO(output.getvalue()),\n        media_type=\"text/csv\",\n        headers={\n            \"Content-Disposition\": f'attachment; filename=\"{filename}\"'\n        }\n    )"
+        },
+        "streaming_download": {
+          "description": "Streaming large CSV with async generator",
+          "code": "from fastapi.responses import StreamingResponse\nimport csv\n\nasync def generate_csv():\n    \"\"\"Async generator for streaming CSV\"\"\"\n    output = io.StringIO()\n    writer = csv.writer(output)\n    \n    # Write header\n    writer.writerow(['DOI', '作者', '邮箱', '机构', '评分'])\n    yield output.getvalue()\n    output.seek(0)\n    output.truncate(0)\n    \n    # Stream data rows\n    async for row in get_leads_async():\n        writer.writerow([row.doi, row.author, row.email, row.institution, row.score])\n        yield output.getvalue()\n        output.seek(0)\n        output.truncate(0)\n\n@router.get(\"/api/export/csv/stream\")\nasync def export_csv_stream():\n    return StreamingResponse(\n        generate_csv(),\n        media_type=\"text/csv\",\n        headers={\n            \"Content-Disposition\": \"attachment; filename=leads.csv\"\n        }\n    )"
+        }
+      }
+    },
+    "preview_and_validation": {
+      "best_practices": [
+        "Show preview before confirming upload",
+        "Validate data types and required fields",
+        "Display matched/unmatched records",
+        "Highlight validation errors",
+        "Allow users to cancel before committing"
+      ],
+      "code_examples": {
+        "preview_validation": {
+          "description": "CSV preview with validation",
+          "code": "@router.post(\"/api/import/csv/preview\")\nasync def preview_csv(file: UploadFile = File(...)):\n    # Parse CSV\n    df = pd.read_csv(file.file)\n    \n    # Validate required columns\n    required = ['DOI', '线索准确性', '需求匹配度']\n    missing = [col for col in required if col not in df.columns]\n    if missing:\n        raise HTTPException(400, f\"缺少必需列: {', '.join(missing)}\")\n    \n    # Check DOI matches\n    dois = df['DOI'].tolist()\n    matched_dois = await check_dois_exist(dois)\n    \n    return {\n        \"preview\": df.head(10).to_dict('records'),\n        \"total_rows\": len(df),\n        \"matched\": len(matched_dois),\n        \"unmatched\": len(dois) - len(matched_dois),\n        \"validation_errors\": validate_rows(df)\n    }\n\n@router.post(\"/api/import/csv/confirm\")\nasync def confirm_upload(\n    temp_path: str,\n    service: ExportService = Depends(get_export_service)\n):\n    # Final upload after user confirmation\n    df = pd.read_csv(temp_path)\n    result = await service.import_feedback(df)\n    \n    # Cleanup temp file\n    Path(temp_path).unlink()\n    \n    return result"
+        }
+      }
+    }
+  },
+  "charts_integration": {
+    "echarts_with_fastapi": {
+      "best_practices": [
+        "Load ECharts from CDN (faster than bundling)",
+        "Return chart configuration as JSON from API",
+        "Initialize charts after HTMX content loads (htmx:afterSettle)",
+        "Implement responsive chart resizing",
+        "Use async data loading to avoid blocking page render",
+        "Cache chart data for frequently accessed charts"
+      ],
+      "code_examples": {
+        "api_endpoint": {
+          "description": "FastAPI endpoint returning chart config",
+          "code": "@router.get(\"/api/analysis/chart/quality\")\nasync def get_quality_chart(\n    service: AnalysisService = Depends(get_analysis_service)\n):\n    # Get data\n    quality_data = await service.get_quality_distribution()\n    \n    # Return ECharts config\n    return {\n        \"title\": {\n            \"text\": \"线索质量分布\",\n            \"left\": \"center\"\n        },\n        \"tooltip\": {\n            \"trigger\": \"item\"\n        },\n        \"legend\": {\n            \"orient\": \"vertical\",\n            \"left\": \"left\"\n        },\n        \"series\": [{\n            \"name\": \"质量等级\",\n            \"type\": \"pie\",\n            \"radius\": \"50%\",\n            \"data\": [\n                {\"value\": quality_data.high, \"name\": \"高\"},\n                {\"value\": quality_data.medium, \"name\": \"中\"},\n                {\"value\": quality_data.low, \"name\": \"低\"}\n            ],\n            \"emphasis\": {\n                \"itemStyle\": {\n                    \"shadowBlur\": 10,\n                    \"shadowOffsetX\": 0,\n                    \"shadowColor\": \"rgba(0, 0, 0, 0.5)\"\n                }\n            }\n        }]\n    }"
+        },
+        "china_map": {
+          "description": "China map with institution distribution",
+          "code": "@router.get(\"/api/analysis/map/china\")\nasync def get_china_map(\n    service: AnalysisService = Depends(get_analysis_service)\n):\n    # Get city distribution from address_cn\n    city_stats = await service.get_city_distribution()\n    \n    # Convert to ECharts format\n    map_data = [\n        {\"name\": city, \"value\": count}\n        for city, count in city_stats.items()\n    ]\n    \n    return {\n        \"title\": {\n            \"text\": \"机构地域分布\",\n            \"left\": \"center\"\n        },\n        \"tooltip\": {\n            \"trigger\": \"item\",\n            \"formatter\": \"{b}<br/>{c} 篇论文\"\n        },\n        \"visualMap\": {\n            \"min\": 0,\n            \"max\": max(city_stats.values()),\n            \"left\": \"left\",\n            \"top\": \"bottom\",\n            \"text\": [\"高\", \"低\"],\n            \"calculable\": True\n        },\n        \"series\": [{\n            \"name\": \"论文数量\",\n            \"type\": \"map\",\n            \"map\": \"china\",\n            \"roam\": True,\n            \"label\": {\n                \"show\": True\n            },\n            \"data\": map_data\n        }]\n    }"
+        },
+        "frontend_integration": {
+          "description": "Initialize ECharts after HTMX load",
+          "code": "<!-- templates/analysis/stats.html -->\n<div id=\"quality-chart\" style=\"width: 600px; height: 400px;\"></div>\n\n<script>\ndocument.addEventListener('htmx:afterSettle', function(evt) {\n    // Initialize chart after content loads\n    if (evt.target.querySelector('#quality-chart')) {\n        fetch('/api/analysis/chart/quality')\n            .then(response => response.json())\n            .then(option => {\n                const chart = echarts.init(document.getElementById('quality-chart'));\n                chart.setOption(option);\n            });\n    }\n});\n\n// Responsive resize\nwindow.addEventListener('resize', function() {\n    const chart = echarts.getInstanceByDom(document.getElementById('quality-chart'));\n    if (chart) {\n        chart.resize();\n    }\n});\n</script>"
+        }
+      },
+      "gotchas": [
+        "Load China map JS file separately (echarts.china.js)",
+        "Handle missing data gracefully (null/undefined values)",
+        "Implement loading states for slow data fetching",
+        "Use async/await to avoid blocking UI",
+        "Clean up chart instances when elements are removed"
+      ]
+    }
+  },
+  "tailwind_integration": {
+    "jinja2_patterns": {
+      "best_practices": [
+        "Use Tailwind CDN for rapid development",
+        "Create custom component classes in dashboard.css",
+        "Use @apply for reusable styles",
+        "Implement responsive design with Tailwind breakpoints",
+        "Use Tailwind's color palette for consistency",
+        "Extract common patterns to Jinja2 macros"
+      ],
+      "code_examples": {
+        "tailwind_config": {
+          "description": "Tailwind configuration for dashboard",
+          "code": "<!-- Add to base.html head -->\n<script src=\"https://cdn.tailwindcss.com\"></script>\n<script>\ntailwind.config = {\n  theme: {\n    extend: {\n      colors: {\n        'irriss-blue': '#1e40af',\n        'irriss-green': '#059669',\n        'irriss-yellow': '#f59e0b',\n        'irriss-red': '#dc2626'\n      },\n      spacing: {\n        '128': '32rem',\n      }\n    }\n  }\n}\n</script>"
+        },
+        "responsive_design": {
+          "description": "Responsive grid layout with Tailwind",
+          "code": "<!-- Responsive dashboard grid -->\n<div class=\"container mx-auto px-4\">\n    <div class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6\">\n        <!-- Cards adapt to screen size -->\n        <div class=\"bg-white rounded-lg shadow p-6\">\n            <h3 class=\"text-lg font-semibold text-gray-700\">总论文数</h3>\n            <p class=\"text-3xl font-bold text-irriss-blue\">{{ stats.total_papers }}</p>\n        </div>\n        <!-- More cards... -->\n    </div>\n</div>"
+        },
+        "htmx_states": {
+          "description": "Tailwind classes for HTMX states",
+          "code": "<!-- Loading indicator styles -->\n<style>\n.htmx-indicator {\n    display: none;\n}\n\n.htmx-request .htmx-indicator {\n    display: inline-block;\n}\n\n.htmx-request.htmx-indicator {\n    display: inline-block;\n}\n\n/* Spinner animation */\n.spinner {\n    border: 4px solid #f3f3f3;\n    border-top: 4px solid #3490dc;\n    border-radius: 50%;\n    width: 40px;\n    height: 40px;\n    animation: spin 1s linear infinite;\n}\n\n@keyframes spin {\n    0% { transform: rotate(0deg); }\n    100% { transform: rotate(360deg); }\n}\n</style>\n\n<!-- Usage -->\n<button hx-post=\"/api/batch/retry\" \n        class=\"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded\">\n    重试\n    <span class=\"htmx-indicator spinner\"></span>\n</button>"
+        }
+      }
+    },
+    "component_patterns": {
+      "best_practices": [
+        "Create reusable Tailwind components",
+        "Use @apply for repeated class combinations",
+        "Implement dark mode support",
+        "Use Tailwind's responsive utilities",
+        "Extract common styles to CSS file"
+      ],
+      "code_examples": {
+        "button_component": {
+          "description": "Reusable button styles",
+          "code": "<!-- Custom CSS file: static/css/dashboard.css -->\n<style type=\"text/tailwindcss\">\n@layer components {\n  .btn {\n    @apply font-bold py-2 px-4 rounded transition duration-200;\n  }\n  \n  .btn-primary {\n    @apply bg-blue-500 hover:bg-blue-700 text-white;\n  }\n  \n  .btn-secondary {\n    @apply bg-gray-500 hover:bg-gray-700 text-white;\n  }\n  \n  .btn-danger {\n    @apply bg-red-500 hover:bg-red-700 text-white;\n  }\n  \n  .card {\n    @apply bg-white rounded-lg shadow-md p-6;\n  }\n  \n  .input {\n    @apply border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500;\n  }\n}\n</style>"
+        }
+      }
+    }
+  },
+  "performance_tips": {
+    "database_optimization": {
+      "best_practices": [
+        "Add indexes on frequently queried columns (processing_status, doi, created_at)",
+        "Use select_only() to fetch specific columns",
+        "Implement pagination with LIMIT/OFFSET",
+        "Use async queries with asyncio.gather() for concurrent requests",
+        "Cache frequently accessed data (Redis)",
+        "Use EXPLAIN ANALYZE to optimize slow queries"
+      ],
+      "code_examples": {
+        "indexing": {
+          "description": "Database indexes for dashboard queries",
+          "code": "-- Add indexes for common queries\nCREATE INDEX idx_raw_markdown_status ON raw_markdown(processing_status);\nCREATE INDEX idx_raw_markdown_batch_id ON raw_markdown(batch_id);\nCREATE INDEX idx_paper_leads_doi ON paper_leads(doi);\nCREATE INDEX idx_paper_leads_created_at ON paper_leads(created_at DESC);\nCREATE INDEX idx_paper_leads_email ON paper_leads(email) WHERE email IS NOT NULL;\n\n-- Composite index for filtered queries\nCREATE INDEX idx_paper_leads_score_date ON paper_leads(score DESC, created_at DESC);"
+        },
+        "optimized_queries": {
+          "description": "Optimized database queries",
+          "code": "from sqlalchemy import select, func\nfrom sqlalchemy.orm import load_only\n\nasync def get_dashboard_stats(db: AsyncSession):\n    # Use select_only to fetch specific columns\n    stmt = select(\n        func.count(RawMarkdown.id).label('total'),\n        func.count().filter(RawMarkdown.processing_status == 'pending').label('pending'),\n        func.count().filter(RawMarkdown.processing_status == 'processing').label('processing'),\n        func.count().filter(RawMarkdown.processing_status == 'completed').label('completed'),\n        func.count().filter(RawMarkdown.processing_status == 'failed').label('failed')\n    )\n    \n    result = await db.execute(stmt)\n    return result.one()\n\nasync def get_paper_leads_paginated(db: AsyncSession, page: int = 1, per_page: int = 50):\n    # Pagination with offset/limit\n    offset = (page - 1) * per_page\n    \n    stmt = select(PaperLead)\\\n        .options(load_only(PaperLead.doi, PaperLead.author, PaperLead.email, PaperLead.score))\\\n        .order_by(PaperLead.created_at.desc())\\\n        .offset(offset)\\\n        .limit(per_page)\n    \n    result = await db.execute(stmt)\n    return result.scalars().all()"
+        },
+        "caching": {
+          "description": "Redis caching for dashboard stats",
+          "code": "import redis.asyncio as redis\nimport json\nfrom datetime import timedelta\n\nredis_client = redis.from_url(\"redis://localhost:6379\")\n\nasync def get_cached_stats(cache_key: str, ttl: int = 60):\n    \"\"\"Get stats from cache or database\"\"\"\n    # Try cache first\n    cached = await redis_client.get(cache_key)\n    if cached:\n        return json.loads(cached)\n    \n    # Fetch from database\n    stats = await fetch_stats_from_db()\n    \n    # Cache for TTL seconds\n    await redis_client.setex(\n        cache_key,\n        timedelta(seconds=ttl),\n        json.dumps(stats)\n    )\n    \n    return stats"
+        }
+      }
+    },
+    "async_optimization": {
+      "best_practices": [
+        "Use asyncio.gather() for concurrent operations",
+        "Implement connection pooling (asyncpg)",
+        "Use background tasks for long-running operations",
+        "Implement request timeouts",
+        "Use async file I/O (aiofiles)"
+      ],
+      "code_examples": {
+        "concurrent_queries": {
+          "description": "Concurrent database queries",
+          "code": "import asyncio\n\nasync def get_dashboard_data_optimized(db: AsyncSession):\n    # Execute multiple queries concurrently\n    results = await asyncio.gather(\n        db.execute(select(func.count(PaperLead.id))),\n        db.execute(select(func.count(RawMarkdown.id)).where(RawMarkdown.processing_status == 'failed')),\n        db.execute(select(PaperLead).order_by(PaperLead.score.desc()).limit(10)),\n        get_cached_stats('quality_distribution')\n    )\n    \n    return {\n        'total_papers': results[0].scalar(),\n        'failed_count': results[1].scalar(),\n        'top_leads': results[2].scalars().all(),\n        'quality_dist': results[3]\n    }"
+        }
+      }
+    },
+    "frontend_optimization": {
+      "best_practices": [
+        "Minimize HTTP requests (combine CSS/JS)",
+        "Use CDN for Tailwind and ECharts",
+        "Implement lazy loading for charts",
+        "Use HTMX to avoid full page reloads",
+        "Debounce search inputs",
+        "Implement client-side caching"
+      ],
+      "code_examples": {
+        "lazy_loading": {
+          "description": "Lazy load charts when visible",
+          "code": "<script>\n// Lazy load charts when they become visible\nconst observer = new IntersectionObserver((entries) => {\n    entries.forEach(entry => {\n        if (entry.isIntersecting) {\n            const chartId = entry.target.id;\n            initChart(chartId);\n            observer.unobserve(entry.target);\n        }\n    });\n});\n\n// Observe all chart containers\ndocument.querySelectorAll('[data-chart]').forEach(el => {\n    observer.observe(el);\n});\n\nfunction initChart(chartId) {\n    fetch(`/api/analysis/chart/${chartId}`)\n        .then(response => response.json())\n        .then(option => {\n            const chart = echarts.init(document.getElementById(chartId));\n            chart.setOption(option);\n        });\n}\n</script>"
+        },
+        "debounce": {
+          "description": "Debounce search input",
+          "code": "<!-- Debounce DOI search input -->\n<input type=\"text\" \n       name=\"doi\"\n       hx-get=\"/api/query/doi\"\n       hx-trigger=\"keyup changed delay:500ms\"\n       hx-target=\"#result-container\"\n       placeholder=\"输入 DOI 查询\">\n\n<!-- Or with JavaScript -->\n<script>\nlet searchTimeout;\ndocument.querySelector('#doi-input').addEventListener('input', (e) => {\n    clearTimeout(searchTimeout);\n    searchTimeout = setTimeout(() => {\n        htmx.trigger(e.target, 'search');\n    }, 500);\n});\n</script>"
+        }
+      }
+    }
+  },
+  "security_considerations": {
+    "input_validation": {
+      "best_practices": [
+        "Use Pydantic models for request validation",
+        "Sanitize user inputs (XSS prevention)",
+        "Validate file uploads (type, size, content)",
+        "Implement rate limiting",
+        "Use parameterized queries (SQLAlchemy)"
+      ],
+      "code_examples": {
+        "pydantic_validation": {
+          "description": "Pydantic models for validation",
+          "code": "from pydantic import BaseModel, validator, constr\nimport re\n\nclass DOIQuery(BaseModel):\n    doi: constr(min_length=5, max_length=100)\n    \n    @validator('doi')\n    def validate_doi(cls, v):\n        # Validate DOI format\n        if not re.match(r'^10\\.\\d{4,}/.+', v):\n            raise ValueError('Invalid DOI format')\n        return v\n\nclass CSVUpload(BaseModel):\n    filename: str\n    rows: int\n    matched: int\n    unmatched: int\n\n@router.post(\"/api/query/doi\")\nasync def query_doi(\n    query: DOIQuery,\n    service: QueryService = Depends(get_query_service)\n):\n    # Pydantic automatically validates input\n    result = await service.query_by_doi(query.doi)\n    return result"
+        },
+        "file_validation": {
+          "description": "File upload validation",
+          "code": "import magic\n\nALLOWED_TYPES = ['text/csv', 'application/vnd.ms-excel']\nMAX_SIZE = 10 * 1024 * 1024  # 10MB\n\nasync def validate_upload(file: UploadFile):\n    # Check file size\n    content = await file.read()\n    if len(content) > MAX_SIZE:\n        raise HTTPException(400, \"File too large\")\n    \n    # Check file type using magic numbers\n    file_type = magic.from_buffer(content[:1024], mime=True)\n    if file_type not in ALLOWED_TYPES:\n        raise HTTPException(400, f\"Invalid file type: {file_type}\")\n    \n    # Reset file pointer\n    await file.seek(0)\n    return file"
+        }
+      }
+    },
+    "xss_protection": {
+      "best_practices": [
+        "Jinja2 auto-escaping is enabled by default",
+        "Use {{ variable | escape }} explicitly if needed",
+        "Sanitize HTML content before rendering",
+        "Use Content-Security-Policy headers",
+        "Validate and sanitize user-generated content"
+      ],
+      "code_examples": {
+        "auto_escape": {
+          "description": "Ensure auto-escaping in Jinja2",
+          "code": "from jinja2 import Environment, FileSystemLoader, select_autoescape\n\n# Enable auto-escaping\nenv = Environment(\n    loader=FileSystemLoader('templates'),\n    autoescape=select_autoescape(['html', 'xml'])\n)\n\n# In templates, auto-escaping is automatic:\n# {{ user_input }}  -> automatically escaped\n\n# If you need to render HTML safely:\n# {{ html_content | safe }}  -> only if you trust the source"
+        },
+        "csp_headers": {
+          "description": "Content Security Policy headers",
+          "code": "from fastapi.middleware.cors import CORSMiddleware\nfrom starlette.middleware.base import BaseHTTPMiddleware\n\nclass CSPMiddleware(BaseHTTPMiddleware):\n    async def dispatch(self, request, call_next):\n        response = await call_next(request)\n        response.headers['Content-Security-Policy'] = (\n            \"default-src 'self'; \"\n            \"script-src 'self' 'unsafe-inline' 'unsafe-eval' \"\n            \"https://cdn.tailwindcss.com \"\n            \"https://unpkg.com \"\n            \"https://cdn.jsdelivr.net; \"\n            \"style-src 'self' 'unsafe-inline' \"\n            \"https://cdn.tailwindcss.com;\"\n        )\n        return response\n\napp.add_middleware(CSPMiddleware)"
+        }
+      }
+    },
+    "sql_injection": {
+      "best_practices": [
+        "Always use SQLAlchemy's parameterized queries",
+        "Never concatenate user input into SQL strings",
+        "Use ORM methods instead of raw SQL",
+        "Validate and sanitize filter parameters"
+      ],
+      "code_examples": {
+        "safe_queries": {
+          "description": "Safe parameterized queries",
+          "code": "# SAFE: Using SQLAlchemy ORM\nstmt = select(PaperLead).where(PaperLead.doi == user_input_doi)\nresult = await db.execute(stmt)\n\n# SAFE: Using SQLAlchemy core with parameters\nstmt = text(\"SELECT * FROM paper_leads WHERE doi = :doi\")\nresult = await db.execute(stmt, {\"doi\": user_input_doi})\n\n# DANGEROUS: Never do this!\n# stmt = text(f\"SELECT * FROM paper_leads WHERE doi = '{user_input_doi}'\")"
+        }
+      }
+    },
+    "authentication": {
+      "best_practices": [
+        "Implement Basic Auth for internal tools",
+        "Use environment variables for credentials",
+        "Implement rate limiting",
+        "Log all access attempts",
+        "Use HTTPS in production"
+      ],
+      "code_examples": {
+        "basic_auth": {
+          "description": "Basic Auth implementation",
+          "code": "from fastapi.security import HTTPBasic, HTTPBasicCredentials\nfrom fastapi import Depends, HTTPException\nimport secrets\nimport os\n\nsecurity = HTTPBasic()\n\ndef verify_credentials(credentials: HTTPBasicCredentials = Depends(security)):\n    correct_username = secrets.compare_digest(\n        credentials.username, os.getenv('DASHBOARD_USER', 'admin')\n    )\n    correct_password = secrets.compare_digest(\n        credentials.password, os.getenv('DASHBOARD_PASSWORD', 'password')\n    )\n    \n    if not (correct_username and correct_password):\n        raise HTTPException(\n            status_code=401,\n            detail=\"Invalid credentials\",\n            headers={\"WWW-Authenticate\": \"Basic\"}\n        )\n    return credentials.username\n\n# Protect routes\n@router.get(\"/dashboard\")\nasync def dashboard(\n    request: Request,\n    username: str = Depends(verify_credentials)\n):\n    return templates.TemplateResponse(\"dashboard/index.html\", {\"request\": request})"
+        }
+      }
+    },
+    "rate_limiting": {
+      "best_practices": [
+        "Implement rate limiting for API endpoints",
+        "Use Redis for distributed rate limiting",
+        "Set appropriate limits (e.g., 100 requests/minute)",
+        "Return 429 status code when exceeded"
+      ],
+      "code_examples": {
+        "rate_limit": {
+          "description": "Rate limiting with Redis",
+          "code": "import redis.asyncio as redis\nfrom fastapi import HTTPException\n\nredis_client = redis.from_url(\"redis://localhost:6379\")\n\nasync def rate_limit(key: str, limit: int = 100, window: int = 60):\n    \"\"\"Rate limit using Redis\"\"\"\n    current = await redis_client.get(key)\n    \n    if current and int(current) >= limit:\n        raise HTTPException(\n            status_code=429,\n            detail=\"Rate limit exceeded\"\n        )\n    \n    # Increment counter\n    pipe = redis_client.pipeline()\n    pipe.incr(key)\n    pipe.expire(key, window)\n    await pipe.execute()\n\n@router.get(\"/api/query/doi\")\nasync def query_doi(\n    doi: str,\n    request: Request,\n    service: QueryService = Depends(get_query_service)\n):\n    # Rate limit by IP\n    await rate_limit(f\"rate_limit:{request.client.host}\", limit=100, window=60)\n    \n    result = await service.query_by_doi(doi)\n    return result"
+        }
+      }
+    }
+  },
+  "testing_strategies": {
+    "unit_tests": {
+      "best_practices": [
+        "Test business logic in services layer",
+        "Mock database sessions for isolated testing",
+        "Test edge cases and error conditions",
+        "Use pytest-asyncio for async tests"
+      ],
+      "code_examples": {
+        "service_test": {
+          "description": "Unit test for service layer",
+          "code": "import pytest\nfrom unittest.mock import AsyncMock, MagicMock\nfrom src.web.services.batch_service import BatchService\n\n@pytest.mark.asyncio\nasync def test_get_batch_stats():\n    # Mock database session\n    mock_db = AsyncMock()\n    mock_result = MagicMock()\n    mock_result.all.return_value = [\n        ('pending', 10),\n        ('completed', 50)\n    ]\n    mock_db.execute.return_value = mock_result\n    \n    service = BatchService(mock_db)\n    stats = await service.get_batch_stats()\n    \n    assert stats['pending'] == 10\n    assert stats['completed'] == 50"
+        }
+      }
+    },
+    "integration_tests": {
+      "best_practices": [
+        "Test full request/response cycle",
+        "Use test database with fixtures",
+        "Test HTMX endpoints return correct HTML",
+        "Test file upload/download flows"
+      ],
+      "code_examples": {
+        "api_test": {
+          "description": "Integration test for API endpoints",
+          "code": "from fastapi.testclient import TestClient\nfrom src.web.main import app\n\nclient = TestClient(app)\n\ndef test_query_doi():\n    response = client.get(\"/api/query/doi?doi=10.1234/test\")\n    assert response.status_code == 200\n    data = response.json()\n    assert 'doi' in data\n    assert data['doi'] == '10.1234/test'\n\ndef test_upload_csv():\n    csv_content = b\"DOI,accuracy\\n10.1234/test,good\"\n    response = client.post(\n        \"/api/import/csv\",\n        files={\"file\": (\"test.csv\", csv_content, \"text/csv\")}\n    )\n    assert response.status_code == 200\n    assert response.json()['status'] == 'success'"
+        }
+      }
+    }
+  },
+  "deployment_tips": {
+    "production_setup": {
+      "best_practices": [
+        "Use Gunicorn with Uvicorn workers for production",
+        "Enable HTTPS with SSL certificates",
+        "Use environment variables for configuration",
+        "Implement health check endpoints",
+        "Set up logging and monitoring",
+        "Use Docker for consistent deployment"
+      ],
+      "code_examples": {
+        "gunicorn_config": {
+          "description": "Gunicorn configuration for production",
+          "code": "# gunicorn.conf.py\nimport multiprocessing\n\nbind = \"0.0.0.0:8000\"\nworkers = multiprocessing.cpu_count() * 2 + 1\nworker_class = \"uvicorn.workers.UvicornWorker\"\nkeepalive = 120\ntimeout = 120\n\n# Logging\naccesslog = \"-\"\nerrorlog = \"-\"\nloglevel = \"info\""
+        },
+        "dockerfile": {
+          "description": "Dockerfile for FastAPI dashboard",
+          "code": "FROM python:3.11-slim\n\nWORKDIR /app\n\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\n\nCOPY src/ ./src/\nCOPY config/ ./config/\n\nEXPOSE 8000\n\nCMD [\"gunicorn\", \"src.web.main:app\", \"-c\", \"gunicorn.conf.py\"]"
+        },
+        "systemd_service": {
+          "description": "Systemd service for dashboard",
+          "code": "[Unit]\nDescription=IRRISS-SLeads Dashboard\nAfter=network.target\n\n[Service]\nType=notify\nUser=www-data\nGroup=www-data\nWorkingDirectory=/opt/irriss-sleads\nEnvironment=\"PATH=/opt/irriss-sleads/.venv/bin\"\nExecStart=/opt/irriss-sleads/.venv/bin/gunicorn src.web.main:app -c gunicorn.conf.py\nRestart=always\n\n[Install]\nWantedBy=multi-user.target"
+        }
+      }
+    },
+    "monitoring": {
+      "best_practices": [
+        "Implement health check endpoint",
+        "Use structured logging (structlog)",
+        "Monitor response times and error rates",
+        "Set up alerts for critical errors",
+        "Use APM tools (Sentry, DataDog)"
+      ],
+      "code_examples": {
+        "health_check": {
+          "description": "Health check endpoint",
+          "code": "@router.get(\"/health\")\nasync def health_check(db: AsyncSession = Depends(get_db)):\n    try:\n        # Check database connection\n        await db.execute(text(\"SELECT 1\"))\n        return {\n            \"status\": \"healthy\",\n            \"database\": \"connected\"\n        }\n    except Exception as e:\n        logger.error(\"health_check_failed\", error=str(e))\n        return JSONResponse(\n            status_code=503,\n            content={\n                \"status\": \"unhealthy\",\n                \"error\": str(e)\n            }\n        )"
+        }
+      }
+    }
+  },
+  "official_documentation_urls": {
+    "fastapi": "https://fastapi.tiangolo.com/",
+    "jinja2": "https://jinja.palletsprojects.com/",
+    "htmx": "https://htmx.org/",
+    "htmx_examples": "https://htmx.org/examples/",
+    "tailwind_css": "https://tailwindcss.com/",
+    "echarts": "https://echarts.apache.org/",
+    "echarts_china_map": "https://echarts.apache.org/examples/zh/editor.html?c=map-polygon",
+    "sqlalchemy_async": "https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html",
+    "pydantic": "https://docs.pydantic.dev/",
+    "pandas": "https://pandas.pydata.org/",
+    "uvicorn": "https://www.uvicorn.org/",
+    "gunicorn": "https://gunicorn.org/"
+  },
+  "project_specific_recommendations": {
+    "batch_monitoring": {
+      "refresh_strategy": "Use HTMX hx-trigger='every 60s' for auto-refresh, combined with manual refresh button",
+      "implementation": "Create separate API endpoint (/api/batch/stats) that returns HTML fragment with updated stats",
+      "caching": "Cache batch stats in Redis for 30 seconds to reduce database load",
+      "real_time_alternative": "Consider WebSocket for sub-second updates if needed in future"
+    },
+    "doi_query": {
+      "validation": "Use Pydantic to validate DOI format before querying database",
+      "optimization": "Add database index on doi column in both raw_markdown and paper_leads tables",
+      "caching": "Cache query results for 5 minutes (DOI content rarely changes)",
+      "error_handling": "Return 404 if DOI not found, with user-friendly message"
+    },
+    "china_map": {
+      "city_extraction": "Extract city from address_cn field using predefined city list and regex matching",
+      "data_preparation": "Create API endpoint that aggregates counts by city and returns ECharts-compatible format",
+      "performance": "Cache city distribution data for 10 minutes",
+      "error_handling": "Handle cases where address_cn is missing or unparseable (mark as '未知')"
+    },
+    "csv_import_export": {
+      "file_size_limit": "Limit uploads to 10MB, stream larger files",
+      "preview_flow": "Upload → Parse → Preview → User Confirms → Update Database",
+      "validation": "Validate required columns (DOI, accuracy, demand_match, etc.) before processing",
+      "transaction": "Use database transaction for batch updates (rollback on error)",
+      "cleanup": "Delete temporary files after processing"
+    },
+    "configuration_management": {
+      "yaml_editing": "Read YAML → Display in form → Edit → Validate → Write back to YAML file",
+      "validation": "Validate YAML syntax before saving",
+      "backup": "Create backup before editing (copy to .bak file)",
+      "reload": "Support hot reload or require service restart (document clearly)"
+    },
+    "performance_optimizations": {
+      "database_indexes": [
+        "CREATE INDEX idx_raw_markdown_status ON raw_markdown(processing_status)",
+        "CREATE INDEX idx_paper_leads_doi ON paper_leads(doi)",
+        "CREATE INDEX idx_paper_leads_score ON paper_leads(score DESC)"
+      ],
+      "caching_strategy": "Use Redis for: batch stats (30s TTL), query results (5m TTL), chart data (10m TTL)",
+      "async_patterns": "Use asyncio.gather() for concurrent database queries in dashboard page",
+      "connection_pooling": "Configure asyncpg pool size (10-20 connections)"
+    },
+    "security_hardening": {
+      "basic_auth": "Implement Basic Auth using environment variables (DASHBOARD_USER, DASHBOARD_PASSWORD)",
+      "rate_limiting": "Limit API requests to 100/minute per IP address",
+      "input_validation": "Use Pydantic for all API inputs, validate DOI format",
+      "file_upload": "Validate file type, size, and content before processing",
+      "sql_injection": "Use SQLAlchemy parameterized queries exclusively",
+      "xss_prevention": "Rely on Jinja2 auto-escaping, use CSP headers"
+    }
+  }
+}

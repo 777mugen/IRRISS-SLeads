@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}导入导出 - IRRISS Dashboard{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- 标签页切换 -->
+    <div class="border-b border-slate-200">
+        <nav class="-mb-px flex gap-8">
+            <button onclick="showTab('export')" 
+                    class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-blue-500 text-blue-600"
+                    id="tab-export">
+                导出数据
+            </button>
+            <button onclick="showTab('import')" 
+                    class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700"
+                    id="tab-import">
+                导入反馈
+            </button>
+        </nav>
+    </div>
+
+    <!-- 导出数据 -->
+    <div id="export-content" class="tab-content">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 全量导出 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-slate-900">全量导出</h3>
+                    <span class="text-sm text-slate-500">包含所有论文线索</span>
+                </div>
+                
+                <p class="text-sm text-slate-600 mb-4">
+                    导出所有论文线索数据，包括 DOI、标题、通讯作者、联系方式、评分等信息。
+                </p>
+                
+                <button onclick="exportFullData()"
+                        class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    <svg class="inline w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    下载全量 CSV
+                </button>
+            </div>
+
+            <!-- 今日新增导出 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-slate-900">今日新增</h3>
+                    <span class="text-sm text-slate-500">{{ today_date }}</span>
+                </div>
+                
+                <p class="text-sm text-slate-600 mb-4">
+                    只导出今天新增的论文线索，适合每日销售跟进使用。
+                </p>
+                
+                <button onclick="exportTodayData()"
+                        class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    <svg class="inline w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    下载今日 CSV
+                </button>
+            </div>
+        </div>
+
+        <!-- 导出历史 -->
+        <div class="mt-6 bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <h3 class="text-lg font-semibold text-slate-900 mb-4">导出历史</h3>
+            <div class="text-sm text-slate-600">
+                <p>最近导出记录将显示在这里...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导入反馈 -->
+    <div id="import-content" class="tab-content hidden">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <h3 class="text-lg font-semibold text-slate-900 mb-4">上传销售反馈 CSV</h3>
+            
+            <!-- 上传区域 -->
+            <div class="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center mb-6"
+                 id="upload-zone">
+                <svg class="mx-auto w-12 h-12 text-slate-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                </svg>
+                <p class="text-sm text-slate-600 mb-2">拖拽文件到此处，或点击选择文件</p>
+                <input type="file" 
+                       id="file-input" 
+                       accept=".csv" 
+                       class="hidden"
+                       onchange="handleFileSelect(event)">
+                <button onclick="document.getElementById('file-input').click()"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    选择 CSV 文件
+                </button>
+            </div>
+
+            <!-- CSV 格式说明 -->
+            <div class="bg-slate-50 rounded-lg p-4 mb-6">
+                <h4 class="text-sm font-semibold text-slate-900 mb-2">CSV 格式要求</h4>
+                <p class="text-xs text-slate-600 mb-2">必须包含以下列：</p>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="flex items-center">
+                        <span class="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                        <span class="text-slate-700">DOI（必需）</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                        <span class="text-slate-700">线索准确性（好/中/差）</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                        <span class="text-slate-700">需求匹配度（好/中/差）</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                        <span class="text-slate-700">联系方式有效性（好/中/差）</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                        <span class="text-slate-700">成交速度（好/中/差）</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                        <span class="text-slate-700">成交价格（好/中/差）</span>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-500 mt-2">可选列：备注</p>
+            </div>
+
+            <!-- 预览区域 -->
+            <div id="preview-section" class="hidden">
+                <div class="border border-slate-200 rounded-lg p-4 mb-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="text-sm font-semibold text-slate-900">预览结果</h4>
+                        <span class="text-xs text-slate-500" id="preview-stats"></span>
+                    </div>
+                    
+                    <div id="preview-content" class="text-xs text-slate-600 max-h-60 overflow-y-auto">
+                        <!-- 预览数据将显示在这里 -->
+                    </div>
+                </div>
+                
+                <div class="flex gap-3">
+                    <button onclick="confirmImport()"
+                            class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                        确认导入
+                    </button>
+                    <button onclick="cancelImport()"
+                            class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors">
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let csvContent = '';
+
+function showTab(tabName) {
+    // 隐藏所有内容
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    // 显示选中的内容
+    document.getElementById(tabName + '-content').classList.remove('hidden');
+    
+    // 更新标签样式
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('border-blue-500', 'text-blue-600');
+        btn.classList.add('border-transparent', 'text-slate-500');
+    });
+    document.getElementById('tab-' + tabName).classList.remove('border-transparent', 'text-slate-500');
+    document.getElementById('tab-' + tabName).classList.add('border-blue-500', 'text-blue-600');
+}
+
+function exportFullData() {
+    // 触发全量导出
+    window.location.href = '/api/export/csv/full';
+}
+
+function exportTodayData() {
+    // 触发今日导出
+    window.location.href = '/api/export/csv/today';
+}
+
+function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        csvContent = e.target.result;
+        previewCSV(csvContent);
+    };
+    reader.readAsText(file);
+}
+
+function previewCSV(content) {
+    // 发送到后端预览
+    fetch('/api/import/csv/preview', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ csv_content: content })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // 显示预览
+        document.getElementById('preview-section').classList.remove('hidden');
+        document.getElementById('preview-stats').textContent = 
+            `共 ${data.total_rows} 行，匹配 ${data.matched_count} 个DOI`;
+        
+        // 构建预览内容
+        let previewHTML = '<table class="min-w-full divide-y divide-slate-200">';
+        previewHTML += '<thead><tr>';
+        previewHTML += '<th class="px-2 py-1 text-left text-xs font-medium text-slate-500">DOI</th>';
+        previewHTML += '<th class="px-2 py-1 text-left text-xs font-medium text-slate-500">状态</th>';
+        previewHTML += '</tr></thead><tbody>';
+        
+        data.preview_data.forEach(row => {
+            const isMatched = data.matched_dois.includes(row.DOI);
+            previewHTML += '<tr>';
+            previewHTML += `<td class="px-2 py-1 text-xs">${row.DOI}</td>`;
+            previewHTML += `<td class="px-2 py-1 text-xs ${isMatched ? 'text-green-600' : 'text-red-600'}">${isMatched ? '✓ 已匹配' : '✗ 未找到'}</td>`;
+            previewHTML += '</tr>';
+        });
+        
+        previewHTML += '</tbody></table>';
+        document.getElementById('preview-content').innerHTML = previewHTML;
+    })
+    .catch(error => {
+        alert('预览失败: ' + error.message);
+    });
+}
+
+function confirmImport() {
+    // 确认导入
+    fetch('/api/import/csv/confirm', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ csv_content: csvContent })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(`导入成功！\n已导入: ${data.imported} 条\n跳过: ${data.skipped} 条`);
+        cancelImport();
+    })
+    .catch(error => {
+        alert('导入失败: ' + error.message);
+    });
+}
+
+function cancelImport() {
+    csvContent = '';
+    document.getElementById('preview-section').classList.add('hidden');
+    document.getElementById('file-input').value = '';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,478 @@
+{
+  "research_summary": "Security considerations for IRRISS-SLeads Web Dashboard (internal use, no authentication)",
+  "timestamp": "2026-03-15T01:48:00Z",
+  
+  "input_validation": {
+    "doi_validation": {
+      "pattern": "^10\\.\\d{4,9}/[-._;()/:A-Z0-9]+$",
+      "example": "10.1000/xyz123",
+      "implementation": {
+        "fastapi": "DOIQuery(BaseModel): doi: str = Field(..., pattern=r'^10\\.\\d{4,9}/[-._;()/:A-Z0-9]+$')",
+        "sanitization": "Lowercase, trim whitespace, remove URL encoding"
+      },
+      "edge_cases": [
+        "DOI with special characters: 10.1000/abc(def)",
+        "DOI with unicode: 10.1000/日本語",
+        "Short DOI: 10.1/ab"
+      ],
+      "validation_code": "import re\n\nDOI_PATTERN = re.compile(r'^10\\.\\d{4,9}/[-._;()/:A-Z0-9]+$', re.IGNORECASE)\n\ndef validate_doi(doi: str) -> str:\n    doi = doi.strip().lower()\n    if not DOI_PATTERN.match(doi):\n        raise ValueError(f'Invalid DOI format: {doi}')\n    return doi"
+    },
+    
+    "pmid_validation": {
+      "pattern": "^\\d{7,8}$",
+      "example": "12345678",
+      "implementation": "PMIDQuery(BaseModel): pmid: str = Field(..., pattern=r'^\\d{7,8}$')"
+    },
+    
+    "csv_upload_validation": {
+      "file_size_limit": "10MB",
+      "max_rows": 10000,
+      "allowed_extensions": [".csv"],
+      "mime_types": ["text/csv", "application/vnd.ms-excel"],
+      "encoding": "utf-8-sig",
+      "required_columns": {
+        "feedback_upload": ["DOI", "线索准确性", "需求匹配度", "联系方式有效性", "成交速度", "成交价格"],
+        "note": "At minimum, DOI column is required; other columns optional"
+      },
+      "validation_steps": [
+        "1. Check file extension and MIME type",
+        "2. Check file size (max 10MB)",
+        "3. Parse CSV with pandas",
+        "4. Validate required columns exist",
+        "5. Validate DOI format in DOI column",
+        "6. Validate feedback values (好/中/差)",
+        "7. Preview mode before commit"
+      ],
+      "validation_code": "import pandas as pd\nfrom fastapi import UploadFile, HTTPException\n\nMAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB\nALLOWED_EXTENSIONS = {'.csv'}\n\ndef validate_csv_upload(file: UploadFile) -> pd.DataFrame:\n    # 1. Extension check\n    ext = Path(file.filename).suffix.lower()\n    if ext not in ALLOWED_EXTENSIONS:\n        raise HTTPException(400, 'Only CSV files allowed')\n    \n    # 2. Size check\n    content = file.file.read()\n    if len(content) > MAX_FILE_SIZE:\n        raise HTTPException(400, 'File size exceeds 10MB limit')\n    \n    # 3. Parse CSV\n    try:\n        df = pd.read_csv(io.BytesIO(content), encoding='utf-8-sig')\n    except Exception as e:\n        raise HTTPException(400, f'CSV parse error: {str(e)}')\n    \n    # 4. Column validation\n    if 'DOI' not in df.columns:\n        raise HTTPException(400, 'DOI column required')\n    \n    # 5. Row limit\n    if len(df) > 10000:\n        raise HTTPException(400, 'Max 10000 rows allowed')\n    \n    return df"
+    },
+    
+    "yaml_editing_validation": {
+      "allowed_files": ["keywords.yaml", "scoring_paper.yaml", "scoring_tender.yaml", "scheduler.yaml"],
+      "file_locking": "Use file lock to prevent concurrent edits",
+      "validation": "Validate YAML syntax before saving",
+      "backup": "Create backup before overwriting",
+      "rollback": "Support rollback to previous version",
+      "validation_code": "import yaml\nfrom pathlib import Path\nimport fcntl\n\nALLOWED_CONFIG_FILES = {'keywords.yaml', 'scoring_paper.yaml', 'scoring_tender.yaml'}\n\ndef validate_and_save_yaml(filename: str, content: str, config_dir: Path) -> dict:\n    # 1. Check allowed file\n    if filename not in ALLOWED_CONFIG_FILES:\n        raise ValueError(f'Config file not allowed: {filename}')\n    \n    # 2. Validate YAML syntax\n    try:\n        data = yaml.safe_load(content)\n    except yaml.YAMLError as e:\n        raise ValueError(f'Invalid YAML: {str(e)}')\n    \n    # 3. Schema validation (example for keywords.yaml)\n    if filename == 'keywords.yaml':\n        if not isinstance(data, dict):\n            raise ValueError('keywords.yaml must be a dict')\n        if 'english' not in data and 'chinese' not in data:\n            raise ValueError('keywords.yaml must have english or chinese keys')\n    \n    # 4. File lock and save\n    filepath = config_dir / filename\n    with open(filepath, 'w', encoding='utf-8') as f:\n        fcntl.flock(f.fileno(), fcntl.LOCK_EX)  # Exclusive lock\n        f.write(content)\n        fcntl.flock(f.fileno(), fcntl.LOCK_UN)  # Unlock\n    \n    return {'status': 'success', 'file': filename}"
+    }
+  },
+  
+  "sql_injection_prevention": {
+    "mechanism": "SQLAlchemy parameterized queries",
+    "status": "ALREADY_PROTECTED",
+    "notes": "All database queries use SQLAlchemy ORM with parameterized queries. No raw SQL is used.",
+    "examples": {
+      "safe_query": "# Safe - SQLAlchemy parameterized\nasync def query_doi(doi: str):\n    result = await session.execute(\n        select(RawMarkdown).where(RawMarkdown.doi == doi)\n    )\n    return result.scalar()",
+      "unsafe_example_avoid": "# UNSAFE - Never do this!\n# await session.execute(f\"SELECT * FROM raw_markdown WHERE doi = '{doi}'\")"
+    },
+    "recommendations": [
+      "Always use SQLAlchemy ORM methods (select, update, insert)",
+      "Never use f-strings or string concatenation for SQL",
+      "Use text() with bind parameters if raw SQL is absolutely necessary",
+      "Validate and sanitize all user inputs before database queries"
+    ]
+  },
+  
+  "xss_prevention": {
+    "mechanism": "Jinja2 auto-escaping",
+    "status": "ENABLED_BY_DEFAULT",
+    "notes": "Jinja2 automatically escapes HTML in templates by default",
+    "configuration": "from jinja2 import Environment, select_autoescape\n\nenv = Environment(\n    autoescape=select_autoescape(['html', 'xml'])\n)",
+    "template_examples": {
+      "safe_escaped": "<!-- Safe - Auto-escaped -->\n<div>{{ paper_lead.title }}</div>\n<!-- Output: &lt;script&gt;alert('xss')&lt;/script&gt; -->",
+      "unsafe_raw": "<!-- UNSAFE - Only use for trusted content -->\n<div>{{ paper_lead.markdown_content | safe }}</div>\n<!-- Never use | safe filter on user input -->"
+    },
+    "recommendations": [
+      "Never use | safe filter on user-provided data",
+      "Only use | safe for trusted content (e.g., generated HTML from markdown)",
+      "Validate and sanitize markdown content before rendering",
+      "Use Content Security Policy (CSP) headers as additional protection"
+    ],
+    "csp_headers": {
+      "strict": "Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' cdn.tailwindcss.com;",
+      "reason": "HTMX requires 'unsafe-inline' for scripts; Tailwind requires 'unsafe-inline' for styles"
+    }
+  },
+  
+  "file_upload": {
+    "security_measures": [
+      {
+        "measure": "File size limit",
+        "value": "10MB",
+        "implementation": "MAX_FILE_SIZE = 10 * 1024 * 1024"
+      },
+      {
+        "measure": "File type validation",
+        "value": "Only .csv files",
+        "implementation": "Check file extension and MIME type"
+      },
+      {
+        "measure": "Virus scanning",
+        "value": "Not required (internal use)",
+        "note": "Internal network, trusted users"
+      },
+      {
+        "measure": "Temporary storage",
+        "value": "In-memory or /tmp with auto-cleanup",
+        "implementation": "Use io.BytesIO or tempfile with auto-delete"
+      },
+      {
+        "measure": "Filename sanitization",
+        "value": "Remove path traversal characters",
+        "implementation": "Use Path(filename).name to get basename only"
+      },
+      {
+        "measure": "Row limit",
+        "value": "10,000 rows",
+        "implementation": "Check len(df) before processing"
+      }
+    ],
+    "upload_flow": [
+      "1. User uploads CSV file",
+      "2. Server validates file size, type, and structure",
+      "3. Parse CSV into pandas DataFrame",
+      "4. Validate each row (DOI format, feedback values)",
+      "5. Preview results (show matched DOIs, validation errors)",
+      "6. User confirms or cancels",
+      "7. If confirmed, update database in single transaction",
+      "8. Return success/failure statistics",
+      "9. Delete temporary file"
+    ],
+    "error_handling": {
+      "partial_success": "Use database transaction; rollback on any error",
+      "duplicate_dois": "Skip duplicates or update existing records",
+      "invalid_dois": "Collect all invalid DOIs and return in error response",
+      "missing_columns": "Reject entire upload with clear error message"
+    }
+  },
+  
+  "csrf_considerations": {
+    "status": "NOT_REQUIRED_INTERNAL_USE",
+    "rationale": [
+      "Dashboard is internal use only (intranet)",
+      "No authentication required",
+      "No sensitive user sessions to hijack",
+      "CSRF tokens add complexity without security benefit"
+    ],
+    "future_consideration": {
+      "when_to_add": "If authentication is added in the future",
+      "implementation": "Use FastAPI-CSRF-Protect or manual token validation",
+      "code_example": "from fastapi_csrf_protect import CsrfProtect\n\n@CsrfProtect.load_config\ndef get_csrf_config():\n    return CsrfSettings(secret_key='secret-key', cookie_key='csrf-token')"
+    }
+  },
+  
+  "secrets_management": {
+    "current_approach": {
+      "method": "Environment variables via .env file",
+      "loader": "src/config/loader.py - Config class with @property methods",
+      "location": "dotenv.load_dotenv(override=True)"
+    },
+    "secrets_required": [
+      {
+        "name": "DATABASE_URL",
+        "example": "postgresql+asyncpg://user:pass@localhost/sleads_dev",
+        "usage": "PostgreSQL connection string"
+      },
+      {
+        "name": "JINA_API_KEY",
+        "example": "jina_xxxxxxxxxxxxx",
+        "usage": "Jina Reader API for markdown extraction"
+      },
+      {
+        "name": "ZAI_API_KEY",
+        "example": "zhipu_xxxxxxxxxxxxx",
+        "usage": "Zhipu/GLM-5 API for LLM processing"
+      },
+      {
+        "name": "FEISHU_WEBHOOK",
+        "example": "https://open.feishu.cn/open-apis/bot/v2/hook/xxx",
+        "usage": "Feishu notifications"
+      }
+    ],
+    "recommendations": [
+      {
+        "level": "basic",
+        "approach": "Environment variables with .env file",
+        "notes": ".env file should be in .gitignore; never commit secrets"
+      },
+      {
+        "level": "production",
+        "approach": "Use HashiCorp Vault, AWS Secrets Manager, or Azure Key Vault",
+        "notes": "Fetch secrets at runtime; never store in code or config files"
+      },
+      {
+        "level": "container",
+        "approach": "Docker secrets or Kubernetes secrets",
+        "notes": "Mount secrets as files or environment variables"
+      }
+    ],
+    "fastapi_integration": {
+      "code": "from pydantic_settings import BaseSettings\n\nclass Settings(BaseSettings):\n    database_url: str\n    jina_api_key: str\n    zai_api_key: str\n    feishu_webhook: str = ''\n    \n    class Config:\n        env_file = '.env'\n        env_file_encoding = 'utf-8'\n\nsettings = Settings()",
+      "usage": "# In FastAPI app\nfrom fastapi import Depends\n\ndef get_settings():\n    return settings\n\n@app.get('/api/config')\nasync def get_config(settings: Settings = Depends(get_settings)):\n    return {'database': '***', 'jina': '***'}  # Never expose actual secrets"
+    },
+    "secrets_exposure_prevention": [
+      "Never log secrets (mask in logs)",
+      "Never return secrets in API responses",
+      "Use dependency injection to access settings",
+      "Validate secrets exist at startup (fail fast)"
+    ]
+  },
+  
+  "audit_logging": {
+    "what_to_log": [
+      {
+        "event": "CSV_UPLOAD",
+        "fields": ["timestamp", "user_ip", "filename", "file_size", "rows_count", "status", "error_message"],
+        "example": "2026-03-15T01:48:00Z | 192.168.1.100 | feedback.csv | 1.2MB | 500 rows | SUCCESS"
+      },
+      {
+        "event": "DOI_QUERY",
+        "fields": ["timestamp", "user_ip", "doi", "found_in_raw_markdown", "found_in_paper_leads"],
+        "example": "2026-03-15T01:48:00Z | 192.168.1.100 | 10.1000/xyz123 | true | true"
+      },
+      {
+        "event": "CONFIG_EDIT",
+        "fields": ["timestamp", "user_ip", "filename", "change_summary", "previous_version"],
+        "example": "2026-03-15T01:48:00Z | 192.168.1.100 | keywords.yaml | Added 5 new keywords | v1.2.3"
+      },
+      {
+        "event": "BATCH_RETRY",
+        "fields": ["timestamp", "user_ip", "batch_id", "doi_count", "status"],
+        "example": "2026-03-15T01:48:00Z | 192.168.1.100 | batch_001 | 10 | RETRY_INITIATED"
+      },
+      {
+        "event": "CSV_EXPORT",
+        "fields": ["timestamp", "user_ip", "export_type", "filters", "rows_count"],
+        "example": "2026-03-15T01:48:00Z | 192.168.1.100 | paper_leads | date=today | 150"
+      }
+    ],
+    "what_not_to_log": [
+      "API keys (mask as ***)",
+      "Database passwords",
+      "Email content",
+      "Personal identifiable information (PII) beyond necessary"
+    ],
+    "implementation": {
+      "logger": "Use existing structlog from src/logging_config.py",
+      "storage": "PostgreSQL audit_log table or separate log files",
+      "retention": "Keep logs for 90 days (adjust based on requirements)",
+      "code_example": "import structlog\n\nlogger = structlog.get_logger()\n\nasync def log_audit_event(event: str, **kwargs):\n    await logger.ainfo(\n        event,\n        event_type='AUDIT',\n        timestamp=datetime.utcnow().isoformat(),\n        **kwargs\n    )\n\n# Usage\nawait log_audit_event(\n    'CSV_UPLOAD',\n    user_ip=request.client.host,\n    filename=file.filename,\n    file_size=len(content),\n    status='SUCCESS'\n)"
+    },
+    "database_model": {
+      "table": "audit_logs",
+      "columns": [
+        "id SERIAL PRIMARY KEY",
+        "event_type VARCHAR(50) NOT NULL",
+        "user_ip VARCHAR(45)",
+        "resource_type VARCHAR(50)",
+        "resource_id VARCHAR(100)",
+        "action VARCHAR(50)",
+        "details JSONB",
+        "created_at TIMESTAMP DEFAULT NOW()"
+      ],
+      "indexes": ["event_type", "user_ip", "created_at"]
+    }
+  },
+  
+  "future_auth": {
+    "phase_1_basic_auth": {
+      "description": "HTTP Basic Authentication (simple, built-in)",
+      "use_case": "Quick security layer for internal use",
+      "implementation": "from fastapi.security import HTTPBasic, HTTPBasicCredentials\nfrom fastapi import Depends, HTTPException\nimport secrets\n\nsecurity = HTTPBasic()\n\nVALID_USERS = {\n    'admin': 'hashed_password_here',\n    'sales': 'hashed_password_here'\n}\n\ndef authenticate(credentials: HTTPBasicCredentials = Depends(security)):\n    correct_password = VALID_USERS.get(credentials.username)\n    if not correct_password or not secrets.compare_digest(\n        credentials.password.encode('utf-8'),\n        correct_password.encode('utf-8')\n    ):\n        raise HTTPException(401, 'Invalid credentials', headers={'WWW-Authenticate': 'Basic'})\n    return credentials.username\n\n@app.get('/api/protected')\nasync def protected_route(username: str = Depends(authenticate)):\n    return {'user': username}",
+      "pros": ["Simple to implement", "No session management", "Works with any HTTP client"],
+      "cons": ["Credentials sent with every request", "No logout mechanism", "Limited user management"]
+    },
+    
+    "phase_2_session_auth": {
+      "description": "Session-based authentication with cookies",
+      "use_case": "More secure, better UX",
+      "implementation": "Use FastAPI-Users or custom session management",
+      "dependencies": ["itsdangerous", "python-multipart"],
+      "pros": ["Secure cookies", "Logout support", "CSRF protection"],
+      "cons": ["More complex", "Requires session storage"]
+    },
+    
+    "phase_3_oauth": {
+      "description": "OAuth2 / OpenID Connect",
+      "use_case": "Integration with corporate SSO (LDAP, Active Directory, Okta)",
+      "implementation": "Use authlib or fastapi-authlib",
+      "providers": ["Azure AD", "Okta", "Google Workspace"],
+      "pros": ["Enterprise SSO", "No password management", "MFA support"],
+      "cons": ["Complex setup", "External dependency"]
+    },
+    
+    "phase_4_jwt": {
+      "description": "JWT tokens for stateless authentication",
+      "use_case": "API-first architecture, mobile apps",
+      "implementation": "Use python-jose or pyjwt",
+      "pros": ["Stateless", "Scalable", "Works with microservices"],
+      "cons": ["Token revocation complexity", "Token expiration management"]
+    },
+    
+    "recommendation": {
+      "internal_use": "Phase 1 (Basic Auth) is sufficient for internal use",
+      "external_access": "Phase 2 or Phase 3 if exposing to external users",
+      "api_access": "Phase 4 (JWT) for API-only access"
+    }
+  },
+  
+  "security_checklist": {
+    "pre_deployment": [
+      {
+        "category": "Environment",
+        "items": [
+          "[ ] .env file is in .gitignore",
+          "[ ] All secrets are set in environment variables",
+          "[ ] Database URL uses SSL (postgresql+asyncpg://...?ssl=require)",
+          "[ ] Log level set to INFO or higher (not DEBUG in production)"
+        ]
+      },
+      {
+        "category": "Network",
+        "items": [
+          "[ ] Dashboard only accessible from internal network",
+          "[ ] Firewall rules restrict external access",
+          "[ ] HTTPS enabled (even for internal use)",
+          "[ ] Rate limiting configured (e.g., 100 requests/min per IP)"
+        ]
+      },
+      {
+        "category": "Input Validation",
+        "items": [
+          "[ ] DOI validation with regex pattern",
+          "[ ] CSV file size limit (10MB)",
+          "[ ] CSV row limit (10,000)",
+          "[ ] YAML schema validation before saving",
+          "[ ] All user inputs sanitized and validated"
+        ]
+      },
+      {
+        "category": "SQL Injection",
+        "items": [
+          "[ ] All queries use SQLAlchemy ORM",
+          "[ ] No raw SQL queries with string concatenation",
+          "[ ] Parameterized queries for any custom SQL"
+        ]
+      },
+      {
+        "category": "XSS Prevention",
+        "items": [
+          "[ ] Jinja2 auto-escaping enabled",
+          "[ ] No | safe filter on user input",
+          "[ ] Content Security Policy headers configured",
+          "[ ] X-Content-Type-Options: nosniff header"
+        ]
+      },
+      {
+        "category": "File Upload",
+        "items": [
+          "[ ] File type validation (only .csv)",
+          "[ ] File size limit enforced",
+          "[ ] Filename sanitization (no path traversal)",
+          "[ ] Temporary files cleaned up after processing"
+        ]
+      },
+      {
+        "category": "Secrets",
+        "items": [
+          "[ ] No secrets in code or config files",
+          "[ ] Secrets loaded from environment variables",
+          "[ ] API keys masked in logs",
+          "[ ] Secrets never returned in API responses"
+        ]
+      },
+      {
+        "category": "Audit Logging",
+        "items": [
+          "[ ] CSV upload events logged",
+          "[ ] DOI query events logged",
+          "[ ] Config edit events logged",
+          "[ ] Batch retry events logged",
+          "[ ] Logs retained for 90 days"
+        ]
+      },
+      {
+        "category": "Error Handling",
+        "items": [
+          "[ ] Generic error messages to users (no stack traces)",
+          "[ ] Detailed errors logged internally",
+          "[ ] Graceful degradation on failures",
+          "[ ] No sensitive information in error messages"
+        ]
+      },
+      {
+        "category": "Dependencies",
+        "items": [
+          "[ ] All dependencies pinned in requirements.txt",
+          "[ ] Security vulnerabilities scanned (pip-audit or safety)",
+          "[ ] Dependencies updated to latest stable versions"
+        ]
+      }
+    ],
+    
+    "post_deployment": [
+      "[ ] Monitor audit logs for suspicious activity",
+      "[ ] Review failed upload attempts",
+      "[ ] Check for unusual query patterns",
+      "[ ] Verify HTTPS certificate validity",
+      "[ ] Test backup and recovery procedures"
+    ],
+    
+    "periodic_reviews": [
+      "[ ] Weekly: Review audit logs",
+      "[ ] Monthly: Check for dependency vulnerabilities",
+      "[ ] Quarterly: Review access patterns and IP ranges",
+      "[ ] Annually: Security audit and penetration test"
+    ]
+  },
+  
+  "fastapi_security_middleware": {
+    "recommended_middleware": [
+      {
+        "name": "HTTPSRedirectMiddleware",
+        "purpose": "Force HTTPS in production",
+        "code": "from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware\n\napp.add_middleware(HTTPSRedirectMiddleware)"
+      },
+      {
+        "name": "TrustedHostMiddleware",
+        "purpose": "Prevent host header attacks",
+        "code": "from fastapi.middleware.trustedhost import TrustedHostMiddleware\n\napp.add_middleware(\n    TrustedHostMiddleware,\n    allowed_hosts=['localhost', '127.0.0.1', '*.internal.company.com']\n)"
+      },
+      {
+        "name": "Rate limiting",
+        "purpose": "Prevent abuse and DDoS",
+        "code": "from slowapi import Limiter\nfrom slowapi.util import get_remote_address\n\nlimiter = Limiter(key_func=get_remote_address)\n\n@app.get('/api/query')\n@limiter.limit('100/minute')\nasync def query_doi(request: Request, doi: str):\n    ..."
+      },
+      {
+        "name": "CORS (if needed)",
+        "purpose": "Cross-origin resource sharing",
+        "code": "from fastapi.middleware.cors import CORSMiddleware\n\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=['http://localhost:8000'],\n    allow_methods=['GET', 'POST'],\n    allow_headers=['*']\n)",
+        "note": "Not needed for same-origin internal dashboard"
+      }
+    ],
+    "security_headers": {
+      "implementation": "@app.middleware('http')\nasync def add_security_headers(request: Request, call_next):\n    response = await call_next(request)\n    response.headers['X-Content-Type-Options'] = 'nosniff'\n    response.headers['X-Frame-Options'] = 'DENY'\n    response.headers['X-XSS-Protection'] = '1; mode=block'\n    response.headers['Content-Security-Policy'] = \"default-src 'self'; script-src 'self' 'unsafe-inline' cdn.tailwindcss.com;\"\n    return response"
+    }
+  },
+  
+  "additional_recommendations": {
+    "for_internal_dashboards": [
+      "Network segmentation: Dashboard in separate VLAN from database",
+      "VPN requirement: Access only via corporate VPN",
+      "IP whitelisting: Allow only known internal IP ranges",
+      "Regular access review: Audit who has network access quarterly"
+    ],
+    "for_csv_handling": [
+      "Implement CSV preview mode before commit",
+      "Add transaction rollback for partial failures",
+      "Log all CSV operations with user IP and timestamp",
+      "Consider async processing for large files (>5MB)"
+    ],
+    "for_yaml_configuration": [
+      "Implement version control for config files",
+      "Add file locking to prevent concurrent edits",
+      "Validate config schema before saving",
+      "Create automatic backups before overwriting",
+      "Support rollback to previous versions"
+    ]
+  }
+}
