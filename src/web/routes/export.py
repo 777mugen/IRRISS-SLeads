@@ -8,7 +8,7 @@ router = APIRouter(tags=["export"])
 templates = Jinja2Templates(directory="src/web/templates")
 
 
-@router.get("/export", response_class=HTMLResponse)
+@router.get("", response_class=HTMLResponse)
 async def export_page(request: Request):
     """导入导出页面"""
     return templates.TemplateResponse(

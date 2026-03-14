@@ -44,12 +44,12 @@ app.include_router(analysis.router, prefix="/analysis", tags=["analysis"])
 app.include_router(config.router, prefix="/config", tags=["config"])
 app.include_router(export.router, prefix="/export", tags=["export"])
 
-# 注册 API 路由
-app.include_router(batch_api.router, prefix="/api", tags=["batch-api"])
-app.include_router(query_api.router, prefix="/api", tags=["query-api"])
-app.include_router(export_api.router, prefix="/api", tags=["export-api"])
-app.include_router(import_api.router, prefix="/api", tags=["import-api"])
-app.include_router(analysis_api.router, prefix="/api", tags=["analysis-api"])
+# 注册 API 路由（不添加额外前缀，API 文件中已包含 /api 前缀）
+app.include_router(batch_api.router, tags=["batch-api"])
+app.include_router(query_api.router, tags=["query-api"])
+app.include_router(export_api.router, tags=["export-api"])
+app.include_router(import_api.router, tags=["import-api"])
+app.include_router(analysis_api.router, tags=["analysis-api"])
 
 
 @app.get("/", response_class=HTMLResponse)

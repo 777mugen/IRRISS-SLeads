@@ -5,7 +5,7 @@ from fastapi.templating import Jinja2Templates
 
 from src.web.services.config_service import ConfigService
 
-router = APIRouter(prefix="/config", tags=["config"])
+router = APIRouter(tags=["config"])
 templates = Jinja2Templates(directory="src/web/templates")
 
 
