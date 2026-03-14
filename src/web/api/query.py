@@ -24,26 +24,31 @@ async def query_by_dois(
     request: DOIQuery,
     db: AsyncSession = Depends(get_db)
 ):
-    """批量查询 DOI"""
+    """批量查询 DOI（优化：2 次查询替代 2N 次）"""
     try:
-        results = []
+        # 过滤空 DOI
+        dois = [d.strip() for d in request.dois if d.strip()]
         
-        for doi in request.dois:
-            doi = doi.strip()
-            if not doi:
-                continue
-            
-            # 查询 raw_markdown
-            raw_result = await db.execute(
-                select(RawMarkdown).where(RawMarkdown.doi == doi)
-            )
-            raw = raw_result.scalar_one_or_none()
-            
-            # 查询 paper_leads
-            lead_result = await db.execute(
-                select(PaperLead).where(PaperLead.doi == doi)
-            )
-            lead = lead_result.scalar_one_or_none()
+        if not dois:
+            return {"results": []}
+        
+        # 批量查询 raw_markdown（1 次查询）
+        raw_result = await db.execute(
+            select(RawMarkdown).where(RawMarkdown.doi.in_(dois))
+        )
+        raws = {r.doi: r for r in raw_result.scalars().all()}
+        
+        # 批量查询 paper_leads（1 次查询）
+        lead_result = await db.execute(
+            select(PaperLead).where(PaperLead.doi.in_(dois))
+        )
+        leads = {l.doi: l for l in lead_result.scalars().all()}
+        
+        # 组装结果
+        results = []
+        for doi in dois:
+            raw = raws.get(doi)
+            lead = leads.get(doi)
             
             result = {
                 "doi": doi,

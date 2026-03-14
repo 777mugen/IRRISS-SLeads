@@ -54,12 +54,17 @@ async def preview_csv(
         matched_dois = []
         unmatched_dois = []
         
-        # 检查 DOI 是否存在
-        for doi in df["DOI"]:
-            result = await db.execute(
-                select(PaperLead.id).where(PaperLead.doi == doi)
-            )
-            if result.scalar():
+        # 批量检查 DOI 是否存在（1 次查询替代 N 次）
+        dois = df["DOI"].tolist()
+        result = await db.execute(
+            select(PaperLead.doi, PaperLead.id)
+            .where(PaperLead.doi.in_(dois))
+        )
+        existing_dois = {row.doi for row in result.fetchall()}
+        
+        # 分类匹配和未匹配的 DOI
+        for doi in dois:
+            if doi in existing_dois:
                 matched_dois.append(doi)
             else:
                 unmatched_dois.append(doi)
@@ -98,15 +103,20 @@ async def confirm_import(
         imported_count = 0
         skipped_count = 0
         
-        # 逐行导入
+        # 批量查询所有 DOI（1 次查询替代 N 次）
+        dois = df["DOI"].tolist()
+        result = await db.execute(
+            select(PaperLead.id, PaperLead.doi)
+            .where(PaperLead.doi.in_(dois))
+        )
+        paper_ids = {row.doi: row.id for row in result.fetchall()}
+        
+        # 准备批量插入
+        feedbacks = []
+        
         for _, row in df.iterrows():
             doi = row["DOI"]
-            
-            # 查找论文
-            result = await db.execute(
-                select(PaperLead.id).where(PaperLead.doi == doi)
-            )
-            paper_id = result.scalar()
+            paper_id = paper_ids.get(doi)
             
             if not paper_id:
                 if request.skip_unmatched:
@@ -126,8 +136,13 @@ async def confirm_import(
                 notes=row.get("备注", "")
             )
             
-            db.add(feedback)
+            feedbacks.append(feedback)
             imported_count += 1
+        
+        # 批量插入（1 次提交替代 N 次）
+        if feedbacks:
+            db.add_all(feedbacks)
+            await db.commit()
         
         # 提交事务
         await db.commit()
