@@ -1,0 +1,72 @@
+Construction and validation of a palmitoylation-related prognostic model for lung adenocarcinoma based on integrated bioinformatics and machine learning - Huang - Translational Cancer Research
+===============
+
+Have a website account?[Log In](https://tcr.amegroups.org/login) or[Register](https://tcr.amegroups.org/user/register) for exclusive website content.
+
+[Subscribe](https://news.amepc.org/h/t/DC7EB183D963AFC1 "Subscribe")
+
+[![Image 1: Translational Cancer Research (TCR) logo, with the tagline Advances Clinical Medicine Toward the Goal of Improving Patients' Quality of Life and the Impact Factor and CiteScore of 1.7 and 2.5 respectively](https://cdn.amegroups.cn/journals/pbpc/public/journals/3/homeHeaderTitleImage_en_US.png/w1400?v=20260314)](https://tcr.amegroups.org/ "Translational Cancer Research")
+
+[Advanced Search](https://doi.org/10.21037/tcr-2025-1389)
+
+*   [Home](https://tcr.amegroups.org/index)/
+*   [Vol 15, No 2 (February 28, 2026)](https://tcr.amegroups.org/issue/view/873)/
+*   Construction and validation of a palmitoylation-related prognostic model for lung adenocarcinoma based on integrated bio...
+
+Construction and validation of a palmitoylation-related prognostic model for lung adenocarcinoma based on integrated bioinformatics and machine learning
+===============
+[![Image 2: A 120x26 small image, likely a logo, icon or avatar](https://cdn.amegroups.cn/static/mirror/crossmark/widget/v2.0/CROSSMARK_Color_horizontal.svg)](https://doi.org/10.21037/tcr-2025-1389)
+
+Original Article
+
+Construction and validation of a palmitoylation-related prognostic model for lung adenocarcinoma based on integrated bioinformatics and machine learning
+========================================================================================================================================================
+
+Zhilan Huang 1#[![Image 3: ORCID logo](https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png)](https://orcid.org/0009-0008-9748-9186), Tingyi Xie 1#, Mingwen Tang 2, Anqi Su 1, Zhujin Jin 1, Zhuni Chen 2, Dan Jia 2, Wei Xie 2[![Image 4: ORCID logo](https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png)](https://orcid.org/0009-0005-0909-5557)
+
+1 The Fourth Clinical Medical College of Guangzhou University of Chinese Medicine, Shenzhen, China; 2 Department of Respiratory Medicine, Shenzhen Traditional Chinese Medicine Hospital, Shenzhen, China
+
+_Contributions:_ (I) Conception and design: Z Huang, T Xie, M Tang, W Xie; (II) Administrative support: W Xie; (III) Provision of study materials or patients: None; (IV) Collection and assembly of data: Z Huang, T Xie, Z Chen; (V) Data analysis and interpretation: Z Huang, M Tang, D Jia, A Su; (VI) Manuscript writing: All authors; (VII) Final approval of manuscript: All authors.
+
+#These authors contributed equally to this work.
+
+_Correspondence to:_ Wei Xie, PhD. Department of Respiratory Medicine, Shenzhen Traditional Chinese Medicine Hospital, No. 1 Fuhua Road, Futian District, Shenzhen 518033, China. Email: xiew0703@163.com.
+
+* * *
+
+**Background:**Lung adenocarcinoma (LUAD) is a prevalent malignancy whose therapeutic management is complicated by nonspecific early symptoms, late-stage diagnosis, and aggressive metastasis. Given the critical role of palmitoylation in LUAD progression, this study aims to construct a prognostic model based on palmitoylation-related genes, identify key biomarkers, and elucidate their underlying mechanisms.
+
+**Methods:**In this study, bulk RNA-seq data and clinical information for LUAD were retrieved from The Cancer Genome Atlas (TCGA) and Gene Expression Omnibus (GEO) databases, while palmitoylation-related genes were obtained from the GeneCards database. The LUAD gene expression profile was analyzed using DESeq2 and weighted gene co-expression network analysis (WGCNA) to identify potential palmitoylation-associated biomarkers. Subsequently, by exploring 117 combinations of 10 machine learning algorithms, a predictive prognostic model based on palmitoylation-related features was constructed. This model was trained on the TCGA cohort (n=493) with 10-fold cross-validation and externally validated using three independent LUAD datasets (GSE30219, GSE72094, and GSE31210). Features independently predictive of prognosis were identified by integrating baseline clinical characteristics and were used to construct a prognostic nomogram. The model’s performance was rigorously evaluated through multi-faceted assessments, including the concordance index (C-index), Kaplan-Meier (KM) survival analysis, time-dependent receiver operating characteristic (ROC) curves, and comparative analysis with existing LUAD models from the past year. Core genes were further screened, and their expression patterns and prognostic significance were analyzed. Finally, patients were stratified into high- and low-risk groups based on LUAD palmitoylation-related genes (LPRGs), and differences in genomic alterations, immune microenvironment characteristics, and drug susceptibility between the groups were investigated.
+
+**Results:**Through differential expression analysis, 152 potential candidates were identified. Using machine learning, a prognostic signature comprising 51 LPRGs was constructed. The optimal model, “Random Survival Forest (RSF) + Ridge”, demonstrated a C-index of up to 0.68 in the training set and achieved 0.70 in external validation cohorts. It outperformed other LUAD prognostic models published in the past year across both training and testing datasets. Univariate and multivariate Cox regression analyses confirmed the LPRGs signature and disease stage as independent prognostic predictors, which were subsequently incorporated into a clinical nomogram. A high-risk score was associated with poorer overall survival. Survival analysis indicated that elevated expression of TXN and DNAJB4 was linked to worse outcomes, whereas upregulation of SCN2B, GPD1L and ATP8A2 was correlated with favorable prognosis. Significant disparities were observed between the high- and low-risk groups regarding immune cell infiltration levels, immune functional activity, gene mutation frequency, and anticancer drug susceptibility. High-risk individuals exhibited increased mutation burden, reduced immune infiltration, and a weaker response to immunotherapy. In contrast, the low-risk group demonstrated enhanced drug sensitivity and lower tumor mutational burden.
+
+**Conclusions:**Our work developed a robust LPRGs-based prognostic model and nomogram that personalizes LUAD management and guides therapeutic decisions.
+
+**Keywords:** Lung adenocarcinoma (LUAD); palmitoylation; bioinformatics; machine learning; biomarkers; prognosis
+
+* * *
+
+Submitted Jun 28, 2025. Accepted for publication Dec 01, 2025. Published online Feb 12, 2026.
+
+doi: 10.21037/tcr-2025-1389
+
+* * *
+
+Highlight box
+-------------
+
+**Key findings**
+
+• A prognostic signature comprising 51 lung adenocarcinoma palmitoylation-related genes (LPRGs) was constructed using a comprehensive machine-learning framework.
+
+**What is known and what is new?**
+
+• Protein palmitoylation is increasingly recognized as a key post-translational modification involved in tumorigenesis and immune regulation in lung adenocarcinoma (LUAD). However, the prognostic significance of LPRGs has not been systematically evaluated.
+
+• This study is the first to develop and externally validate a palmitoylation-based prognostic model using advanced machine-learning strategies, which identified five hub genes (_TXN_, _DNAJB4_, _SCN2B_, _GPD1L_, _ATP8A2_) with bidirectional roles in LUAD progression.
+
+**What is the implication, and what should change now?**
+
+• The LPRG signatures refine LUAD risk stratification and survival prediction, and their integration into clinical workflows can guide immunotherapy decisions. These findings support further mechanistic and translational investigations targeting palmitoylation pathways in LUAD.
+
+* * *
