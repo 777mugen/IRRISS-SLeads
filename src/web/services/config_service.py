@@ -2,7 +2,7 @@
 from typing import Dict, Any
 from pathlib import Path
 import yaml
-from src.config.loader import load_config
+from src.config.loader import config
 from src.logging_config import get_logger
 
 logger = get_logger()
@@ -12,7 +12,7 @@ class ConfigService:
     """配置管理服务"""
     
     def __init__(self):
-        self.config = load_config()
+        self.config = config
         self.config_dir = Path("config")
     
     async def get_keywords(self) -> Dict[str, Any]:

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}IRRISS Dashboard{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-xl font-bold text-slate-900">
+                        IRRISS Dashboard
+                    </a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <a href="/batch/monitor" 
+                       class="px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900">
+                        📊 批处理监控
+                    </a>
+                    <a href="/query/search" 
+                       class="px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900">
+                        🔍 DOI 查询
+                    </a>
+                    <a href="/export" 
+                       class="px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900">
+                        📥 导入导出
+                    </a>
+                    <a href="/analysis/stats" 
+                       class="px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900">
+                        📈 数据分析
+                    </a>
+                    <a href="/config" 
+                       class="px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900">
+                        ⚙️ 配置
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="border-t border-slate-200 mt-8 py-4 text-center text-sm text-slate-600">
+        <p>© 2026 IRRISS - 论文线索管理系统</p>
+    </footer>
+</body>
+</html>
