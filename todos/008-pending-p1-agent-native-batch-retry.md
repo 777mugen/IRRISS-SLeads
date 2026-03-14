@@ -1,10 +1,11 @@
 ---
-status: pending
+status: complete
 priority: p1
 issue_id: 008
 tags: [agent-native, api, batch, retry, p1, code-review]
 dependencies: []
 created: 2026-03-15
+completed: 2026-03-15
 ---
 
 # P1: 添加批处理重试 API 端点

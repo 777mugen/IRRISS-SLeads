@@ -1,10 +1,11 @@
 ---
-status: pending
+status: complete
 priority: p1
 issue_id: 007
 tags: [agent-native, api, configuration, p1, code-review]
 dependencies: []
 created: 2026-03-15
+completed: 2026-03-15
 ---
 
 # P1: 添加配置管理 API 端点
