@@ -1,10 +1,11 @@
 ---
-status: pending
+status: complete
 priority: p1
 issue_id: 004
 tags: [architecture, naming, duplicate, p1, code-review]
 dependencies: []
 created: 2026-03-15
+completed: 2026-03-15
 ---
 
 # P1: 解决 ExportService 类名冲突
