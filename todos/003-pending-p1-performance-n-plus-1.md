@@ -1,10 +1,11 @@
 ---
-status: pending
+status: complete
 priority: p1
 issue_id: 003
 tags: [performance, database, n+1, sql, p1, code-review]
 dependencies: []
 created: 2026-03-15
+completed: 2026-03-15
 ---
 
 # P1: 修复 N+1 查询问题（6 处）

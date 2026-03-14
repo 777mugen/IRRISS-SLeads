@@ -1,10 +1,11 @@
 ---
-status: pending
+status: complete
 priority: p1
 issue_id: 005
 tags: [performance, database, index, sql, p1, code-review]
 dependencies: []
 created: 2026-03-15
+completed: 2026-03-15
 ---
 
 # P1: 添加缺失的 paper_leads.doi 索引
