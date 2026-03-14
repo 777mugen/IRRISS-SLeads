@@ -9,10 +9,12 @@ from pathlib import Path
 # 导入路由
 from src.web.routes import dashboard, batch, query, analysis, config, export
 from src.web.api import batch as batch_api
+from src.web.api import batch_control as batch_control_api
 from src.web.api import query as query_api
 from src.web.api import export as export_api
 from src.web.api import import_csv as import_api
 from src.web.api import analysis as analysis_api
+from src.web.api import config as config_api
 
 # 创建应用
 app = FastAPI(
@@ -46,10 +48,12 @@ app.include_router(export.router, prefix="/export", tags=["export"])
 
 # 注册 API 路由（不添加额外前缀，API 文件中已包含 /api 前缀）
 app.include_router(batch_api.router, tags=["batch-api"])
+app.include_router(batch_control_api.router, tags=["batch-control-api"])
 app.include_router(query_api.router, tags=["query-api"])
 app.include_router(export_api.router, tags=["export-api"])
 app.include_router(import_api.router, tags=["import-api"])
 app.include_router(analysis_api.router, tags=["analysis-api"])
+app.include_router(config_api.router, tags=["config-api"])
 
 
 @app.get("/", response_class=HTMLResponse)
