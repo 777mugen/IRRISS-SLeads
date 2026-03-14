@@ -15,11 +15,14 @@ from src.logging_config import get_logger
 logger = get_logger()
 
 
-class ExportService:
-    """CSV 导入导出服务"""
+class FeedbackImportService:
+    """反馈数据导入服务（从 CSV 导入销售反馈数据）"""
     
     def __init__(self, session: AsyncSession):
         self.session = session
+    
+    # 注意：导出功能已移至 export_service.ExportService
+    # 本服务专注于 CSV 导入功能
     
     async def export_full_csv(self, output_path: Path) -> int:
         """导出全量 CSV"""
