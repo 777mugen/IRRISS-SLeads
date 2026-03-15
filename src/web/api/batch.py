@@ -67,8 +67,7 @@ async def get_failed_papers(db: AsyncSession = Depends(get_db)):
             failed_list.append({
                 "doi": paper.doi,
                 "error": paper.error_message or "未知错误",
-                "retry_count": paper.retry_count or 0,
-                "last_retry": paper.last_retry_at.strftime("%Y-%m-%d %H:%M:%S") if paper.last_retry_at else None
+                "processed_at": paper.processed_at.strftime("%Y-%m-%d %H:%M:%S") if paper.processed_at else None
             })
         
         logger.info("failed_papers_retrieved", count=len(failed_list))
@@ -76,4 +75,4 @@ async def get_failed_papers(db: AsyncSession = Depends(get_db)):
         
     except Exception as e:
         logger.error("failed_papers_retrieval_failed", error=str(e))
-        return {"papers": []}
+        return {"papers": []
