@@ -1,0 +1,190 @@
+{
+  "batch_id": "batch_1000papers_20260315_122659",
+  "timestamp": "20260315_122659",
+  "processed": 410,
+  "total": 799,
+  "tasks_prepared": 375,
+  "stats": {
+    "total": 799,
+    "success": 375,
+    "failed": 35,
+    "no_doi": 0,
+    "errors": [
+      {
+        "pmid": "41782113",
+        "doi": "10.1186/s12929-026-01226-1",
+        "error": ""
+      },
+      {
+        "pmid": "41781968",
+        "doi": "10.1186/s12967-026-07940-6",
+        "error": ""
+      },
+      {
+        "pmid": "41504629",
+        "doi": "10.1158/1078-0432.CCR-25-3148",
+        "error": ""
+      },
+      {
+        "pmid": "41762316",
+        "doi": "10.1007/s00432-026-06428-6",
+        "error": ""
+      },
+      {
+        "pmid": "41731256",
+        "doi": "10.1007/s10162-026-01032-4",
+        "error": ""
+      },
+      {
+        "pmid": "41723536",
+        "doi": "10.1186/s12967-026-07879-8",
+        "error": ""
+      },
+      {
+        "pmid": "41706265",
+        "doi": "10.1007/s10557-026-07849-8",
+        "error": ""
+      },
+      {
+        "pmid": "41703574",
+        "doi": "10.1186/s12929-026-01224-3",
+        "error": ""
+      },
+      {
+        "pmid": "41664126",
+        "doi": "10.1186/s12905-026-04274-9",
+        "error": ""
+      },
+      {
+        "pmid": "41201469",
+        "doi": "10.1158/2326-6066.CIR-25-0062",
+        "error": "Server error '503 Service Unavailable' for url 'https://r.jina.ai/https://doi.org/10.1158/2326-6066.CIR-25-0062'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      {
+        "pmid": "41622242",
+        "doi": "10.1186/s12967-026-07766-2",
+        "error": "Server error '503 Service Unavailable' for url 'https://r.jina.ai/https://doi.org/10.1186/s12967-026-07766-2'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      {
+        "pmid": "41827003",
+        "doi": "10.1186/s13062-026-00742-2",
+        "error": ""
+      },
+      {
+        "pmid": "41711620",
+        "doi": "10.1016/j.jacep.2026.01.003",
+        "error": ""
+      },
+      {
+        "pmid": "41540606",
+        "doi": "10.1002/anie.202523125",
+        "error": "Server error '503 Service Unavailable' for url 'https://r.jina.ai/https://doi.org/10.1002/anie.202523125'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      {
+        "pmid": "41667916",
+        "doi": "10.1007/s12185-026-04179-1",
+        "error": ""
+      },
+      {
+        "pmid": "41442105",
+        "doi": "10.1007/s40121-025-01287-z",
+        "error": ""
+      },
+      {
+        "pmid": "41593664",
+        "doi": "10.1186/s13046-026-03646-1",
+        "error": ""
+      },
+      {
+        "pmid": "41549185",
+        "doi": "10.1007/s10554-026-03614-y",
+        "error": ""
+      },
+      {
+        "pmid": "41343137",
+        "doi": "10.1007/s11897-025-00725-w",
+        "error": ""
+      },
+      {
+        "pmid": "41659652",
+        "doi": "10.64898/2026.01.27.702166",
+        "error": "Server error '503 Service Unavailable' for url 'https://r.jina.ai/https://doi.org/10.64898/2026.01.27.702166'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      {
+        "pmid": "41505017",
+        "doi": "10.1007/s12565-025-00915-5",
+        "error": ""
+      },
+      {
+        "pmid": "41478969",
+        "doi": "10.1007/978-1-0716-4901-5_8",
+        "error": ""
+      },
+      {
+        "pmid": "40426261",
+        "doi": "10.1186/s13104-025-07301-4",
+        "error": ""
+      },
+      {
+        "pmid": "38987687",
+        "doi": "10.1186/s12575-024-00250-5",
+        "error": ""
+      },
+      {
+        "pmid": "41823534",
+        "doi": "10.3892/ijmm.2026.5791",
+        "error": "Client error '409 Conflict' for url 'https://r.jina.ai/https://doi.org/10.3892/ijmm.2026.5791'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/409"
+      },
+      {
+        "pmid": "41824192",
+        "doi": "10.1007/s10120-026-01726-x",
+        "error": ""
+      },
+      {
+        "pmid": "41796278",
+        "doi": "10.1007/s11356-026-37526-0",
+        "error": ""
+      },
+      {
+        "pmid": "41784898",
+        "doi": "10.1007/s44445-026-00131-5",
+        "error": ""
+      },
+      {
+        "pmid": "41782056",
+        "doi": "10.1186/s42836-025-00366-3",
+        "error": ""
+      },
+      {
+        "pmid": "39425845",
+        "doi": "10.1007/s10803-024-06590-1",
+        "error": ""
+      },
+      {
+        "pmid": "41761090",
+        "doi": "10.1186/s12871-026-03648-8",
+        "error": ""
+      },
+      {
+        "pmid": "41741904",
+        "doi": "10.1186/s40510-026-00610-9",
+        "error": ""
+      },
+      {
+        "pmid": "41735600",
+        "doi": "10.1007/s40266-026-01282-0",
+        "error": ""
+      },
+      {
+        "pmid": "41731397",
+        "doi": "10.1186/s12884-026-08747-5",
+        "error": ""
+      },
+      {
+        "pmid": "41706369",
+        "doi": "10.1007/s10528-026-11336-y",
+        "error": ""
+      }
+    ]
+  }
+}

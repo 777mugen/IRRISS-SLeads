@@ -234,7 +234,7 @@ class OptimizedPaperExtractor:
             
             pmid = paper.get('pmid')
             doi = paper.get('doi')
-            title = paper.get('title', 'N/A')[:50]
+            title = (paper.get('title') or 'N/A')[:50]
             
             self.logger.info(f"[{i}/{len(papers)}] PMID: {pmid} - {title}")
             

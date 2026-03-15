@@ -1,0 +1,149 @@
+{
+  "doi": "10.21037/tcr-2025-aw-2287",
+  "timestamp": "20260315_195407",
+  "old_style": {
+    "success": false,
+    "json": null,
+    "raw": ""
+  },
+  "new_style": {
+    "success": true,
+    "json": {
+      "title": "Enhanced CT-based deep learning radiomics and biological correlations for predicting immunotherapy efficacy in advanced non-small cell lung cancer",
+      "published_at": null,
+      "doi": "https://doi.org/10.21037/tcr-2025-aw-2287",
+      "corresponding_author": {
+        "name": null,
+        "email": null,
+        "phone": null,
+        "address": null,
+        "address_cn": null
+      },
+      "all_authors_info": [
+        {
+          "name": "Zhu J",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Shi H",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Liang Z",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Lin T",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Li C",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Jiang C",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Wang Q",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Mo J",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Zeng D",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Wen Z",
+          "address": "",
+          "email": "",
+          "phone": ""
+        }
+      ],
+      "all_authors_info_cn": [
+        {
+          "name": "Zhu J",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Shi H",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Liang Z",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Lin T",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Li C",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Jiang C",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Wang Q",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Mo J",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Zeng D",
+          "address": "",
+          "email": "",
+          "phone": ""
+        },
+        {
+          "name": "Wen Z",
+          "address": "",
+          "email": "",
+          "phone": ""
+        }
+      ]
+    },
+    "raw": null
+  }
+}

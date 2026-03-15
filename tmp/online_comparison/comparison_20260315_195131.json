@@ -1,0 +1,27 @@
+{
+  "doi": "10.21037/tcr-2025-aw-2287",
+  "timestamp": "20260315_195131",
+  "old_style": {
+    "success": false,
+    "json": null,
+    "raw": ""
+  },
+  "new_style": {
+    "success": true,
+    "json": {
+      "title": "Enhanced CT-based deep learning radiomics and biological correlations for predicting immunotherapy efficacy in advanced non-small cell lung cancer",
+      "published_at": null,
+      "doi": "https://doi.org/10.21037/tcr-2025-aw-2287",
+      "corresponding_author": {
+        "name": null,
+        "email": null,
+        "phone": null,
+        "address": null,
+        "address_cn": null
+      },
+      "all_authors_info": [],
+      "all_authors_info_cn": []
+    },
+    "raw": null
+  }
+}

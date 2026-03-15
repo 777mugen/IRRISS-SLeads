@@ -60,6 +60,14 @@ class PaperLead(Base):
     grade: Mapped[Optional[str]] = mapped_column(String(1), nullable=True)  # 'A' | 'B' | 'C' | 'D'
     feedback_status: Mapped[Optional[str]] = mapped_column(String(20), nullable=True, default="未处理")
     strategy_version: Mapped[Optional[str]] = mapped_column(String(10), nullable=True)
+    
+    # Pipeline 来源追踪（可选值：'pipeline_v1_jina' | 'pipeline_v2_zhipu_reader'）
+    # 标识数据来源的处理管道，用于追踪和统计分析
+    pipeline_source: Mapped[Optional[str]] = mapped_column(
+        String(50), 
+        nullable=True
+    )
+    
     is_archived: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(
@@ -74,6 +82,7 @@ class PaperLead(Base):
         Index('ix_paper_leads_created_at', 'created_at'),
         Index('ix_paper_leads_pmid', 'pmid'),
         Index('ix_paper_leads_doi', 'doi'),  # 添加 DOI 索引（性能提升 100-1000 倍）
+        Index('ix_paper_leads_pipeline_source', 'pipeline_source'),  # Pipeline 来源索引
     )
 
 
@@ -156,6 +165,13 @@ class RawMarkdown(Base):
     processed_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     error_message: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     
+    # Pipeline 来源追踪（可选值：'pipeline_v1_jina' | 'pipeline_v2_zhipu_reader'）
+    # 标识内容获取的处理管道，用于追踪和统计分析
+    pipeline_source: Mapped[Optional[str]] = mapped_column(
+        String(50), 
+        nullable=True
+    )
+    
     fetched_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
     
@@ -164,6 +180,7 @@ class RawMarkdown(Base):
         Index('idx_raw_markdown_pmid', 'pmid'),
         Index('idx_raw_markdown_processing_status', 'processing_status'),
         Index('idx_raw_markdown_batch_id', 'batch_id'),
+        Index('idx_raw_markdown_pipeline_source', 'pipeline_source'),  # Pipeline 来源索引
     )
 
 
