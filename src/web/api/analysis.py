@@ -47,17 +47,31 @@ async def get_analysis_stats(db: AsyncSession = Depends(get_db)):
                 bucket = "0-39"
             score_distribution[bucket] = score_distribution.get(bucket, 0) + 1
         
-        # 机构分布（Top 20）
-        institution_result = await db.execute(
-            select(PaperLead.institution_cn, func.count(PaperLead.id))
-            .where(PaperLead.institution_cn != None)
-            .group_by(PaperLead.institution_cn)
-            .order_by(func.count(PaperLead.id).desc())
-            .limit(20)
+        # 地区分布（从 address_cn 提取省份，Top 20）
+        import re
+        
+        # 获取所有有地址的线索
+        address_result = await db.execute(
+            select(PaperLead.address_cn).where(PaperLead.address_cn != None)
         )
-        institution_distribution = [
-            {"name": inst, "count": count}
-            for inst, count in institution_result.fetchall()
+        addresses = [addr for (addr,) in address_result.fetchall() if addr]
+        
+        # 提取省份信息
+        province_counter = Counter()
+        province_pattern = re.compile(
+            r'(北京|天津|上海|重庆|河北|山西|辽宁|吉林|黑龙江|江苏|浙江|安徽|福建|江西|山东|河南|湖北|湖南|广东|海南|四川|贵州|云南|陕西|甘肃|青海|台湾|内蒙古|广西|西藏|宁夏|新疆|香港|澳门)'
+        )
+        
+        for address in addresses:
+            match = province_pattern.search(address)
+            if match:
+                province = match.group(1)
+                province_counter[province] += 1
+        
+        # 转换为 Top 20 格式
+        province_distribution = [
+            {"name": province, "count": count}
+            for province, count in province_counter.most_common(20)
         ]
         
         # 反馈统计
@@ -82,7 +96,7 @@ async def get_analysis_stats(db: AsyncSession = Depends(get_db)):
             "total_papers": total_papers,
             "total_leads": total_leads,
             "score_distribution": score_distribution,
-            "institution_distribution": institution_distribution,
+            "province_distribution": province_distribution,  # 改名
             "feedback_stats": feedback_stats
         }
         

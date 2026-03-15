@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>销售反馈录入 - IRRISS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- 顶部导航 -->
+            <div class="mb-8">
+                <a href="/" class="text-blue-600 hover:text-blue-800">
+                    ← 返回首页
+                </a>
+                <h1 class="text-3xl font-bold text-gray-900 mt-4">销售反馈录入</h1>
+                <p class="text-gray-600 mt-2">录入线索的反馈信息，用于优化评分策略</p>
+            </div>
+            
+            <!-- 搜索表单 -->
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6 mb-6">
+                <h2 class="text-lg font-semibold text-slate-900 mb-4">查找线索</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">线索 ID</label>
+                        <input type="number" id="searchLeadId" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="输入 paper_lead_id">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">或 DOI</label>
+                        <input type="text" id="searchDOI" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="例如: 10.1016/j.jad.2026.121506">
+                    </div>
+                </div>
+                <button onclick="searchLead()" 
+                    class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    查找线索
+                </button>
+            </div>
+            
+            <!-- 反馈表单 -->
+            <div id="feedbackForm" class="bg-white rounded-lg shadow-sm border border-slate-200 p-6 hidden">
+                <h2 class="text-lg font-semibold text-slate-900 mb-4">录入反馈</h2>
+                
+                <!-- 线索信息 -->
+                <div id="leadInfo" class="bg-gray-50 rounded-md p-4 mb-6">
+                    <!-- 动态填充 -->
+                </div>
+                
+                <!-- 反馈维度 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- 线索准确性 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">线索准确性</label>
+                        <select id="accuracy" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">请选择</option>
+                            <option value="好">好</option>
+                            <option value="中">中</option>
+                            <option value="差">差</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 需求匹配度 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">需求匹配度</label>
+                        <select id="demandMatch" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">请选择</option>
+                            <option value="好">好</option>
+                            <option value="中">中</option>
+                            <option value="差">差</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 联系方式有效性 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">联系方式有效性</label>
+                        <select id="contactValidity" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">请选择</option>
+                            <option value="好">好</option>
+                            <option value="中">中</option>
+                            <option value="差">差</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 成交速度 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">成交速度</label>
+                        <select id="dealSpeed" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">请选择</option>
+                            <option value="好">好</option>
+                            <option value="中">中</option>
+                            <option value="差">差</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 成交价格 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">成交价格</label>
+                        <select id="dealPrice" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">请选择</option>
+                            <option value="好">好</option>
+                            <option value="中">中</option>
+                            <option value="差">差</option>
+                        </select>
+                    </div>
+                    
+                </div>
+                
+                <!-- 备注 -->
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">销售备注</label>
+                    <textarea id="notes" rows="3" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="输入备注信息..."></textarea>
+                </div>
+                
+                <!-- 提交按钮 -->
+                <div class="mt-6 flex gap-4">
+                    <button onclick="submitFeedback()" 
+                        class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                        提交反馈
+                    </button>
+                    <button onclick="resetForm()" 
+                        class="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+                        重置
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 提示信息 -->
+            <div id="alertBox" class="hidden mt-6"></div>
+            
+        </div>
+    </div>
+    
+    <script>
+        let currentLeadId = null;
+        
+        // 查找线索
+        async function searchLead() {
+            const leadId = document.getElementById('searchLeadId').value;
+            const doi = document.getElementById('searchDOI').value;
+            
+            if (!leadId && !doi) {
+                showAlert('请输入线索 ID 或 DOI', 'warning');
+                return;
+            }
+            
+            try {
+                // 先通过 DOI 查找 ID（如果提供了 DOI）
+                let searchId = leadId;
+                if (!searchId && doi) {
+                    const queryRes = await axios.get(`/api/query/leads?doi=${encodeURIComponent(doi)}`);
+                    if (queryRes.data.leads && queryRes.data.leads.length > 0) {
+                        searchId = queryRes.data.leads[0].id;
+                    } else {
+                        showAlert('未找到该 DOI 对应的线索', 'error');
+                        return;
+                    }
+                }
+                
+                currentLeadId = searchId;
+                
+                // 获取线索详情
+                const res = await axios.get(`/api/query/leads/${searchId}`);
+                const lead = res.data.lead;
+                
+                // 填充线索信息
+                document.getElementById('leadInfo').innerHTML = `
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div><span class="font-medium">线索 ID:</span> ${lead.id}</div>
+                        <div><span class="font-medium">DOI:</span> ${lead.doi || '-'}</div>
+                        <div><span class="font-medium">标题:</span> ${lead.title || '-'}</div>
+                        <div><span class="font-medium">评级:</span> ${lead.grade || '-'}</div>
+                        <div><span class="font-medium">评分:</span> ${lead.score || '-'}</div>
+                        <div><span class="font-medium">通讯作者:</span> ${lead.name || '-'}</div>
+                        <div><span class="font-medium">邮箱:</span> ${lead.email || '-'}</div>
+                        <div><span class="font-medium">机构:</span> ${lead.institution_cn || '-'}</div>
+                    </div>
+                `;
+                
+                // 显示表单
+                document.getElementById('feedbackForm').classList.remove('hidden');
+                
+                // 检查是否已有反馈
+                const feedbackRes = await axios.get(`/api/feedback/${searchId}`);
+                if (feedbackRes.data.status === 'success') {
+                    const feedback = feedbackRes.data.feedback;
+                    document.getElementById('accuracy').value = feedback.accuracy || '';
+                    document.getElementById('demandMatch').value = feedback.demand_match || '';
+                    document.getElementById('contactValidity').value = feedback.contact_validity || '';
+                    document.getElementById('dealSpeed').value = feedback.deal_speed || '';
+                    document.getElementById('dealPrice').value = feedback.deal_price || '';
+                    document.getElementById('notes').value = feedback.notes || '';
+                    showAlert('已加载历史反馈', 'info');
+                }
+                
+            } catch (error) {
+                console.error(error);
+                showAlert('查找失败: ' + (error.response?.data?.detail || error.message), 'error');
+            }
+        }
+        
+        // 提交反馈
+        async function submitFeedback() {
+            if (!currentLeadId) {
+                showAlert('请先查找线索', 'warning');
+                return;
+            }
+            
+            const feedbackData = {
+                paper_lead_id: parseInt(currentLeadId),
+                accuracy: document.getElementById('accuracy').value,
+                demand_match: document.getElementById('demandMatch').value,
+                contact_validity: document.getElementById('contactValidity').value,
+                deal_speed: document.getElementById('dealSpeed').value,
+                deal_price: document.getElementById('dealPrice').value,
+                notes: document.getElementById('notes').value
+            };
+            
+            try {
+                const res = await axios.post('/api/feedback/', feedbackData);
+                showAlert(res.data.message || '反馈提交成功', 'success');
+            } catch (error) {
+                console.error(error);
+                showAlert('提交失败: ' + (error.response?.data?.detail || error.message), 'error');
+            }
+        }
+        
+        // 重置表单
+        function resetForm() {
+            document.getElementById('accuracy').value = '';
+            document.getElementById('demandMatch').value = '';
+            document.getElementById('contactValidity').value = '';
+            document.getElementById('dealSpeed').value = '';
+            document.getElementById('dealPrice').value = '';
+            document.getElementById('notes').value = '';
+            showAlert('表单已重置', 'info');
+        }
+        
+        // 显示提示
+        function showAlert(message, type) {
+            const colors = {
+                success: 'bg-green-100 border-green-500 text-green-700',
+                error: 'bg-red-100 border-red-500 text-red-700',
+                warning: 'bg-yellow-100 border-yellow-500 text-yellow-700',
+                info: 'bg-blue-100 border-blue-500 text-blue-700'
+            };
+            
+            const alertBox = document.getElementById('alertBox');
+            alertBox.className = `p-4 border-l-4 rounded ${colors[type]}`;
+            alertBox.innerHTML = message;
+            alertBox.classList.remove('hidden');
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                alertBox.classList.add('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

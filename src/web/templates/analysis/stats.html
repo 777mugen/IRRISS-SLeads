@@ -30,10 +30,10 @@
         <div id="score-chart" style="height: 400px;"></div>
     </div>
 
-    <!-- 机构分布 -->
+    <!-- 地区分布 -->
     <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-        <h2 class="text-lg font-semibold text-slate-900 mb-4">机构分布（Top 10）</h2>
-        <div id="institution-chart" style="height: 400px;"></div>
+        <h2 class="text-lg font-semibold text-slate-900 mb-4">地区分布（Top 10）</h2>
+        <div id="province-chart" style="height: 400px;"></div>
     </div>
 
     <!-- 反馈统计 -->
@@ -87,7 +87,7 @@ function loadStats() {
         
         // 渲染图表
         renderScoreChart(data.score_distribution || {});
-        renderInstitutionChart(data.institution_distribution || []);
+        renderProvinceChart(data.province_distribution || []);  // 改名
         renderFeedbackStats(data.feedback_stats || {});
     })
     .catch(err => {
@@ -122,8 +122,8 @@ function renderScoreChart(data) {
     chart.setOption(option);
 }
 
-function renderInstitutionChart(data) {
-    const chart = echarts.init(document.getElementById('institution-chart'));
+function renderProvinceChart(data) {
+    const chart = echarts.init(document.getElementById('province-chart'));
     
     const top10 = data.slice(0, 10);
     
@@ -133,7 +133,7 @@ function renderInstitutionChart(data) {
         yAxis: {
             type: 'category',
             data: top10.map(d => d.name).reverse(),
-            name: '机构'
+            name: '省份'
         },
         series: [{
             name: '线索数',
