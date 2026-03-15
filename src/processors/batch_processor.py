@@ -113,7 +113,8 @@ class BatchProcessor:
                             }
                         ],
                         "temperature": 0.1,
-                        "max_tokens": 4096
+                        "max_tokens": 4096,
+                        "response_format": {"type": "json_object"}  # 官方结构化输出
                     }
                 }
                 

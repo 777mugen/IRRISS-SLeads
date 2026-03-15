@@ -75,4 +75,4 @@ async def get_failed_papers(db: AsyncSession = Depends(get_db)):
         
     except Exception as e:
         logger.error("failed_papers_retrieval_failed", error=str(e))
-        return {"papers": []
+        return {"papers": []}
