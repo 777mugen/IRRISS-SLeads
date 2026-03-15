@@ -13,10 +13,10 @@ logger = get_logger()
 
 @router.get("/stats")
 async def get_batch_stats(db: AsyncSession = Depends(get_db)):
-    """获取批处理统计数据"""
+    """获取批处理统计数据（从 raw_markdown 和 paper_leads 双表统计）"""
     try:
-        # 统计各状态的论文数量
-        result = await db.execute(
+        # 从 raw_markdown 统计
+        raw_result = await db.execute(
             select(
                 RawMarkdown.processing_status,
                 func.count(RawMarkdown.id).label('count')
@@ -31,12 +31,23 @@ async def get_batch_stats(db: AsyncSession = Depends(get_db)):
             "failed": 0
         }
         
-        for row in result:
+        for row in raw_result:
             status = row.processing_status or "pending"
             if status in stats:
-                stats[status] = row.count
+                stats[status] += row.count
         
-        logger.info("batch_stats_retrieved", stats=stats)
+        # 从 paper_leads 统计（Pipeline 1 直接写入）
+        from src.db.models import PaperLead
+        
+        leads_result = await db.execute(
+            select(func.count(PaperLead.id))
+        )
+        leads_count = leads_result.scalar() or 0
+        
+        # 将 paper_leads 的数量加到 completed 中
+        stats["completed"] += leads_count
+        
+        logger.info("batch_stats_retrieved", stats=stats, source="dual_table")
         return stats
         
     except Exception as e:
