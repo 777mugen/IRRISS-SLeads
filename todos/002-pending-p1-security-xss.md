@@ -1,11 +1,11 @@
 ---
-status: partial
+status: complete
 priority: p1
 issue_id: 002
 tags: [security, xss, javascript, p1, code-review]
 dependencies: []
 created: 2026-03-15
-completed: 2026-03-15 (2/4 templates)
+completed: 2026-03-15
 ---
 
 # P1: 修复 XSS 跨站脚本漏洞
