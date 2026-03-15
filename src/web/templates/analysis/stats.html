@@ -163,19 +163,34 @@ function renderFeedbackStats(stats) {
     
     dimensions.forEach(dim => {
         const stat = stats[dim];
+        const container = document.getElementById(labels[dim]);
+        
         if (!stat) {
-            document.getElementById(labels[dim]).textContent = '暂无数据';
+            container.textContent = '暂无数据';
             return;
         }
         
-        const html = `
-            <div class="text-left">
-                <p class="text-green-600">好: ${stat.good || 0}</p>
-                <p class="text-yellow-600">中: ${stat.medium || 0}</p>
-                <p class="text-red-600">差: ${stat.poor || 0}</p>
-            </div>
-        `;
-        document.getElementById(labels[dim]).innerHTML = html;
+        // XSS 防护：使用 DOM API 而不是 innerHTML
+        const wrapper = document.createElement('div');
+        wrapper.className = 'text-left';
+        
+        const goodP = document.createElement('p');
+        goodP.className = 'text-green-600';
+        goodP.textContent = `好: ${stat.good || 0}`;
+        wrapper.appendChild(goodP);
+        
+        const mediumP = document.createElement('p');
+        mediumP.className = 'text-yellow-600';
+        mediumP.textContent = `中: ${stat.medium || 0}`;
+        wrapper.appendChild(mediumP);
+        
+        const poorP = document.createElement('p');
+        poorP.className = 'text-red-600';
+        poorP.textContent = `差: ${stat.poor || 0}`;
+        wrapper.appendChild(poorP);
+        
+        container.innerHTML = '';
+        container.appendChild(wrapper);
     });
 }
 </script>
